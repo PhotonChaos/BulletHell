@@ -3,14 +3,27 @@ extends Node2D
 
 # Collision Layers:
 #  1. Player rigidbody
-#  2. Bullets
-#  3. Player shot, enemies
+#  2. Bullets, enemies
+#  3. Player shots
+#  4. Powerups
 
+# Sprite Layers (lower is further back):
+#  -2. Player Shots
+#  -1. Player Sprite
+#   0. Default
+#  10. Player Hitbox
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
+@onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
+
+@onready var enemy_template: PackedScene = preload("res://scenes/enemy.tscn")
+
+static var _game_instance: GameController = null
 
 var play_sfx: bool = false
 var sfx_cooldown: float = 0
+
+var enemy_cooldown: float = 0
 
 const DEFAULT_BULLET_TYPE = "ball"
 
@@ -33,10 +46,11 @@ static func get_bullet_template(name: String) -> PackedScene:
 
 ## Spawns a bullet of [param type] at [param position] with properties [param args].[br]
 ## Returns a reference to the new bullet.
-static func spawn_bullet(position: Vector2, type: String, args: BulletStats=null) -> Bullet:
+static func spawn_bullet(_position: Vector2, type: String, args: BulletStats=null) -> Bullet:
 	# TODO: Make this work with object pooling
 	var bullet: Bullet = get_bullet_template(type).instantiate()
 	
+	bullet.position = _position
 	bullet.init(args)
 	
 	return bullet
@@ -46,9 +60,10 @@ static func spawn_bullet(position: Vector2, type: String, args: BulletStats=null
 ## spread evenly across an arc of [param spread]. [br]
 ## The arc is centred on a vector rotated by [param rotation], and the 
 ## bullets spawn [param distance] away from [param position] along the aim vector.[br]
-## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].
+## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].[br]
+## Also, the bullets will be added as children of the game controller.
 ## Returns an array containing the bullets, ordered from lowest angle aim vector to highest.
-static func spawn_burst(position: Vector2, type: String, count: int, spread: float, rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:
+static func spawn_burst(_position: Vector2, type: String, count: int, spread: float, rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:
 	var bullets: Array[Bullet] = []
 	var angle_gap = spread / count
 	var start_angle = rotation - spread / 2
@@ -57,38 +72,72 @@ static func spawn_burst(position: Vector2, type: String, count: int, spread: flo
 		var bullet_dir = start_angle + angle_gap * i
 		var point_dir = Vector2.from_angle(bullet_dir)
 		
-		var bullet: Bullet = spawn_bullet(position + point_dir * dist, type)
+		var bullet: Bullet = spawn_bullet(_position + point_dir * dist, type)
 		
 		bullet.rotation = bullet_dir
 		bullet.velocity = point_dir * v
 		bullet.acceleration = point_dir * a
 		
 		bullets.append(bullet)
-		
+	
+	_game_instance.play_sfx = true
+	
+	for bullet in bullets:
+		_game_instance.add_child(bullet)
+	
 	return bullets
 
 
-static func spawn_ring(position: Vector2, type: String, count: int, rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:
-	return spawn_burst(position, type, count, TAU, rotation, rotation, v, a)
+static func spawn_ring(_position: Vector2, type: String, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:
+	return spawn_burst(_position, type, count, TAU, _rotation, dist, v, a)
 
+
+## Returns the position of the player.[br]
+## If there is more than one player object in the group, returns the first one.
+static func get_player_pos() -> Vector2:
+	if not _game_instance:
+		return Vector2.ZERO
+	
+	return _game_instance.get_tree().get_first_node_in_group('player').position
+
+## SFX Methods
+static func play_enemy_death_sfx():
+	_game_instance.enemy_death_sfx.stop()
+	_game_instance.enemy_death_sfx.play()
+
+func spawn_enemies():
+	var enemy = enemy_template.instantiate()		
+	var posx = randf_range(100, 600)
+	
+	enemy.position = Vector2(posx, -60)
+	enemy.destination = Vector2(posx, randf_range(130, 200))
+	enemy.target_dest = true
+	enemy.tick_duration = 0.2
+	
+	enemy.tick_func = func (age: int, _position: Vector2):
+		GameController.spawn_ring(_position, "knife", 8, age * PI/15, 5, 40, 20)
+	
+	add_child(enemy)
+
+
+func _ready() -> void:
+	_game_instance = self
 
 func _process(delta: float) -> void:
+	sfx_cooldown = max(0, sfx_cooldown - delta)
+	enemy_cooldown = max(0, enemy_cooldown - delta)
+	
 	if sfx_cooldown <= 0 and play_sfx:
 		play_sfx = false
 		sfx_cooldown = 0.1
 		
 		bullet_sfx.play()
-	else:
-		sfx_cooldown = max(0, sfx_cooldown - delta)
-
-
-## Signals
-func _on_bullet_bounds_area_entered(area: Area2D) -> void:
-	# Triggers when a bullet is spawned
-	if area is Bullet:
-		play_sfx = true
+		
+	if enemy_cooldown <= 0:
+		enemy_cooldown = 1
+		spawn_enemies()
 
 
 func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 	# Triggers whenever a bullet exits the area
-	area.queue_free()  # Only bullets should be on layer 2
+	area.queue_free()  # Only bullets and enemies should be on layer 2

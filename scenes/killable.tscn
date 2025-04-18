@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8uq6kn21ulaq"]
+
+[ext_resource type="Script" uid="uid://dk81bhrptt8je" path="res://killable.gd" id="1_8gkj0"]
+
+[node name="Killable" type="Area2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_8gkj0")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

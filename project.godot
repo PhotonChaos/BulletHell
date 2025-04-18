@@ -26,6 +26,7 @@ window/stretch/scale_mode="integer"
 [global_group]
 
 enemy_bullets="Projectiles that can harm the player"
+player="Contains the player node"
 
 [input]
 

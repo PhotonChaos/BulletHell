@@ -4,8 +4,12 @@ extends Area2D
 var velocity: Vector2 = Vector2.ZERO
 var acceleration: Vector2 = Vector2.ZERO
 
-var rotate_to_velocity: bool = false
-var rotation_offset: float = 0
+## Whether the bullet should auto-rotate in the direction of its velocity.
+var rotate_to_velocity: bool = true
+
+## Bullet sprite will be rotated by this much relative to the bullet object's rotation.[br]
+## Defaults to PI/2 since 0 radians points on the x-axis in Godot.
+var rotation_offset: float = PI / 2
 
 func _ready():
 	var collider = get_node_or_null("Hitbox") as CollisionShape2D

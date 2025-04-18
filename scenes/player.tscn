@@ -17,7 +17,7 @@ radius = 2.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
 radius = 14.0
 
-[node name="Player" type="RigidBody2D"]
+[node name="Player" type="RigidBody2D" groups=["player"]]
 physics_material_override = SubResource("PhysicsMaterial_dqkch")
 gravity_scale = 0.0
 lock_rotation = true
@@ -28,6 +28,7 @@ position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_dqkch")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
+z_index = -1
 texture = ExtResource("1_onrkg")
 
 [node name="HitboxSprite" type="Sprite2D" parent="."]

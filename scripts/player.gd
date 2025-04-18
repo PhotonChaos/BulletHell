@@ -6,8 +6,12 @@ signal player_damage
 ## Player Settings
 @export var speed: float
 @export var focus_speed: float
-@export var deathbomb_timer: float
+#@export var deathbomb_timer: float
+@export_group("Player Shot")
 @export_range(1, 100) var fire_rate: float
+@export_range(1, 7) var shot_count: int
+## Shot spread in degrees
+@export_range(1, 360) var shot_spread: float
 
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
@@ -23,15 +27,30 @@ var itime: float = 0
 var focused: bool = true
 var points: int = 0
 
+var _shot_gap_size: float
+var _shot_angle_start: float
+
 func get_move_speed() -> float:
 	return focus_speed if focused else speed
 
 func shoot() -> void:
-	var shot = shot_template.instantiate()
-	shot.position = position + Vector2(0, -10)
-	shot.velocity = 20
-	add_sibling(shot)
+	for i in range(shot_count):
+		var shot: PlayerShot = shot_template.instantiate()
+		shot.position = position + Vector2(0, -10)
+		shot.rotation = _shot_angle_start + i*_shot_gap_size + PI/2
+		shot.velocity = Vector2.from_angle(_shot_angle_start + i*_shot_gap_size) * 20
+		add_sibling(shot)
 
+
+func _ready() -> void:
+	var _shot_spread_rad = deg_to_rad(shot_spread)
+	
+	_shot_angle_start = -(PI+_shot_spread_rad)/2
+	
+	if shot_count > 1:
+		_shot_gap_size = _shot_spread_rad / (shot_count-1)
+	else:
+		_shot_gap_size = 0
 
 func _process(delta: float) -> void:	
 	# Moving

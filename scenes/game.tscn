@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=3 uid="uid://uk6quv3bwyb6"]
+
+[ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player.tscn" id="2_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://bp5lp887k6ujn" path="res://scenes/turret.tscn" id="3_iywne"]
+[ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://sound/bulletShoot1.wav" id="4_lbhrr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
+size = Vector2(672, 392)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbhrr"]
+size = Vector2(651, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iywne"]
+size = Vector2(6, 364)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
+size = Vector2(4, 364)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_lnu2h")
+
+[node name="Player" parent="." instance=ExtResource("2_lbhrr")]
+position = Vector2(310, 293)
+speed = 200.0
+focus_speed = 100.0
+fire_rate = 20.0
+
+[node name="BulletBounds" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BulletBounds"]
+position = Vector2(323, 179)
+shape = SubResource("RectangleShape2D_e2o6t")
+
+[node name="Turret" parent="." instance=ExtResource("3_iywne")]
+position = Vector2(308, 106)
+bullet = "small_ball"
+speed = 90.0
+fire_rate = 9.0
+rotate_inc = 0.5
+
+[node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_lbhrr")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="BottomWall" type="StaticBody2D" parent="Walls"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
+position = Vector2(323, 361)
+shape = SubResource("RectangleShape2D_lbhrr")
+
+[node name="TopWall" type="StaticBody2D" parent="Walls"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
+position = Vector2(315, -1)
+shape = SubResource("RectangleShape2D_lbhrr")
+
+[node name="LeftWall" type="StaticBody2D" parent="Walls"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
+position = Vector2(-1, 182)
+shape = SubResource("RectangleShape2D_iywne")
+
+[node name="RightWall" type="StaticBody2D" parent="Walls"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
+position = Vector2(640, 181)
+shape = SubResource("RectangleShape2D_p57ef")
+
+[connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
+[connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]

@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://b5a8qqajkoryp"]
+
+[ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player.gd" id="1_4flbx"]
+[ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://cp17eer47sjjy" path="res://textures/hitbox.png" id="3_i3pqv"]
+[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://sound/hitHurt.wav" id="4_dqkch"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dqkch"]
+friction = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
+size = Vector2(16, 29)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
+radius = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
+radius = 14.0
+
+[node name="Player" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_dqkch")
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_4flbx")
+
+[node name="PlayerWallCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_dqkch")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_onrkg")
+
+[node name="HitboxSprite" type="Sprite2D" parent="."]
+z_index = 10
+position = Vector2(0, 2)
+texture = ExtResource("3_i3pqv")
+
+[node name="PlayerHitbox" type="Area2D" parent="HitboxSprite"]
+position = Vector2(0, -2)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxSprite/PlayerHitbox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_onrkg")
+
+[node name="PlayerGrazebox" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGrazebox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_i3pqv")
+
+[node name="PlayerSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_dqkch")
+
+[connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
+[connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]

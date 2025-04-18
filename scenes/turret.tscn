@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bp5lp887k6ujn"]
+
+[ext_resource type="Script" uid="uid://llg1wqxo4bo6" path="res://scripts/turret.gd" id="1_3oylf"]
+[ext_resource type="Texture2D" uid="uid://cf8devk28ehbi" path="res://textures/turret.png" id="1_tjdg3"]
+
+[node name="Turret" type="Sprite2D"]
+texture = ExtResource("1_tjdg3")
+script = ExtResource("1_3oylf")

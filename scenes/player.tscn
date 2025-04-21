@@ -63,5 +63,6 @@ stream = ExtResource("4_dqkch")
 [node name="PlayerGrazeSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_qlg0r")
 
+[connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
 [connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]

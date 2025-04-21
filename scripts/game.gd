@@ -16,6 +16,7 @@ extends Node2D
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
+@onready var main_ui = $UILayer/GameplayUI as GameplayUI
 
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy.tscn")
 
@@ -101,30 +102,39 @@ static func get_player_pos() -> Vector2:
 	
 	return _game_instance.get_tree().get_first_node_in_group('player').position
 
+
 ## SFX Methods
 static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
 
+
+## Turns all bullets onscreen into points. [br]
+## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs)
+static func clear_all_bullets(hard_clear=false):
+	var bullets
+
 func spawn_enemies():
 	var enemy = enemy_template.instantiate()
-	var posx = randf_range(100, 600)
+	var posx = randf_range(100, 360)
 	
 	enemy.position = Vector2(posx, -60)
 	enemy.destination = Vector2(posx, randf_range(130, 200))
 	enemy.target_dest = true
-	enemy.tick_duration = 0.5
+	enemy.tick_duration = randf_range(0.1, 0.4)
 	
-	var enemy_shots = randi_range(5, 10)
+	var enemy_shots = randi_range(3, 6)
 	
 	enemy.tick_func = func (age: float, _position: Vector2):
-		GameController.spawn_ring(_position, "knife", enemy_shots, age * PI/15, 5, 40, 20)
+		GameController.spawn_ring(_position, "small_ball", enemy_shots, age * PI/15, 5, 40, 20)
 	
 	add_child(enemy)
 
 
 func _ready() -> void:
 	_game_instance = self
+	var player: Player = get_tree().get_first_node_in_group('player')
+	player.emit_stats()
 
 func _process(delta: float) -> void:
 	sfx_cooldown = max(0, sfx_cooldown - delta)
@@ -137,10 +147,18 @@ func _process(delta: float) -> void:
 		bullet_sfx.play()
 		
 	if enemy_cooldown <= 0:
-		enemy_cooldown = 1
+		enemy_cooldown = 0.4
 		spawn_enemies()
 
 
 func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 	# Triggers whenever a bullet exits the area
 	area.queue_free()  # Only bullets and enemies should be on layer 2
+
+
+func _on_player_bombs_changed(old: int, new: int) -> void:
+	main_ui.set_bombs(new)
+
+
+func _on_player_lives_changed(old: int, new: int) -> void:
+	main_ui.set_lives(new)

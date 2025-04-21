@@ -1,7 +1,8 @@
 class_name Player
 extends RigidBody2D
 
-signal player_damage
+signal lives_changed(old: int, new: int)
+signal bombs_changed(old: int, new: int)
 
 ## Player Settings
 @export var speed: float
@@ -66,10 +67,18 @@ func shoot() -> void:
 		shot.velocity = Vector2.from_angle(angle_start + i*gap_size) * 20
 		add_sibling(shot)
 
-func bomb() -> void:
+func use_bomb() -> void:
 	var bomb = bomb_template.instantiate() as Bomb
 	bomb.position = position
 	add_sibling(bomb)
+
+
+## Causes the player to emit all of it's stat changed signals
+## Order is lives, bombs, score
+func emit_stats():
+	lives_changed.emit(_lives, _lives)
+	bombs_changed.emit(_bombs, _bombs)
+	# TODO: Score
 
 func _ready() -> void:
 	state = PlayerState.NORMAL
@@ -89,6 +98,7 @@ func _ready() -> void:
 	else:
 		_shot_gap_size = 0
 		_focus_gap_size = 0
+
 
 func _physics_process(delta: float) -> void:	
 	# Moving
@@ -134,19 +144,21 @@ func _physics_process(delta: float) -> void:
 		
 		if Input.is_action_pressed("secondary") and _bombs > 0:
 			_bomb_cooldown = 0
-			_bombs -= 1
 			itime += 6
-			bomb()
-	
+			_bombs -= 1
+			bombs_changed.emit(_bombs+1, _bombs)
+			use_bomb()
 
 
 func _on_player_hitbox_area_entered(area: Area2D) -> void:
 	if itime > 0:
 		return
 	
+	_lives -= 1
+	
 	area.queue_free()
 	sfx_player_hit.play()
-	player_damage.emit()
+	lives_changed.emit(_lives+1, _lives)
 	
 	itime = MAX_ITIME
 
@@ -154,4 +166,3 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
 	points += 1
 	sfx_player_graze.play()
-	

@@ -11,6 +11,8 @@ var rotate_to_velocity: bool = true
 ## Defaults to PI/2 since 0 radians points on the x-axis in Godot.
 var rotation_offset: float = PI / 2
 
+var strong: bool = false
+
 func _ready():
 	var collider = get_node_or_null("Hitbox") as CollisionShape2D
 	

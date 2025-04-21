@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=10 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player.tscn" id="2_lbhrr"]
+[ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://sound/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://sound/bulletShoot1.wav" id="4_lbhrr"]
-[ext_resource type="AudioStream" uid="uid://crospa2pb5jp4" path="res://sound/not_mine/block.mp3" id="5_iywne"]
+[ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="5_iywne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(672, 392)
@@ -20,13 +21,55 @@ size = Vector2(4, 364)
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="MainUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_iywne")
+
+[node name="Panel" type="Panel" parent="UILayer/MainUI"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -274.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UILayer/MainUI/Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 57.0
+grow_horizontal = 2
+text = "Bullet Hell!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="UILayer/MainUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -17.0
+grow_horizontal = 2
+grow_vertical = 0
+
 [node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(316, 302)
+position = Vector2(149, 297)
 speed = 200.0
 focus_speed = 100.0
 fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0
+focus_spread = 15.0
 
 [node name="BulletBounds" type="Area2D" parent="."]
 visible = false
@@ -39,9 +82,10 @@ shape = SubResource("RectangleShape2D_e2o6t")
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
+volume_db = -10.0
 
 [node name="EnemyDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_iywne")
+stream = ExtResource("4_iywne")
 
 [node name="Walls" type="Node2D" parent="."]
 

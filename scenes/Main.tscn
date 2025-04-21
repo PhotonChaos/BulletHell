@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn4eu8dksotav"]
+
+[ext_resource type="PackedScene" uid="uid://uk6quv3bwyb6" path="res://scenes/game.tscn" id="1_elqb8"]
+
+[node name="Main" type="Node2D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -313.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Control/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 30.0
+offset_right = 59.0
+offset_bottom = 53.0
+grow_horizontal = 2
+text = "BULLET HELL!!!!"
+
+[node name="Game" parent="." instance=ExtResource("1_elqb8")]

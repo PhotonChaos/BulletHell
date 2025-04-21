@@ -8,6 +8,7 @@ extends Node2D
 #  4. Powerups
 
 # Sprite Layers (lower is further back):
+#  -3. Bomb Sprite
 #  -2. Player Shots
 #  -1. Player Sprite
 #   0. Default
@@ -106,16 +107,18 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.play()
 
 func spawn_enemies():
-	var enemy = enemy_template.instantiate()		
+	var enemy = enemy_template.instantiate()
 	var posx = randf_range(100, 600)
 	
 	enemy.position = Vector2(posx, -60)
 	enemy.destination = Vector2(posx, randf_range(130, 200))
 	enemy.target_dest = true
-	enemy.tick_duration = 0.2
+	enemy.tick_duration = 0.5
 	
-	enemy.tick_func = func (age: int, _position: Vector2):
-		GameController.spawn_ring(_position, "knife", 8, age * PI/15, 5, 40, 20)
+	var enemy_shots = randi_range(5, 10)
+	
+	enemy.tick_func = func (age: float, _position: Vector2):
+		GameController.spawn_ring(_position, "knife", enemy_shots, age * PI/15, 5, 40, 20)
 	
 	add_child(enemy)
 

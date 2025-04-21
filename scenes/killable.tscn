@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8uq6kn21ulaq"]
 
-[ext_resource type="Script" uid="uid://dk81bhrptt8je" path="res://killable.gd" id="1_8gkj0"]
+[ext_resource type="Script" uid="uid://dk81bhrptt8je" path="res://scripts/killable.gd" id="1_8gkj0"]
 
 [node name="Killable" type="Area2D"]
 collision_layer = 2

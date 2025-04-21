@@ -6,20 +6,32 @@ signal player_damage
 ## Player Settings
 @export var speed: float
 @export var focus_speed: float
+@export var lives: int
+@export var bombs: int
 #@export var deathbomb_timer: float
 @export_group("Player Shot")
 @export_range(1, 100) var fire_rate: float
 @export_range(1, 7) var shot_count: int
 ## Shot spread in degrees
 @export_range(1, 360) var shot_spread: float
+@export_range(1, 360) var focus_spread: float
 
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
-@onready var sfx_player: AudioStreamPlayer2D = $PlayerSFX
-@onready var shot_template: PackedScene = preload("res://scenes/player_shot.tscn")
+@onready var sfx_player_hit: AudioStreamPlayer2D = $PlayerHitSFX
+@onready var sfx_player_graze: AudioStreamPlayer2D = $PlayerGrazeSFX
+
+var shot_template: PackedScene = preload("res://scenes/player_shot.tscn")
+var bomb_template: PackedScene = preload("res://scenes/bomb.tscn")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold
+
+const BOMB_COOLDOWN: float = 4
+var _bomb_cooldown: float = BOMB_COOLDOWN
+
+var _lives: int
+var _bombs: int
 
 const MAX_ITIME: float = 1  # Max itime when hit
 var itime: float = 0
@@ -29,30 +41,56 @@ var points: int = 0
 
 var _shot_gap_size: float
 var _shot_angle_start: float
+var _focus_gap_size: float
+var _focus_angle_start: float
+
+enum PlayerState {
+	NORMAL,
+	DIALOGUE,
+	PAUSE
+}
+
+var state: PlayerState
 
 func get_move_speed() -> float:
 	return focus_speed if focused else speed
 
 func shoot() -> void:
+	var gap_size = _focus_gap_size if focused else _shot_gap_size
+	var angle_start = _focus_angle_start if focused else _shot_angle_start
+	
 	for i in range(shot_count):
 		var shot: PlayerShot = shot_template.instantiate()
 		shot.position = position + Vector2(0, -10)
-		shot.rotation = _shot_angle_start + i*_shot_gap_size + PI/2
-		shot.velocity = Vector2.from_angle(_shot_angle_start + i*_shot_gap_size) * 20
+		shot.rotation = angle_start + i*gap_size + PI/2
+		shot.velocity = Vector2.from_angle(angle_start + i*gap_size) * 20
 		add_sibling(shot)
 
+func bomb() -> void:
+	var bomb = bomb_template.instantiate() as Bomb
+	bomb.position = position
+	add_sibling(bomb)
 
 func _ready() -> void:
-	var _shot_spread_rad = deg_to_rad(shot_spread)
+	state = PlayerState.NORMAL
 	
-	_shot_angle_start = -(PI+_shot_spread_rad)/2
+	_lives = lives
+	_bombs = bombs
+	
+	var _shot_spread_rad = deg_to_rad(shot_spread)
+	var _focus_spread_rad = deg_to_rad(focus_spread)
+	
+	_shot_angle_start  = -(PI+_shot_spread_rad)/2
+	_focus_angle_start = -(PI+_focus_spread_rad)/2
 	
 	if shot_count > 1:
-		_shot_gap_size = _shot_spread_rad / (shot_count-1)
+		_shot_gap_size  = _shot_spread_rad / (shot_count-1)
+		_focus_gap_size = _focus_spread_rad / (shot_count-1)
 	else:
 		_shot_gap_size = 0
+		_focus_gap_size = 0
 
-func _process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:	
 	# Moving
 	if not focused and Input.is_action_pressed("focus"):
 		focused = true
@@ -75,8 +113,14 @@ func _process(delta: float) -> void:
 	
 	linear_velocity = frame_move.normalized() * get_move_speed()
 	
-	# Shooting
+	itime = max(0, itime - delta)
+	
+	## From this point onwards, nothing runs in cutscene or during pause
+	if state != PlayerState.NORMAL:
+		return
+
 	shot_cooldown += delta
+	_bomb_cooldown += delta
 
 	if shot_cooldown >= shot_threshold:
 		shot_cooldown = shot_threshold
@@ -85,16 +129,23 @@ func _process(delta: float) -> void:
 			shot_cooldown = 0
 			shoot()
 	
-	# ITime
-	itime = max(0, itime - delta)
+	if _bomb_cooldown >= BOMB_COOLDOWN:
+		_bomb_cooldown = BOMB_COOLDOWN
+		
+		if Input.is_action_pressed("secondary") and _bombs > 0:
+			_bomb_cooldown = 0
+			_bombs -= 1
+			itime += 6
+			bomb()
 	
+
 
 func _on_player_hitbox_area_entered(area: Area2D) -> void:
 	if itime > 0:
 		return
 	
 	area.queue_free()
-	sfx_player.play()
+	sfx_player_hit.play()
 	player_damage.emit()
 	
 	itime = MAX_ITIME
@@ -102,3 +153,5 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
 	points += 1
+	sfx_player_graze.play()
+	

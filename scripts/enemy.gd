@@ -55,5 +55,8 @@ func death():
 func _on_killable_dead() -> void:
 	death()
 	die.emit()
+	
 	GameController.play_enemy_death_sfx()
+	GameController.spawn_item(global_position, Item.ItemType.POINT)
+	
 	queue_free()

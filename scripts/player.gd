@@ -186,3 +186,8 @@ func _on_item_hitbox_area_entered(area: Area2D) -> void:
 	if area is Item:
 		(area as Item).apply(self)
 		area.queue_free()
+
+
+func _on_item_magnet_box_area_entered(area: Area2D) -> void:
+	if area is Item:
+		(area as Item).magnet_player = true

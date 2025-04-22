@@ -47,4 +47,4 @@ func _on_animation_finished() -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area is Bullet:
-		area.queue_free()
+		GameController.clear_bullet(area as Bullet, true)

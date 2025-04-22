@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b5a8qqajkoryp"]
+[gd_scene load_steps=12 format=3 uid="uid://b5a8qqajkoryp"]
 
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
@@ -18,8 +18,12 @@ radius = 2.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
 radius = 12.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qlg0r"]
-size = Vector2(14, 27)
+[sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
+radius = 36.0139
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
+radius = 7.0
+height = 28.0
 
 [node name="Player" type="RigidBody2D" groups=["player"]]
 physics_material_override = SubResource("PhysicsMaterial_dqkch")
@@ -61,13 +65,22 @@ position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_i3pqv")
 debug_color = Color(0, 0.7, 0.396667, 0.419608)
 
+[node name="ItemMagnetBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemMagnetBox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_qlg0r")
+debug_color = Color(0.606667, 0, 0.7, 0)
+
 [node name="ItemHitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemHitbox"]
-position = Vector2(0, 1.5)
-shape = SubResource("RectangleShape2D_qlg0r")
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_qlg0r")
 
 [node name="PlayerHitSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dqkch")
@@ -78,4 +91,5 @@ stream = ExtResource("5_qlg0r")
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
 [connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]
+[connection signal="area_entered" from="ItemMagnetBox" to="." method="_on_item_magnet_box_area_entered"]
 [connection signal="area_entered" from="ItemHitbox" to="." method="_on_item_hitbox_area_entered"]

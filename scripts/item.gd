@@ -23,9 +23,10 @@ var _sprite_map = {
 # In all other cases, this is not used.
 #var item_value_map: Dictionary[ItemType, int]
 
-const MAGNET_SPEED = 90
 const GRAVITY = 20
 const MAX_FALL_SPEED = 50
+
+const MAGNET_SPEED = 220
 
 # Item values
 const POINT_VALUE_FULL = 10000
@@ -36,7 +37,6 @@ const SMALL_POINT_VALUE = 50
 const POINT_OF_COLLECTION = 50
 
 var magnet_player = false
-
 var _fall_speed = 0
 
 @onready var sprite = $Sprite2D as Sprite2D
@@ -63,9 +63,12 @@ func apply(player: Player) -> void:
 		player.add_lives(1)
 
 func _physics_process(delta: float) -> void:
+	if GameController.get_player_pos().y <= POINT_OF_COLLECTION:
+		magnet_player = true
+	
 	if magnet_player:
 		position += (GameController.get_player_pos() - position).normalized() * MAGNET_SPEED * delta
 	else:
 		_fall_speed = min(_fall_speed + 0.5 * GRAVITY * delta, MAX_FALL_SPEED)
-		position += _fall_speed * delta
+		position += Vector2(0, _fall_speed * delta)
 		_fall_speed = min(_fall_speed + 0.5 * GRAVITY * delta, MAX_FALL_SPEED)

@@ -15,6 +15,13 @@ extends Node2D
 #   5. Enemy Bullets
 #  10. Player Hitbox
 
+# TODO list
+#  - Add a level system
+#    - Make bullets a child of the Level node
+#    - Level node is abstract, levels are subclasses of the base Level node
+#    - Level base class has all the bullet spawn/clear methods
+#    - Level base class has enemy spawning methods + dialogue starting methods
+
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
@@ -23,6 +30,7 @@ extends Node2D
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
 static var _game_instance: GameController = null
+static var _player_reference: Player = null
 
 var play_sfx: bool = false
 var sfx_cooldown: float = 0
@@ -98,8 +106,10 @@ static func spawn_ring(_position: Vector2, type: String, count: int, _rotation: 
 
 static func spawn_item(_position: Vector2, type: Item.ItemType) -> Item:
 	var item: Item = _game_instance.item_template.instantiate()
+	
 	item.position = _position
 	item.item_type = type
+	_game_instance.add_child(item)
 	
 	return item
 
@@ -108,8 +118,11 @@ static func spawn_item(_position: Vector2, type: Item.ItemType) -> Item:
 static func get_player_pos() -> Vector2:
 	if not _game_instance:
 		return Vector2.ZERO
+		
+	if _player_reference == null:
+		_player_reference = _game_instance.get_tree().get_first_node_in_group('player')
 	
-	return _game_instance.get_tree().get_first_node_in_group('player').position
+	return _player_reference.position
 
 
 ## SFX Methods
@@ -118,18 +131,19 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.play()
 
 
+static func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
+	if spawn_point:
+		spawn_item(bullet.global_position, Item.ItemType.SMALL_POINT).magnet_player = true
+	
+	bullet.queue_free()
+
 ## Turns all bullets onscreen into points. [br]
 ## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs)
 static func clear_all_bullets(hard_clear=false):
 	var bullets: Array = _game_instance.get_tree().get_nodes_in_group("enemy_bullets")
 	
 	for bullet: Bullet in bullets:
-		var item: Item = spawn_item(bullet.global_position, Item.ItemType.SMALL_POINT)
-		
-		item.magnet_player = true
-		_game_instance.add_child(item)
-		
-		bullet.queue_free()
+		clear_bullet(bullet, true)
 	
 	
 func spawn_enemies():

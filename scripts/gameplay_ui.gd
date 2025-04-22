@@ -9,7 +9,7 @@ var bomb_icon  = preload("res://textures/bomb_icon.png")
 
 
 func set_lives(lives: int):
-	for child in livesContainer.get_children(true):
+	for child in livesContainer.get_children():
 		child.queue_free()
 		
 	for i in range(lives):
@@ -27,7 +27,7 @@ func set_bombs(bombs: int):
 	if bombs < 0:
 		bombs = 0
 	
-	for child in bombsContainer.get_children(true):
+	for child in bombsContainer.get_children():
 		child.queue_free()
 		
 	for i in range(bombs):

@@ -6,7 +6,8 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_v7oki"]
 radius = 3.0
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" groups=["enemy_bullets"]]
+z_index = 5
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_nl13i")
@@ -14,5 +15,5 @@ script = ExtResource("1_nl13i")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_nl13i")
 
-[node name="Hitbox" type="CollisionShape2D" parent="." groups=["enemy_bullets"]]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_v7oki")

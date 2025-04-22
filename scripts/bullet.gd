@@ -11,6 +11,7 @@ var rotate_to_velocity: bool = true
 ## Defaults to PI/2 since 0 radians points on the x-axis in Godot.
 var rotation_offset: float = PI / 2
 
+## Whether the bullet survives bombs
 var strong: bool = false
 
 func _ready():
@@ -26,6 +27,8 @@ func _ready():
 ## Initializes the bullet with the given template. 
 ## Null fields of the template are ignored.
 func init(template: BulletStats = null) -> void:
+	# TODO: Implement this properly.
+	
 	if template:
 		velocity = template.velocity
 		acceleration = template.acceleration

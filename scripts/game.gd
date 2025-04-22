@@ -18,7 +18,7 @@ extends Node2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
 
-@onready var enemy_template: PackedScene = preload("res://scenes/enemy.tscn")
+@onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 
 static var _game_instance: GameController = null
 
@@ -112,8 +112,10 @@ static func play_enemy_death_sfx():
 ## Turns all bullets onscreen into points. [br]
 ## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs)
 static func clear_all_bullets(hard_clear=false):
-	var bullets
-
+	var bullets = _game_instance.get_tree().get_nodes_in_group("enemy_bullets")
+	
+	
+	
 func spawn_enemies():
 	var enemy = enemy_template.instantiate()
 	var posx = randf_range(100, 360)
@@ -128,7 +130,8 @@ func spawn_enemies():
 	enemy.tick_func = func (age: float, _position: Vector2):
 		GameController.spawn_ring(_position, "small_ball", enemy_shots, age * PI/15, 5, 40, 20)
 	
-	add_child(enemy)
+	#add_child(enemy)
+
 
 
 func _ready() -> void:
@@ -158,7 +161,9 @@ func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 
 func _on_player_bombs_changed(old: int, new: int) -> void:
 	main_ui.set_bombs(new)
+	# TODO: Sound Effect
 
 
 func _on_player_lives_changed(old: int, new: int) -> void:
 	main_ui.set_lives(new)
+	# TODO: Sound Effect 

@@ -3,6 +3,7 @@ extends RigidBody2D
 
 signal lives_changed(old: int, new: int)
 signal bombs_changed(old: int, new: int)
+signal score_changed(old: int, new: int)
 
 ## Player Settings
 @export var speed: float
@@ -38,7 +39,7 @@ const MAX_ITIME: float = 1  # Max itime when hit
 var itime: float = 0
 
 var focused: bool = true
-var points: int = 0
+var score: int = 0
 
 var _shot_gap_size: float
 var _shot_angle_start: float
@@ -72,13 +73,26 @@ func use_bomb() -> void:
 	bomb.position = position
 	add_sibling(bomb)
 
+func add_lives(count: int) -> void:
+	_lives += count
+	lives_changed.emit(_lives - count, _lives)
+
+func add_bombs(count: int) -> void:
+	_bombs += count
+	bombs_changed.emit(_bombs - count, _bombs)
+
+func add_points(points: int) -> void:
+	score += points
+	# TODO: Check for extra life thresholds
+	score_changed.emit(score-points, score)
+
 
 ## Causes the player to emit all of it's stat changed signals
 ## Order is lives, bombs, score
 func emit_stats():
 	lives_changed.emit(_lives, _lives)
 	bombs_changed.emit(_bombs, _bombs)
-	# TODO: Score
+	score_changed.emit(0, 0)
 
 func _ready() -> void:
 	state = PlayerState.NORMAL
@@ -164,5 +178,10 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
-	points += 1
+	add_points(100)
 	sfx_player_graze.play()
+
+
+func _on_item_hitbox_area_entered(area: Area2D) -> void:
+	if area is Item:
+		(area as Item).apply(self)

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dy6oxi25t86v5"]
+
+[ext_resource type="Script" uid="uid://djd4sa8yx0f0f" path="res://scripts/item.gd" id="1_a4ohp"]
+[ext_resource type="Texture2D" uid="uid://8dkbjw6dusfk" path="res://textures/items/small_point.png" id="1_j6jyl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a4ohp"]
+radius = 3.16228
+
+[node name="Item" type="Area2D" groups=["items"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_a4ohp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_j6jyl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a4ohp")

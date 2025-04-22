@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmxpjwm0hopov"
-path="res://.godot/imported/bomb.png-92e55f3425f2a70cc1b4eba69463a1d0.ctex"
+uid="uid://bablowcljxfp8"
+path="res://.godot/imported/point.png-bfc831f38a9ad6fa1ec1054dd8a9c0f8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/bomb.png"
-dest_files=["res://.godot/imported/bomb.png-92e55f3425f2a70cc1b4eba69463a1d0.ctex"]
+source_file="res://textures/items/point.png"
+dest_files=["res://.godot/imported/point.png-bfc831f38a9ad6fa1ec1054dd8a9c0f8.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b5a8qqajkoryp"]
+[gd_scene load_steps=11 format=3 uid="uid://b5a8qqajkoryp"]
 
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
@@ -16,7 +16,10 @@ size = Vector2(16, 29)
 radius = 2.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
-radius = 14.0
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qlg0r"]
+size = Vector2(14, 27)
 
 [node name="Player" type="RigidBody2D" groups=["player"]]
 physics_material_override = SubResource("PhysicsMaterial_dqkch")
@@ -29,6 +32,7 @@ bombs = 4
 [node name="PlayerWallCollider" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_dqkch")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 z_index = -1
@@ -49,13 +53,21 @@ position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_onrkg")
 
 [node name="PlayerGrazebox" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGrazebox"]
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_i3pqv")
+debug_color = Color(0, 0.7, 0.396667, 0.419608)
+
+[node name="ItemHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemHitbox"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_qlg0r")
 
 [node name="PlayerHitSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dqkch")
@@ -66,3 +78,4 @@ stream = ExtResource("5_qlg0r")
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
 [connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]
+[connection signal="area_entered" from="ItemHitbox" to="." method="_on_item_hitbox_area_entered"]

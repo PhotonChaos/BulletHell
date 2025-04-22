@@ -1,8 +1,8 @@
 class_name GameplayUI
 extends Control
 
-var heart_icon = preload("res://textures/heart_icon.png")
-var bomb_icon  = preload("res://textures/bomb_icon.png")
+var heart_icon = preload("res://textures/UI/heart_icon.png")
+var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
 
 @onready var livesContainer = $ColorRect/PlayerResources/LivesContainer/HPIcons as HBoxContainer
 @onready var bombsContainer = $ColorRect/PlayerResources/BombsContainer/BombIcons as HBoxContainer

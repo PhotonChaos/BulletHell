@@ -10,6 +10,8 @@ const DAMAGE_GAP = 0.5
 const MAX_SCALE = Vector2(20, 20)
 const MIN_SCALE = Vector2(0.1, 0.1)
 
+var level_ref: Level
+
 var _age: float
 var _damage_cooldown: float
 var _lerp_end: float
@@ -47,4 +49,4 @@ func _on_animation_finished() -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if area is Bullet:
-		GameController.clear_bullet(area as Bullet, true)
+		level_ref.clear_bullet(area as Bullet, true)

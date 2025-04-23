@@ -48,13 +48,13 @@ func _physics_process(delta: float) -> void:
 ## Called in the _process method. [param age] is the amount of time since the enemy was spawned.
 func tick():
 	if tick_func.get_argument_count() > 0:
-		tick_func.call(_lifetime, global_position)
+		tick_func.call(_lifetime, global_position, _level_ref)
 
 
 ## Called once when the enemy dies
 func death():
 	if death_func:
-		death_func.call(_lifetime, global_position)
+		death_func.call(_lifetime, global_position, _level_ref)
 
 
 func _on_killable_dead() -> void:
@@ -62,6 +62,6 @@ func _on_killable_dead() -> void:
 	die.emit()
 	
 	GameController.play_enemy_death_sfx()
-	GameController.spawn_item(global_position, Item.ItemType.POINT)
+	_level_ref.spawn_item(global_position, Item.ItemType.POINT)
 	
 	queue_free()

@@ -24,8 +24,8 @@ enum BulletType {
 # ## Unused at the moment.
 #@export var bullet_pools: Dictionary[Level.BulletType, int]
 
-@onready var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
-@onready var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
+var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
+var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
 const DEFAULT_BULLET_TYPE = BulletType.BALL
 
@@ -56,13 +56,13 @@ func play() -> void:
 	_level_thread.start(_play)
 	_level_thread.wait_to_finish()
 	
-	level_finished.emit()
+	call_deferred("emit_signal", "level_finished")
 
 
 ## Internal version of the play method, executes in a new thread.[br]
 ## This is what is overridden in subclasses, do not call this directly.
 func _play() -> void:
-	pass
+	print_rich("[color=red]ERROR: Do not instantiate Level directly, use a subclass![/color]")
 
 
 # ############
@@ -70,12 +70,9 @@ func _play() -> void:
 
 # Meant to help the subclasses do their thing.
 
-## Returns the global position of the player.
-func get_player_pos() -> Vector2:
-	if not _player_ref:
-		return Vector2.ZERO
-	else:
-		return _player_ref.position
+## Holds up the current thread for [param time] seconds (rounded down to the nearest millisecond).
+func sleep(time: float) -> void:
+	OS.delay_msec(floor(time * 1000))
 
 
 # Enemy spawning
@@ -83,14 +80,16 @@ func get_player_pos() -> Vector2:
 ## Spawns a standard enemy. Death functions must be added manually.[br]
 ## Enemy will spawn at [param pos] and fly to [param dest].
 func spawn_enemy(pos: Vector2, dest: Vector2, tick_length: float, shot_func: Callable) -> Enemy:
-	var enemy = _enemy_template.instantiate()
+	var enemy: Enemy = _enemy_template.instantiate()
 	
 	enemy.position = pos
 	enemy.destination = dest
 	enemy.tick_duration = tick_length
 	enemy.tick_func = shot_func
-	
-	add_child(enemy)
+	enemy._level_ref = self
+
+	# Can't add children from outside the main thread, so we use call_deferred
+	call_deferred("add_child", enemy)
 	
 	return enemy
 

@@ -76,6 +76,7 @@ func shoot() -> void:
 func use_bomb() -> void:
 	var bomb = bomb_template.instantiate() as Bomb
 	bomb.position = position
+	bomb.level_ref = get_parent() as Level
 	add_sibling(bomb)
 
 func add_lives(count: int) -> void:

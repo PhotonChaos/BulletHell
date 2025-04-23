@@ -109,7 +109,7 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 	return enemies
 
 
-# Bullet spawning, for enemies mainly
+# Bullet mechanics
 
 ## Produces the template for the bullet with id [param name]
 func get_bullet_template(name: BulletType) -> PackedScene:
@@ -167,6 +167,22 @@ func spawn_burst(_position: Vector2, type: BulletType, count: int, spread: float
 ## Same as [method Level.spawn_burst] but spawns them in a circle.
 func spawn_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:
 	return spawn_burst(_position, type, count, TAU, _rotation, dist, v, a)
+
+
+func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
+	if spawn_point:
+		spawn_item(bullet.global_position, Item.ItemType.SMALL_POINT).magnet_player = true
+	
+	bullet.queue_free()
+
+
+## Turns all bullets onscreen into points. [br]
+## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs)
+func clear_all_bullets(hard_clear=false):
+	var bullets: Array = get_tree().get_nodes_in_group("enemy_bullets")
+	
+	for bullet: Bullet in bullets:
+		clear_bullet(bullet, true)
 
 
 # Other spawning

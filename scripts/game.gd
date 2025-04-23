@@ -21,6 +21,9 @@ extends Node2D
 #    - Level node is abstract, levels are subclasses of the base Level node
 #    - Level base class has all the bullet spawn/clear methods
 #    - Level base class has enemy spawning methods + dialogue starting methods
+# - Figure out SFX for level stuff
+
+@export var levels: Array[Level]
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
@@ -109,7 +112,7 @@ static func spawn_item(_position: Vector2, type: Item.ItemType) -> Item:
 	
 	item.position = _position
 	item.item_type = type
-	_game_instance.add_child(item)
+	_game_instance.call_deferred("add_child", item)
 	
 	return item
 

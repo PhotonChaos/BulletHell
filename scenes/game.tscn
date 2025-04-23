@@ -25,15 +25,6 @@ script = ExtResource("1_lnu2h")
 
 [node name="GameplayUI" parent="UILayer" instance=ExtResource("2_iywne")]
 
-[node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(149, 297)
-speed = 200.0
-focus_speed = 100.0
-fire_rate = 20.0
-shot_count = 5
-shot_spread = 45.0
-focus_spread = 15.0
-
 [node name="BulletBounds" type="Area2D" parent="."]
 visible = false
 collision_layer = 0
@@ -42,6 +33,18 @@ collision_mask = 6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletBounds"]
 position = Vector2(205, 176)
 shape = SubResource("RectangleShape2D_e2o6t")
+debug_color = Color(0.7, 0.7, 0.7, 0.0313726)
+
+[node name="Player" parent="." instance=ExtResource("2_lbhrr")]
+position = Vector2(173, 299)
+speed = 200.0
+focus_speed = 100.0
+bombs = 8
+fire_rate = 20.0
+shot_count = 5
+shot_spread = 45.0
+focus_spread = 15.0
+invincible = true
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
@@ -57,26 +60,30 @@ stream = ExtResource("4_iywne")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
 position = Vector2(323, 361)
 shape = SubResource("RectangleShape2D_lbhrr")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="TopWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
 position = Vector2(315, -1)
 shape = SubResource("RectangleShape2D_lbhrr")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="LeftWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
 position = Vector2(-1, 182)
 shape = SubResource("RectangleShape2D_iywne")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="RightWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
 position = Vector2(362, 183)
 shape = SubResource("RectangleShape2D_p57ef")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
-[connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
-[connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]
 [connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
+[connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
+[connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]

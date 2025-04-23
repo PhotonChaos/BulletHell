@@ -18,10 +18,15 @@ signal score_changed(old: int, new: int)
 @export_range(1, 360) var shot_spread: float
 @export_range(1, 360) var focus_spread: float
 
+@export_group("Cheats")
+@export var invincible: bool = false
+
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
+
 @onready var sfx_player_hit: AudioStreamPlayer2D = $PlayerHitSFX
 @onready var sfx_player_graze: AudioStreamPlayer2D = $PlayerGrazeSFX
+@onready var sfx_player_item: AudioStreamPlayer2D = $PlayerItemSFX
 
 var shot_template: PackedScene = preload("res://scenes/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/bomb.tscn")
@@ -165,7 +170,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_player_hitbox_area_entered(area: Area2D) -> void:
-	if itime > 0:
+	if itime > 0 or invincible:
 		return
 	
 	_lives -= 1
@@ -184,6 +189,7 @@ func _on_player_grazebox_area_entered(area: Area2D) -> void:
 
 func _on_item_hitbox_area_entered(area: Area2D) -> void:
 	if area is Item:
+		sfx_player_item.play()
 		(area as Item).apply(self)
 		area.queue_free()
 

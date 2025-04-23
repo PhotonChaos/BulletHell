@@ -3,25 +3,30 @@ extends Node2D
 
 signal die
 
-## Called every enemy tick. Function of type Callable(age: int, pos: Vector2)
+## Called every enemy tick. Function of type Callable(age: int, pos: Vector2, level: Level)
 var tick_func: Callable = Callable()
 
-## Called when the enemy dies. Function of type Callable(age: int, pos: Vector2)
+## Called when the enemy dies. Function of type Callable(age: int, pos: Vector2, level: Level)
 var death_func: Callable = Callable()
 
 ## Lerp stuff
 var destination: Vector2 = Vector2.ZERO
-var target_dest: bool = false
+var target_dest: bool = true
 var interp_time: float = 2.0
 
 ## Time in seconds between calls of the [method Enemy.tick] method
 var tick_duration: float = 0
 var _tick_counter: float = 0
 
+# Dependency injection for the callables
 var _lifetime: float
+var _level_ref: Level = null
 
 func _ready() -> void:
 	_lifetime = 0
+	
+	if _level_ref == null:
+		print_rich("[color=red]ERROR: Enemy spawned with no level reference![/color]")
 
 func _physics_process(delta: float) -> void:
 	_lifetime += delta

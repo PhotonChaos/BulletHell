@@ -26,7 +26,7 @@ var _sprite_map = {
 const GRAVITY = 20
 const MAX_FALL_SPEED = 50
 
-const MAGNET_SPEED = 220
+const MAGNET_SPEED = 300
 
 # Item values
 const POINT_VALUE_FULL = 10000

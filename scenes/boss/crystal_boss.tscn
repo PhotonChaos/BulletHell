@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://gyuva7wf3822"]
+
+[ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_sphx7"]
+[ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/boss.png" id="2_npn3v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]
+size = Vector2(37, 67)
+
+[node name="CrystalBoss" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_sphx7")
+boss_name = "Crystal"
+boss_title = "The Testing Dummy"
+metadata/_custom_type_script = "uid://by5x81wsjesdb"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_npn3v")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 1.5)
+shape = SubResource("RectangleShape2D_npn3v")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)

@@ -59,8 +59,9 @@ func play() -> void:
 	call_deferred("emit_signal", "level_finished")
 
 
-## Internal version of the play method, executes in a new thread.[br]
-## This is what is overridden in subclasses, do not call this directly.
+## Internal version of the play method, executes in a new thread.
+## This is what is overridden in subclasses, do not call this directly.[br]
+## The level_end signal is sent out immediately after this method finishes executing.
 func _play() -> void:
 	print_rich("[color=red]ERROR: Do not instantiate Level directly, use a subclass![/color]")
 

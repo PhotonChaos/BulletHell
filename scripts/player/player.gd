@@ -28,8 +28,8 @@ signal score_changed(old: int, new: int)
 @onready var sfx_player_graze: AudioStreamPlayer2D = $PlayerGrazeSFX
 @onready var sfx_player_item: AudioStreamPlayer2D = $PlayerItemSFX
 
-var shot_template: PackedScene = preload("res://scenes/player_shot.tscn")
-var bomb_template: PackedScene = preload("res://scenes/bomb.tscn")
+var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
+var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold

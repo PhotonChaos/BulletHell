@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1uk3qklqcuqs"]
+
+[ext_resource type="Script" uid="uid://bqfvpb22cobwe" path="res://scripts/spellcard/spell_card.gd" id="1_k8q8q"]
+
+[node name="CrystalSpray" type="Node2D"]
+script = ExtResource("1_k8q8q")
+spell_name = "Crystal Spray"
+nonspell_hp = 999
+nonspell_time_limit = 99
+spell_hp = 1000
+spell_time_limit = 90
+metadata/_custom_type_script = "uid://bqfvpb22cobwe"

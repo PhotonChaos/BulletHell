@@ -19,11 +19,12 @@ signal hp_changed(old: int, new: int)
 @export var boss_title: String
 
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
-@export var spell_cards: Array[int]
+@export var spell_cards: Array[SpellCard]
 
-var hp = 123
+var current_spell: SpellCard = null
 
-
+func next_spell() -> void:
+	pass
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
@@ -32,11 +33,5 @@ func _ready() -> void:
 func _on_hitbox_entered(area: Area2D) -> void:
 	if area is PlayerShot:
 		area.queue_free()
-		var oldhp = hp
-		hp -= (area as PlayerShot).damage
 		
-		hp_changed.emit(oldhp, hp)
-		
-		if hp <= 0: 
-			boss_defeated.emit()
-			queue_free()
+		if current_spell.

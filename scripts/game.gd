@@ -119,3 +119,8 @@ func _on_player_bombs_changed(old: int, new: int) -> void:
 func _on_player_lives_changed(old: int, new: int) -> void:
 	main_ui.set_lives(new)
 	# TODO: Sound Effect 
+
+
+func _on_player_score_changed(old: int, new: int) -> void:
+	# TODO: Add the points text when the player picks up an item
+	main_ui.set_score(new)

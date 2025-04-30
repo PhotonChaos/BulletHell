@@ -4,8 +4,13 @@ extends Control
 var heart_icon = preload("res://textures/UI/heart_icon.png")
 var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
 
-@onready var livesContainer = $ColorRect/PlayerResources/LivesContainer/HPIcons as HBoxContainer
-@onready var bombsContainer = $ColorRect/PlayerResources/BombsContainer/BombIcons as HBoxContainer
+@onready var livesContainer = $ColorRect/PlayerStats/VBoxContainer/PlayerResources/LivesContainer/HPIcons as HBoxContainer
+@onready var bombsContainer = $ColorRect/PlayerStats/VBoxContainer/PlayerResources/BombsContainer/BombIcons as HBoxContainer
+
+@onready var scoreLabel = $ColorRect/PlayerStats/VBoxContainer/Scores/Score as Label
+@onready var highScoreLabel = $ColorRect/PlayerStats/VBoxContainer/Scores/HighScore as Label
+
+var highScore: int = -1
 
 
 func set_lives(lives: int):
@@ -42,4 +47,8 @@ func set_bombs(bombs: int):
 
 
 func set_score(score: int):
-	pass
+	if score > highScore:
+		highScore = score
+		highScoreLabel.text = "High Score: " + str(highScore)
+	
+	scoreLabel.text = "Score: " + str(score)

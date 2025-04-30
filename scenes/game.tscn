@@ -89,3 +89,4 @@ debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
 [connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
 [connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]
+[connection signal="score_changed" from="Player" to="." method="_on_player_score_changed"]

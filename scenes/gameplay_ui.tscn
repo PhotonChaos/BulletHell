@@ -2,7 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
-[ext_resource type="Texture2D" uid="uid://dwhd67uutg258" path="res://textures/UI/heart_icon.png" id="3_bcwfe"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wf0n7"]
+font_size = 22
 
 [node name="GameplayUI" type="Control"]
 layout_mode = 3
@@ -35,51 +37,66 @@ text = "Bullet Hell!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerResources" type="VBoxContainer" parent="ColorRect"]
+[node name="PlayerStats" type="HBoxContainer" parent="ColorRect"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -30.0
-offset_bottom = 30.0
+offset_top = -46.0
+offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LivesContainer" type="HBoxContainer" parent="ColorRect/PlayerResources"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="ColorRect/PlayerResources/LivesContainer"]
+[node name="Control" type="Control" parent="ColorRect/PlayerStats"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="HPLabel" type="Label" parent="ColorRect/PlayerResources/LivesContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/PlayerStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Scores" type="VBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="HighScore" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/Scores"]
+layout_mode = 2
+text = "High Score:"
+label_settings = SubResource("LabelSettings_wf0n7")
+clip_text = true
+
+[node name="Score" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/Scores"]
+layout_mode = 2
+text = "Score:"
+label_settings = SubResource("LabelSettings_wf0n7")
+clip_text = true
+
+[node name="Control" type="Control" parent="ColorRect/PlayerStats/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="PlayerResources" type="VBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="LivesContainer" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources"]
+layout_mode = 2
+
+[node name="HPLabel" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Lives:"
 vertical_alignment = 2
 
-[node name="HPIcons" type="HBoxContainer" parent="ColorRect/PlayerResources/LivesContainer"]
+[node name="HPIcons" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="ColorRect/PlayerResources/LivesContainer/HPIcons"]
-layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 4
-texture = ExtResource("3_bcwfe")
-stretch_mode = 2
-
-[node name="BombsContainer" type="HBoxContainer" parent="ColorRect/PlayerResources"]
+[node name="BombsContainer" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="ColorRect/PlayerResources/BombsContainer"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-
-[node name="BombLabel" type="Label" parent="ColorRect/PlayerResources/BombsContainer"]
+[node name="BombLabel" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Bombs:"
 
-[node name="BombIcons" type="HBoxContainer" parent="ColorRect/PlayerResources/BombsContainer"]
+[node name="BombIcons" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
 layout_mode = 2

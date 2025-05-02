@@ -46,7 +46,7 @@ fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0
 focus_spread = 15.0
-invincible = true
+shot_velocity = 900.0
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")

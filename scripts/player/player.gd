@@ -17,6 +17,7 @@ signal score_changed(old: int, new: int)
 ## Shot spread in degrees
 @export_range(1, 360) var shot_spread: float
 @export_range(1, 360) var focus_spread: float
+@export var shot_velocity: float
 
 @export_group("Cheats")
 @export var invincible: bool = false
@@ -70,7 +71,7 @@ func shoot() -> void:
 		var shot: PlayerShot = shot_template.instantiate()
 		shot.position = position + Vector2(0, -10)
 		shot.rotation = angle_start + i*gap_size + PI/2
-		shot.velocity = Vector2.from_angle(angle_start + i*gap_size) * 20
+		shot.velocity = Vector2.from_angle(angle_start + i*gap_size) * shot_velocity
 		add_sibling(shot)
 
 func use_bomb() -> void:

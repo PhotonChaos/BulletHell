@@ -19,19 +19,64 @@ signal hp_changed(old: int, new: int)
 @export var boss_title: String
 
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
-@export var spell_cards: Array[SpellCard]
+@export var spell_cards: Array[PackedScene]
+
+var _level: Level = null
+
+## Spell Handling
 
 var current_spell: SpellCard = null
+var current_spell_index: int = -1;
 
+var spell_warmup: float = 0
+const SPELL_TIME_GAP: float = 2
+
+var spell_started: bool = false
+
+## End of Spell Handling
+
+
+## Ends the current spell and begins the next one
 func next_spell() -> void:
+	if current_spell != null:
+		current_spell.queue_free()
+	
+	current_spell_index += 1
+	
+	if current_spell_index >= len(spell_cards):
+		print("You win!!")
+		queue_free()
+		return
+	
+	current_spell = spell_cards[current_spell_index].instantiate()
+	current_spell.spell_defeated.connect(next_spell)
+	add_child(current_spell)
+
+	spell_warmup = SPELL_TIME_GAP
+	spell_started = false
+	
+
+## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
+## Eases in and out for movement.
+func move_to(destination: Vector2, move_duration: float) -> void:
+	# TODO: Implement this.
 	pass
+
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
+	next_spell()
 	
+	
+func _process(delta: float) -> void:	
+	if not spell_started:
+		spell_warmup -= delta
+		if spell_warmup <= 0:
+			spell_started = true
+			current_spell.start(_level)
+		
 
 func _on_hitbox_entered(area: Area2D) -> void:
-	if area is PlayerShot:
+	if area is PlayerShot and current_spell.started:
 		area.queue_free()
-		
-		if current_spell.
+		current_spell.damage((area as PlayerShot).damage)

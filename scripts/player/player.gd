@@ -107,8 +107,8 @@ func _ready() -> void:
 	_lives = lives
 	_bombs = bombs
 	
-	var _shot_spread_rad = deg_to_rad(shot_spread)
-	var _focus_spread_rad = deg_to_rad(focus_spread)
+	var _shot_spread_rad: float = deg_to_rad(shot_spread)
+	var _focus_spread_rad: float = deg_to_rad(focus_spread)
 	
 	_shot_angle_start  = -(PI+_shot_spread_rad)/2
 	_focus_angle_start = -(PI+_focus_spread_rad)/2
@@ -119,6 +119,10 @@ func _ready() -> void:
 	else:
 		_shot_gap_size = 0
 		_focus_gap_size = 0
+
+## Used for debug
+#func _draw():
+	#draw_line(Vector2.ZERO, Vector2(0, -1000), Color.RED)
 
 
 func _physics_process(delta: float) -> void:	

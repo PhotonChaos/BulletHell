@@ -38,7 +38,7 @@ shape = SubResource("RectangleShape2D_e2o6t")
 debug_color = Color(0.7, 0.7, 0.7, 0.0313726)
 
 [node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(173, 299)
+position = Vector2(181, 310)
 speed = 200.0
 focus_speed = 100.0
 bombs = 8

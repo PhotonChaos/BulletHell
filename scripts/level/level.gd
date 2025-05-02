@@ -140,14 +140,16 @@ func spawn_bullet(_position: Vector2, type: BulletType, args: BulletStats=null) 
 
 ## Spawns a shotgun-burst containing [param count] bullets of [param type], 
 ## spread evenly across an arc of [param spread]. [br]
-## The arc is centred on a vector rotated by [param rotation], and the 
+## The arc is centred on a vector rotated by [param rotation] degrees, and the 
 ## bullets spawn [param distance] away from [param position] along the aim vector.[br]
 ## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].[br]
 ## Also, the bullets will be added as children of the game controller.
 ## Returns an array containing the bullets, ordered from lowest angle aim vector to highest.
 func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:
+	spread = deg_to_rad(spread)
+	
 	var bullets: Array[Bullet] = []
-	var angle_gap = spread / count
+	var angle_gap = spread / (count-1) if count > 0 else 0
 	var start_angle = rotation - spread / 2
 	
 	for i in range(count):
@@ -172,7 +174,7 @@ func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: floa
 
 ## Same as [method Level.spawn_burst] but spawns them in a circle.
 func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:
-	return bullet_burst(_position, type, count, TAU, _rotation, dist, v, a)
+	return bullet_burst(_position, type, count, 360, _rotation, dist, v, a)
 
 
 func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:

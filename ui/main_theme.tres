@@ -1,8 +1,17 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://burtlrkgl63lg"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://burtlrkgl63lg"]
 
 [ext_resource type="FontFile" uid="uid://dheo5shechy1r" path="res://ui/fonts/Retro Gaming.ttf" id="1_g1fjd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g1fjd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tukj"]
+bg_color = Color(0.439216, 0.439216, 0.439216, 0.239216)
+expand_margin_bottom = 5.0
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1fjd"]
+bg_color = Color(1, 0.3545, 0.641258, 1)
+expand_margin_bottom = 5.0
 
 [resource]
 Label/colors/font_color = Color(1, 1, 1, 1)
@@ -16,3 +25,5 @@ Label/constants/shadow_outline_size = 1
 Label/font_sizes/font_size = 22
 Label/fonts/font = ExtResource("1_g1fjd")
 Label/styles/normal = SubResource("StyleBoxEmpty_g1fjd")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_6tukj")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_g1fjd")

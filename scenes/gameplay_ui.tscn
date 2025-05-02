@@ -1,10 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=7 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
+[ext_resource type="LabelSettings" uid="uid://berx5f5qco7wl" path="res://ui/gameplay_ui.tres" id="3_bcwfe"]
+[ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_wf0n7"]
 font_size = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_om5qg"]
+font = ExtResource("4_haufa")
+font_size = 20
 
 [node name="GameplayUI" type="Control"]
 layout_mode = 3
@@ -16,7 +22,7 @@ grow_vertical = 2
 theme = ExtResource("1_wf0n7")
 script = ExtResource("2_bcwfe")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="GeneralSection" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -27,7 +33,7 @@ grow_horizontal = 0
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="ColorRect"]
+[node name="Label" type="Label" parent="GeneralSection"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -37,7 +43,7 @@ text = "Bullet Hell!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerStats" type="HBoxContainer" parent="ColorRect"]
+[node name="PlayerStats" type="HBoxContainer" parent="GeneralSection"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -48,55 +54,95 @@ offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="ColorRect/PlayerStats"]
+[node name="Control" type="Control" parent="GeneralSection/PlayerStats"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/PlayerStats"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GeneralSection/PlayerStats"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Scores" type="VBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer"]
+[node name="Scores" type="VBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer"]
 layout_mode = 2
 
-[node name="HighScore" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/Scores"]
+[node name="HighScore" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/Scores"]
 layout_mode = 2
 text = "High Score:"
 label_settings = SubResource("LabelSettings_wf0n7")
 clip_text = true
 
-[node name="Score" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/Scores"]
+[node name="Score" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/Scores"]
 layout_mode = 2
 text = "Score:"
 label_settings = SubResource("LabelSettings_wf0n7")
 clip_text = true
 
-[node name="Control" type="Control" parent="ColorRect/PlayerStats/VBoxContainer"]
+[node name="Control" type="Control" parent="GeneralSection/PlayerStats/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="PlayerResources" type="VBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer"]
+[node name="PlayerResources" type="VBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer"]
 layout_mode = 2
 
-[node name="LivesContainer" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources"]
+[node name="LivesContainer" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources"]
 layout_mode = 2
 
-[node name="HPLabel" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
+[node name="HPLabel" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Lives:"
 vertical_alignment = 2
 
-[node name="HPIcons" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
+[node name="HPIcons" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
 layout_mode = 2
 
-[node name="BombsContainer" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources"]
+[node name="BombsContainer" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources"]
 layout_mode = 2
 
-[node name="BombLabel" type="Label" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
+[node name="BombLabel" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Bombs:"
 
-[node name="BombIcons" type="HBoxContainer" parent="ColorRect/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
+[node name="BombIcons" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
 layout_mode = 2
+
+[node name="BossStats" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_right = 361.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BossStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BossStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpellName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Spell Name"
+label_settings = ExtResource("3_bcwfe")
+
+[node name="Control" type="Control" parent="BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BossName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Boss Name"
+label_settings = ExtResource("3_bcwfe")
+
+[node name="HealthBar" type="ProgressBar" parent="BossStats/VBoxContainer"]
+layout_mode = 2
+value = 50.0
+show_percentage = false
+
+[node name="TimeLeft" type="Label" parent="BossStats"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "999.00"
+label_settings = SubResource("LabelSettings_om5qg")
+vertical_alignment = 1

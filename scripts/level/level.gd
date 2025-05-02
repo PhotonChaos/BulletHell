@@ -10,6 +10,13 @@ signal level_finished
 # TODO: Figure out where to handle this
 signal bullet_fired
 
+signal boss_spawned
+signal boss_defeated
+signal spell_started(name: String, boss_name: String)
+signal spell_time_updated(new: float)
+signal spell_hp_updated(max: int, old: int, new: int)
+
+
 enum BulletType {
 	BALL = 0,
 	SMALL_BALL,
@@ -114,6 +121,13 @@ func spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	var bossInstance: Boss = boss.instantiate() 
 	bossInstance.global_position = pos
 	bossInstance._level = self
+	
+	boss_spawned.emit()
+	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
+	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
+	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
+	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
+	
 	call_deferred("add_child", bossInstance)
 
 # Bullet mechanics

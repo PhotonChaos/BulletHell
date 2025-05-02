@@ -5,7 +5,9 @@ extends Node2D
 # TODO: Add parameters for score to these signals
 signal spell_started
 signal spell_defeated
-signal hp_changed(old: int, new: int)
+signal hp_changed(max: int, old: int, new: int)
+signal time_changed(new: float)
+
 
 @export var spell_name: String
 
@@ -33,6 +35,9 @@ var _boss: Boss = null
 var on_spell = false
 var started = false
 
+const WARMUP_DEFAULT: float = 1
+var warmup_timer: float = WARMUP_DEFAULT
+
 var hp_left: float = 0
 var time_left: float = 0
 ## Lifetime of the attack in frames. Resets when the spell starts.
@@ -50,7 +55,10 @@ var lifetime: int = 0
 func damage(amount: int) -> void:
 	hp_left -= amount
 	
-	hp_changed.emit(hp_left+amount, hp_left)
+	if on_spell:
+		hp_changed.emit(spell_hp, hp_left+amount, hp_left)
+	else: 
+		hp_changed.emit(nonspell_hp, hp_left+amount, hp_left)
 	
 	if hp_left <= 0:
 		_defeat()
@@ -69,6 +77,8 @@ func start(level: Level) -> void:
 		hp_left = spell_hp
 		time_left = spell_time_limit
 		on_spell = true
+		
+	hp_changed.emit(hp_left, 0, hp_left)
 	
 
 ## The nonspell portion of the attack. Called once per physics frame.
@@ -96,9 +106,15 @@ func _defeat():
 func _physics_process(delta: float) -> void:
 	if not started:
 		return
-		
+	
+	if warmup_timer > 0:
+		warmup_timer -= delta
+		return
+	
 	time_left -= delta
 	lifetime += 1
+	
+	time_changed.emit(time_left)
 	
 	if on_spell:
 		spell()

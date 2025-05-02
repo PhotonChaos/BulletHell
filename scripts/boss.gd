@@ -6,11 +6,16 @@ extends Area2D
 ## Emits when the boss runs out of spell cards
 signal boss_defeated
 
+signal spell_card_started(name: String)
+
 ## Emits when the current spell card has been defeated
 signal spell_card_defeated
 
 ## Emits when the spell card health changes
-signal hp_changed(old: int, new: int)
+signal spell_hp_changed(max: int, old: int, new: int)
+
+## Emits when the spell card time changes
+signal spell_time_changed(new: int)
 
 ## The name that displays in dialogue and under the bosses health bar 
 @export var boss_name: String
@@ -28,11 +33,6 @@ var _level: Level = null
 var current_spell: SpellCard = null
 var current_spell_index: int = -1;
 
-var spell_warmup: float = 0
-const SPELL_TIME_GAP: float = 2
-
-var spell_started: bool = false
-
 ## End of Spell Handling
 
 
@@ -44,16 +44,19 @@ func next_spell() -> void:
 	current_spell_index += 1
 	
 	if current_spell_index >= len(spell_cards):
-		print("You win!!")
+		boss_defeated.emit()
 		queue_free()
 		return
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
 	current_spell.spell_defeated.connect(next_spell)
+	current_spell.hp_changed.connect(func(max: int, old: int, new: int): spell_hp_changed.emit(max, old, new))
+	current_spell.time_changed.connect(func(new: float): spell_time_changed.emit(new))
 	add_child(current_spell)
-
-	spell_warmup = SPELL_TIME_GAP
-	spell_started = false
+	
+	spell_card_started.emit(current_spell.spell_name)
+	
+	current_spell.start(_level)
 	
 
 ## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
@@ -67,14 +70,7 @@ func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
 	next_spell()
 	
-	
-func _process(delta: float) -> void:	
-	if not spell_started:
-		spell_warmup -= delta
-		if spell_warmup <= 0:
-			spell_started = true
-			current_spell.start(_level)
-		
+
 
 func _on_hitbox_entered(area: Area2D) -> void:
 	if area is PlayerShot and current_spell.started:

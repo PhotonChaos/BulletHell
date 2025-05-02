@@ -60,6 +60,9 @@ static func play_enemy_death_sfx():
 
 func _ready() -> void:
 	_game_instance = self
+	
+	main_ui.set_boss_stats(false)
+	
 	player_ref = get_tree().get_first_node_in_group('player')
 	player_ref.emit_stats()
 	
@@ -89,8 +92,19 @@ func play_next_level() -> void:
 	level_ref = levels[current_level].instantiate()
 	
 	level_ref.setup(player_ref)
+	
+	# Connect signals
 	level_ref.level_finished.connect(_on_level_finished)
 	level_ref.bullet_fired.connect(_on_bullet_fired)
+	
+	level_ref.boss_defeated.connect(func(): main_ui.set_boss_stats(false))
+	level_ref.spell_started.connect(func(spell_name, boss_name):
+		main_ui.set_boss_stats(true)
+		main_ui.set_boss_name(boss_name)
+		main_ui.set_spell_name(spell_name)
+	)
+	level_ref.spell_hp_updated.connect(func(max, old, new): main_ui.set_hp(new, max))
+	level_ref.spell_time_updated.connect(func(time): main_ui.set_time(time))
 	
 	add_child(level_ref)
 	player_ref.reparent(level_ref)

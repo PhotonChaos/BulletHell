@@ -3,7 +3,7 @@ extends Node2D
 
 # Collision Layers:
 #  1. Player rigidbody
-#  2. Bullets, enemies
+#  2. Bullets, enemies, bosses
 #  3. Player shots
 #  4. Powerups
 
@@ -56,6 +56,7 @@ static func get_player_pos() -> Vector2:
 static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
+
 
 
 func _ready() -> void:

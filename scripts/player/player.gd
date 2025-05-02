@@ -76,6 +76,9 @@ func shoot() -> void:
 		add_sibling(shot)
 
 func use_bomb() -> void:
+	if get_parent() is Level:
+		(get_parent() as Level)._bomb_active = true
+	
 	var bomb = bomb_template.instantiate() as Bomb
 	bomb.position = position
 	bomb.level_ref = get_parent() as Level

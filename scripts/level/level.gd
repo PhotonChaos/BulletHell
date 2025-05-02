@@ -48,6 +48,8 @@ var _player_ref: Player = null
 
 var _level_thread: Thread = null
 
+var _bomb_active: bool = false
+
 # ############
 # Core Functions
 

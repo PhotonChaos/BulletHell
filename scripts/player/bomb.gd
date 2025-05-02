@@ -36,6 +36,8 @@ func _process(delta: float) -> void:
 			if target is Killable:
 				var t = target as Killable
 				t.damage(damage)
+			elif target is Boss and not (target as Boss).is_bomb_immune():
+				(target as Boss).damage(damage)
 	
 	if _age > _lerp_end and not is_playing():
 		play("default")
@@ -44,6 +46,8 @@ func _process(delta: float) -> void:
 
 
 func _on_animation_finished() -> void:
+	if get_parent() is Level:
+		(get_parent() as Level)._bomb_active = false
 	queue_free()
 
 

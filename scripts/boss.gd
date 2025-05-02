@@ -17,14 +17,30 @@ signal spell_hp_changed(max: int, old: int, new: int)
 ## Emits when the spell card time changes
 signal spell_time_changed(new: int)
 
+
 ## The name that displays in dialogue and under the bosses health bar 
 @export var boss_name: String
 
 ## The title of the boss that displays during dialogue
 @export var boss_title: String
 
+## When the boss should be immune to bomb damage
+@export var bomb_immunity: BombImmunityLevel = BombImmunityLevel.NONE
+
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
 @export var spell_cards: Array[PackedScene]
+
+
+enum BombImmunityLevel { ## The level of immunity a boss has to damage while a bomb is active (when not on a timeout spell)
+	## Bombs will always damage the boss
+	NONE = 0,
+	## Bombs cannot damage the boss on their last spell card
+	LAST_SPELL_ONLY, 
+	## Bombs cannot damage the boss during spells, but can during nonspells
+	SPELLS_ONLY, 
+	 ## The boss cannot ever be damaged by bombs
+	TOTAL
+}
 
 var _level: Level = null
 
@@ -34,6 +50,18 @@ var current_spell: SpellCard = null
 var current_spell_index: int = -1;
 
 ## End of Spell Handling
+
+func is_bomb_immune() -> bool:
+	if bomb_immunity == BombImmunityLevel.NONE:
+		return false
+	elif bomb_immunity == BombImmunityLevel.LAST_SPELL_ONLY:
+		return current_spell_index == len(spell_cards) - 1
+	elif bomb_immunity == BombImmunityLevel.SPELLS_ONLY:
+		return current_spell.on_spell
+	elif bomb_immunity == BombImmunityLevel.TOTAL:
+		return true
+	else:
+		return false
 
 
 ## Ends the current spell and begins the next one
@@ -66,6 +94,12 @@ func move_to(destination: Vector2, move_duration: float) -> void:
 	pass
 
 
+func damage(amount: int) -> void:
+	if _level._bomb_active and is_bomb_immune():
+		return
+		
+	current_spell.damage(amount)
+
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
 	next_spell()
@@ -75,4 +109,4 @@ func _ready() -> void:
 func _on_hitbox_entered(area: Area2D) -> void:
 	if area is PlayerShot and current_spell.started:
 		area.queue_free()
-		current_spell.damage((area as PlayerShot).damage)
+		damage((area as PlayerShot).damage)

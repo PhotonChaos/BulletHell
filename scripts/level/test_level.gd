@@ -14,5 +14,5 @@ func _play() -> void:
 	#
 	#sleep(3)
 	
-	spawn_boss(bossy, Vector2(200, 100))
+	spawn_boss(bossy, Vector2(X_MIDPOINT, 100))
 	sleep(1000)

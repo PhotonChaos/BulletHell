@@ -28,6 +28,7 @@ var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
 const DEFAULT_BULLET_TYPE = BulletType.BALL
+const X_MIDPOINT = 181
 
 # Screw it, I'm just gonna hardcode this.
 const bullet_library: Dictionary = {
@@ -173,8 +174,8 @@ func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: floa
 
 
 ## Same as [method Level.spawn_burst] but spawns them in a circle.
-func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:
-	return bullet_burst(_position, type, count, 360, _rotation, dist, v, a)
+func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:	
+	return bullet_burst(_position, type, count, 360 - 360 / count, _rotation, dist, v, a)
 
 
 func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:

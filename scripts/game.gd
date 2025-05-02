@@ -8,6 +8,7 @@ extends Node2D
 #  4. Powerups
 
 # Sprite Layers (lower is further back):
+#  -4. Player/Boss Death Wave
 #  -3. Bomb Sprite
 #  -2. Player Shots
 #  -1. Player Sprite

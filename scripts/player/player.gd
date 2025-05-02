@@ -31,6 +31,7 @@ signal score_changed(old: int, new: int)
 
 var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
+var deathwave_template: PackedScene = preload("res://scenes/player/player_death_wave.tscn")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold
@@ -93,6 +94,17 @@ func add_points(points: int) -> void:
 	# TODO: Check for extra life thresholds
 	score_changed.emit(score-points, score)
 
+func die() -> void:
+	var wave = deathwave_template.instantiate()
+	add_sibling(wave)
+	wave.position = position
+	
+	_lives -= 1
+	itime = MAX_ITIME
+	
+	sfx_player_hit.play()
+	lives_changed.emit(_lives+1, _lives)
+	
 
 ## Causes the player to emit all of it's stat changed signals
 ## Order is lives, bombs, score
@@ -179,13 +191,7 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 	if itime > 0 or invincible:
 		return
 	
-	_lives -= 1
-	
-	area.queue_free()
-	sfx_player_hit.play()
-	lives_changed.emit(_lives+1, _lives)
-	
-	itime = MAX_ITIME
+	die()
 
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:

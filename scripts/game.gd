@@ -30,11 +30,25 @@ extends Node2D
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
+@onready var pause_ui = $PauseLayer/PauseMenu as PauseMenuUI
 
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
 static var _game_instance: GameController = null
+
+enum GameState {
+	MAIN_MENU,
+	GAME_STARTED,
+	GAME_DIALOGUE,
+	GAME_PAUSED,
+	END_CREDITS
+}
+
+var state: GameState = GameState.MAIN_MENU
+
+## Only used for pausing. Do not use this anywhere else
+var _last_state: GameState = state
 
 var play_sfx: bool = false
 var sfx_cooldown: float = 0
@@ -58,6 +72,12 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.play()
 
 
+func is_ingame() -> bool:
+	return state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE or state == GameState.GAME_PAUSED
+
+
+func is_paused() -> bool:
+	return state == GameState.GAME_PAUSED
 
 func _ready() -> void:
 	_game_instance = self
@@ -65,11 +85,18 @@ func _ready() -> void:
 	main_ui.set_boss_stats(false)
 	
 	player_ref = get_tree().get_first_node_in_group('player')
+	player_ref._game_ref = self
 	player_ref.emit_stats()
+	
+	state = GameState.GAME_STARTED
+	_last_state = state
+	
+	pause_ui.hide()
 	
 	if len(levels) > 0:
 		level_thread = Thread.new()
 		play_next_level()
+
 
 func _process(delta: float) -> void:
 	sfx_cooldown = max(0, sfx_cooldown - delta)
@@ -80,6 +107,17 @@ func _process(delta: float) -> void:
 		
 		bullet_sfx.play()
 
+## Pauses or unpauses the game, depending on [param paused]. True to pause, false to unpause.[br]
+## Does nothing if we aren't ingame.
+func set_pause(paused: bool) -> void:
+	if state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE:
+		_last_state = state
+		state = GameState.GAME_PAUSED
+		get_tree().paused = true
+		
+	elif state == GameState.GAME_PAUSED:
+		state = _last_state
+		get_tree().paused = false
 
 func play_next_level() -> void:
 	current_level += 1

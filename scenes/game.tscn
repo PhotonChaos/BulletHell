@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=12 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/gameplay_ui.tscn" id="2_iywne"]
+[ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_p57ef"]
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://sound/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://sound/bulletShoot1.wav" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(504, 442)
@@ -26,6 +27,12 @@ levels = Array[PackedScene]([ExtResource("2_p57ef")])
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="GameplayUI" parent="UILayer" instance=ExtResource("2_iywne")]
+
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
+visible = false
 
 [node name="BulletBounds" type="Area2D" parent="."]
 visible = false

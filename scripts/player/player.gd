@@ -36,6 +36,8 @@ var deathwave_template: PackedScene = preload("res://scenes/player/player_death_
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold
 
+var _game_ref: GameController = null
+
 const BOMB_COOLDOWN: float = 4
 var _bomb_cooldown: float = BOMB_COOLDOWN
 
@@ -140,7 +142,7 @@ func _ready() -> void:
 	#draw_line(Vector2.ZERO, Vector2(0, -1000), Color.RED)
 
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
 	# Moving
 	if not focused and Input.is_action_pressed("focus"):
 		focused = true
@@ -164,6 +166,7 @@ func _physics_process(delta: float) -> void:
 	linear_velocity = frame_move.normalized() * get_move_speed()
 	
 	itime = max(0, itime - delta)
+	
 	
 	## From this point onwards, nothing runs in cutscene or during pause
 	if state != PlayerState.NORMAL:
@@ -193,6 +196,9 @@ func _physics_process(delta: float) -> void:
 func _on_player_hitbox_area_entered(area: Area2D) -> void:
 	if itime > 0 or invincible:
 		return
+	
+	if area is Bullet:
+		area.queue_free()
 	
 	die()
 

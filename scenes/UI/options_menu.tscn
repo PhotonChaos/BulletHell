@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://by3v0a2t44smh"]
+
+[ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_m3vow"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_m3vow"]
+font_size = 44
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_m3vow")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control2" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS:"
+label_settings = SubResource("LabelSettings_m3vow")
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="MusicVolume" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MusicVolume"]
+custom_minimum_size = Vector2(184, 0)
+layout_mode = 2
+text = "Music Volume:"
+
+[node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="SFXVolume" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/SFXVolume"]
+custom_minimum_size = Vector2(184, 0)
+layout_mode = 2
+text = "SFX Volume:"
+
+[node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/SFXVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Control2" type="Control" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2

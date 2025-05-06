@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_p57ef"]
-[ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://sound/not_mine/pop.mp3" id="4_iywne"]
-[ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://sound/bulletShoot1.wav" id="4_lbhrr"]
+[ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
+[ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bulletShoot1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
@@ -58,9 +58,11 @@ shot_velocity = 900.0
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="EnemyDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_iywne")
+bus = &"SFX"
 
 [node name="Walls" type="Node2D" parent="."]
 

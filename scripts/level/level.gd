@@ -120,6 +120,9 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 
 ## Spawns [param boss] at position [param pos]
 func spawn_boss(boss: PackedScene, pos: Vector2) -> void:
+	call_deferred("_spawn_boss", boss, pos)
+	
+func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	var bossInstance: Boss = boss.instantiate() 
 	bossInstance.global_position = pos
 	bossInstance._level = self

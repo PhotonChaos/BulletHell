@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://k61e757lhigq"
-path="res://.godot/imported/hitHurt.wav-8821794ce08a2357086f07dedf3ddc9f.sample"
+uid="uid://dfg6gbgcj7yxf"
+path="res://.godot/imported/tick2.wav-a1061e58285c0d87061ce4c61dccdad9.sample"
 
 [deps]
 
-source_file="res://sound/hitHurt.wav"
-dest_files=["res://.godot/imported/hitHurt.wav-8821794ce08a2357086f07dedf3ddc9f.sample"]
+source_file="res://audio/SFX/tick2.wav"
+dest_files=["res://.godot/imported/tick2.wav-a1061e58285c0d87061ce4c61dccdad9.sample"]
 
 [params]
 

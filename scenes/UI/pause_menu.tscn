@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwb74j15yhms2"]
+[gd_scene load_steps=5 format=3 uid="uid://cwb74j15yhms2"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_bl585"]
 [ext_resource type="Script" uid="uid://dnj20qo4sfict" path="res://scripts/UI/pause_menu.gd" id="1_qo2fb"]
+[ext_resource type="PackedScene" uid="uid://by3v0a2t44smh" path="res://scenes/UI/options_menu.tscn" id="3_mko1u"]
+[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://audio/SFX/hitHurt.wav" id="4_feath"]
 
 [node name="PauseMenu" type="Control"]
 process_mode = 3
@@ -23,31 +25,42 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.278431, 0.278431, 0.278431, 0.690196)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="OptionsMenu" parent="ColorRect" instance=ExtResource("3_mko1u")]
+layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -86.0
+offset_right = 86.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="ResumeButton" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="ColorRect/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Resume"
 
-[node name="OptionsButton" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="ColorRect/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Options"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="ColorRect/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Quit"
 
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_feath")
+bus = &"SFX"
+
+[connection signal="options_closed" from="ColorRect/OptionsMenu" to="." method="_on_options_menu_options_closed"]
+[connection signal="sfx_test" from="ColorRect/OptionsMenu" to="." method="_on_options_menu_sfx_test"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player/player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://cp17eer47sjjy" path="res://textures/hitbox.png" id="3_i3pqv"]
-[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://sound/hitHurt.wav" id="4_dqkch"]
-[ext_resource type="AudioStream" uid="uid://cul6jc03mcold" path="res://sound/not_mine/click.mp3" id="5_qlg0r"]
-[ext_resource type="AudioStream" uid="uid://vdp0ujrss5mj" path="res://sound/click(5).wav" id="6_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://audio/SFX/hitHurt.wav" id="4_dqkch"]
+[ext_resource type="AudioStream" uid="uid://cul6jc03mcold" path="res://audio/SFX/not_mine/click.mp3" id="5_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://vdp0ujrss5mj" path="res://audio/SFX/click(5).wav" id="6_tuyoq"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dqkch"]
 friction = 0.0
@@ -85,12 +85,15 @@ shape = SubResource("CapsuleShape2D_qlg0r")
 
 [node name="PlayerHitSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dqkch")
+bus = &"SFX"
 
 [node name="PlayerGrazeSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_qlg0r")
+bus = &"SFX"
 
 [node name="PlayerItemSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_tuyoq")
+bus = &"SFX"
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]

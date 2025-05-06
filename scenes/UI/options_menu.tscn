@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://by3v0a2t44smh"]
+[gd_scene load_steps=4 format=3 uid="uid://by3v0a2t44smh"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_m3vow"]
+[ext_resource type="Script" uid="uid://ncwmwak2vba1" path="res://scripts/UI/options_menu.gd" id="2_3t8k5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m3vow"]
 font_size = 44
@@ -13,6 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_m3vow")
+script = ExtResource("2_3t8k5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -50,10 +52,12 @@ custom_minimum_size = Vector2(184, 0)
 layout_mode = 2
 text = "Music Volume:"
 
-[node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/MusicVolume"]
+[node name="MusicVolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/MusicVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
 
 [node name="SFXVolume" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -63,16 +67,18 @@ custom_minimum_size = Vector2(184, 0)
 layout_mode = 2
 text = "SFX Volume:"
 
-[node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/SFXVolume"]
+[node name="SFXVolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/SFXVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
 
 [node name="Control2" type="Control" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Back"
@@ -80,3 +86,8 @@ text = "Back"
 [node name="Control" type="Control" parent="HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
+
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/MusicVolume/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="drag_ended" from="HBoxContainer/VBoxContainer/SFXVolume/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_drag_ended"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/SFXVolume/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

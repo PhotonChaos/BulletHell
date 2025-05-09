@@ -35,7 +35,7 @@ signal flash_changed(value: int, max: int)
 var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
 var flashbomb_template: PackedScene = preload("res://scenes/player/flash_bomb.tscn")
-var deathwave_template: PackedScene = preload("res://scenes/player/player_death_wave.tscn")
+var deathwave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold
@@ -136,10 +136,12 @@ func add_points(points: int) -> void:
 
 
 func die() -> void:
-	var wave = deathwave_template.instantiate()
+	var wave = deathwave_template.instantiate() as DeathWave
 	add_sibling(wave)
+	wave.lifespan = HIT_ITIME
 	wave.position = position
-	
+	wave._level_ref = get_parent() as Level
+	wave.give_points = false
 	_lives -= 1
 	set_itime(HIT_ITIME)
 		

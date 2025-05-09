@@ -8,8 +8,8 @@ signal boss_defeated
 
 signal spell_card_started(name: String)
 
-## Emits when the current spell card has been defeated
-signal spell_card_defeated
+## Emits when the current spell card or nonspell has been defeated
+signal phase_defeated(was_spell_card: bool)
 
 ## Emits when the spell card health changes
 signal spell_hp_changed(max: int, old: int, new: int)
@@ -78,6 +78,10 @@ func next_spell() -> void:
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
 	current_spell.spell_defeated.connect(next_spell)
+	current_spell.spell_defeated.connect(func(): phase_defeated.emit(true))
+	current_spell.spell_defeated.connect(func(): _level.clear_bullet_wave(global_position, 2, true, true))
+	current_spell.spell_started.connect(func(): phase_defeated.emit(false))
+	current_spell.spell_started.connect(func(): _level.clear_bullet_wave(global_position, 1, true, true))
 	current_spell.hp_changed.connect(func(max: int, old: int, new: int): spell_hp_changed.emit(max, old, new))
 	current_spell.time_changed.connect(func(new: float): spell_time_changed.emit(new))
 	add_child(current_spell)

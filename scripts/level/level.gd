@@ -33,6 +33,7 @@ enum BulletType {
 
 var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
+var _boss_death_wave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
 
 const DEFAULT_BULLET_TYPE = BulletType.BALL
 const X_MIDPOINT = 181
@@ -122,16 +123,14 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 func spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	call_deferred("_spawn_boss", boss, pos)
 	
-	
+## Called only on the main thread.
 func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	var bossInstance: Boss = boss.instantiate() 
 	bossInstance.global_position = pos
 	bossInstance._level = self
 	
 	boss_spawned.emit()
-	bossInstance.boss_defeated.connect(func(): 
-		boss_defeated.emit()
-		call_deferred("clear_all_bullets", true))
+	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
@@ -213,6 +212,14 @@ func clear_all_bullets(hard_clear=false):
 	for bullet: Bullet in bullets:
 		clear_bullet(bullet, true)
 
+
+func clear_bullet_wave(pos: Vector2, duration: float, points: bool, hard: bool) -> void:
+	var wave = _boss_death_wave_template.instantiate() as DeathWave
+	wave.position = pos
+	wave.lifespan = duration 
+	wave.invisible = true
+	wave._level_ref = self
+	add_child(wave)
 
 # Other spawning
 

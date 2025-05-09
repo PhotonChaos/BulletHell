@@ -94,7 +94,6 @@ func _defeat():
 	if on_spell:
 		spell_defeated.emit()
 	else:
-		_level.clear_all_bullets(true)
 		time_left = spell_time_limit
 		hp_left = spell_hp
 		on_spell = true

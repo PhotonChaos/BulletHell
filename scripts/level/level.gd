@@ -122,13 +122,16 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 func spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	call_deferred("_spawn_boss", boss, pos)
 	
+	
 func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	var bossInstance: Boss = boss.instantiate() 
 	bossInstance.global_position = pos
 	bossInstance._level = self
 	
 	boss_spawned.emit()
-	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
+	bossInstance.boss_defeated.connect(func(): 
+		boss_defeated.emit()
+		call_deferred("clear_all_bullets", true))
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))

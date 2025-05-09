@@ -1,7 +1,7 @@
 extends Area2D
 
 const MAX_SCALE = 40
-const LIFESPAN = Player.MAX_ITIME 
+const LIFESPAN = Player.HIT_ITIME 
 
 func _ready() -> void:
 	scale = Vector2(0.1, 0.1)

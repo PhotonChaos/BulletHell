@@ -49,6 +49,7 @@ position = Vector2(181, 310)
 speed = 200.0
 focus_speed = 100.0
 bombs = 8
+max_flash_charge = 100
 fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0
@@ -97,5 +98,6 @@ debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 [connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
 [connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
+[connection signal="flash_changed" from="Player" to="." method="_on_player_flash_changed"]
 [connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]
 [connection signal="score_changed" from="Player" to="." method="_on_player_score_changed"]

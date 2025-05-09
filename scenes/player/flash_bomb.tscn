@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://godkdutkwtjt"]
+
+[ext_resource type="Texture2D" uid="uid://dhcw2lvdqv07o" path="res://textures/flashbomb.png" id="1_ny6bt"]
+[ext_resource type="Script" uid="uid://bvjw3vniiu3mg" path="res://scripts/player/flash_bomb.gd" id="1_yn1ir"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n5oul"]
+radius = 17.0294
+
+[node name="FlashBomb" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_yn1ir")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ny6bt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_n5oul")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

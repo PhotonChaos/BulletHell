@@ -79,6 +79,7 @@ func is_ingame() -> bool:
 func is_paused() -> bool:
 	return state == GameState.GAME_PAUSED
 
+
 func _ready() -> void:
 	_game_instance = self
 	
@@ -106,6 +107,7 @@ func _process(delta: float) -> void:
 		sfx_cooldown = 0.1
 		
 		bullet_sfx.play()
+
 
 ## Pauses or unpauses the game, depending on [param paused]. True to pause, false to unpause.[br]
 ## Does nothing if we aren't ingame.
@@ -159,6 +161,7 @@ func _on_level_finished() -> void:
 	else:
 		play_next_level()
 
+
 func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 	# Triggers whenever a bullet exits the area
 	# TODO: Figure out how this works with object pooling
@@ -178,3 +181,7 @@ func _on_player_lives_changed(old: int, new: int) -> void:
 func _on_player_score_changed(old: int, new: int) -> void:
 	# TODO: Add the points text when the player picks up an item
 	main_ui.set_score(new)
+
+
+func _on_player_flash_changed(value: int, max: int) -> void:
+	main_ui.set_flash_charge(value, max)

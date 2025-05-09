@@ -4,12 +4,14 @@ extends Control
 var heart_icon = preload("res://textures/UI/heart_icon.png")
 var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
 
-@onready var livesContainer = $GeneralSection/PlayerStats/VBoxContainer/PlayerResources/LivesContainer/HPIcons as HBoxContainer
-@onready var bombsContainer = $GeneralSection/PlayerStats/VBoxContainer/PlayerResources/BombsContainer/BombIcons as HBoxContainer
+# Right-side UI elements
+@onready var livesContainer = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer/HPIcons as HBoxContainer
+@onready var bombsContainer = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer/BombIcons as HBoxContainer
+@onready var scoreLabel = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/Scores/Score as Label
+@onready var highScoreLabel = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/Scores/HighScore as Label
+@onready var flashBombMeter = $GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer/FlashbombMeter/TextureProgressBar as TextureProgressBar
 
-@onready var scoreLabel = $GeneralSection/PlayerStats/VBoxContainer/Scores/Score as Label
-@onready var highScoreLabel = $GeneralSection/PlayerStats/VBoxContainer/Scores/HighScore as Label
-
+# Boss UI elements
 @onready var spellNameLabel = $BossStats/VBoxContainer/HBoxContainer/SpellName as Label
 @onready var bossNameLabel = $BossStats/VBoxContainer/HBoxContainer/BossName as Label
 @onready var timerLabel = $BossStats/TimeLeft as Label
@@ -58,6 +60,13 @@ func set_score(score: int):
 		highScoreLabel.text = "High Score: " + str(highScore)
 	
 	scoreLabel.text = "Score: " + str(score)
+
+
+func set_flash_charge(charge: float, max: float):
+	flashBombMeter.value = charge
+	flashBombMeter.max_value = max
+
+# Boss Methods
 
 func set_boss_stats(_visible: bool):
 	if _visible:

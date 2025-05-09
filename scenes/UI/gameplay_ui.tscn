@@ -1,12 +1,32 @@
-[gd_scene load_steps=7 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=13 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
 [ext_resource type="LabelSettings" uid="uid://berx5f5qco7wl" path="res://ui/gameplay_ui.tres" id="3_bcwfe"]
+[ext_resource type="Texture2D" uid="uid://lchfyx5pruq1" path="res://textures/UI/flashbomb_ui.png" id="3_dyrh1"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_dyrh1"]
+font = ExtResource("4_haufa")
+font_size = 40
+
+[sub_resource type="Gradient" id="Gradient_4d4m4"]
+colors = PackedColorArray(0, 0.2695, 0.77, 1, 0.27, 0.939167, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dyrh1"]
+gradient = SubResource("Gradient_4d4m4")
+width = 8
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
 [sub_resource type="LabelSettings" id="LabelSettings_wf0n7"]
-font_size = 22
+font_size = 11
+
+[sub_resource type="LabelSettings" id="LabelSettings_5nf6b"]
+font_size = 11
+
+[sub_resource type="LabelSettings" id="LabelSettings_1i81k"]
+font_size = 11
 
 [sub_resource type="LabelSettings" id="LabelSettings_om5qg"]
 font = ExtResource("4_haufa")
@@ -33,78 +53,140 @@ grow_horizontal = 0
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="GeneralSection"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GeneralSection"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 54.0
-grow_horizontal = 2
-text = "Bullet Hell!"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PlayerStats" type="HBoxContainer" parent="GeneralSection"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -46.0
-offset_bottom = 46.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="GeneralSection/PlayerStats"]
-custom_minimum_size = Vector2(10, 0)
+[node name="MarginContainer" type="MarginContainer" parent="GeneralSection/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GeneralSection/PlayerStats"]
+[node name="GameTitle" type="Label" parent="GeneralSection/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "Bullet Hell!"
+label_settings = SubResource("LabelSettings_dyrh1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="GeneralSection/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GeneralSection/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FlashbombContainer" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="PaddingLeft" type="Control" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer"]
+layout_mode = 2
+
+[node name="PaddingTop" type="Control" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="FlashbombMeter" type="NinePatchRect" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer"]
+z_index = 1
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("3_dyrh1")
+region_rect = Rect2(0, 0, 16, 16)
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer/FlashbombMeter"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 4.0
+offset_right = 4.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 10.0
+fill_mode = 3
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_top = 4
+stretch_margin_right = 4
+stretch_margin_bottom = 4
+texture_progress = SubResource("GradientTexture2D_dyrh1")
+
+[node name="PaddingBottom" type="Control" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="PaddingRight" type="Control" parent="GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="PlayerStats" type="VBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Scores" type="VBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer"]
+[node name="Scores" type="VBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats"]
 layout_mode = 2
 
-[node name="HighScore" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/Scores"]
+[node name="HighScore" type="Label" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/Scores"]
 layout_mode = 2
 text = "High Score:"
 label_settings = SubResource("LabelSettings_wf0n7")
 clip_text = true
 
-[node name="Score" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/Scores"]
+[node name="Score" type="Label" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/Scores"]
 layout_mode = 2
 text = "Score:"
 label_settings = SubResource("LabelSettings_wf0n7")
 clip_text = true
 
-[node name="Control" type="Control" parent="GeneralSection/PlayerStats/VBoxContainer"]
+[node name="Control" type="Control" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="PlayerResources" type="VBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer"]
+[node name="PlayerResources" type="VBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats"]
 layout_mode = 2
 
-[node name="LivesContainer" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources"]
+[node name="LivesContainer" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources"]
 layout_mode = 2
 
-[node name="HPLabel" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
+[node name="HPLabel" type="Label" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Lives:"
+label_settings = SubResource("LabelSettings_5nf6b")
 vertical_alignment = 2
 
-[node name="HPIcons" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/LivesContainer"]
+[node name="HPIcons" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer"]
 layout_mode = 2
 
-[node name="BombsContainer" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources"]
+[node name="BombsContainer" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources"]
 layout_mode = 2
 
-[node name="BombLabel" type="Label" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
+[node name="BombLabel" type="Label" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Bombs:"
+label_settings = SubResource("LabelSettings_1i81k")
 
-[node name="BombIcons" type="HBoxContainer" parent="GeneralSection/PlayerStats/VBoxContainer/PlayerResources/BombsContainer"]
+[node name="BombIcons" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer"]
 layout_mode = 2
 
 [node name="BossStats" type="HBoxContainer" parent="."]

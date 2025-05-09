@@ -4,12 +4,15 @@ extends RigidBody2D
 signal lives_changed(old: int, new: int)
 signal bombs_changed(old: int, new: int)
 signal score_changed(old: int, new: int)
+signal flash_changed(value: int, max: int)
 
 ## Player Settings
 @export var speed: float
 @export var focus_speed: float
 @export var lives: int
 @export var bombs: int
+## Charge needed to use flash bomb
+@export var max_flash_charge: int
 #@export var deathbomb_timer: float
 @export_group("Player Shot")
 @export_range(1, 100) var fire_rate: float
@@ -31,6 +34,7 @@ signal score_changed(old: int, new: int)
 
 var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
+var flashbomb_template: PackedScene = preload("res://scenes/player/flash_bomb.tscn")
 var deathwave_template: PackedScene = preload("res://scenes/player/player_death_wave.tscn")
 
 @onready var shot_threshold: float = 1/fire_rate
@@ -44,10 +48,16 @@ var _bomb_cooldown: float = BOMB_COOLDOWN
 var _lives: int
 var _bombs: int
 
-const MAX_ITIME: float = 1  # Max itime when hit
+var _flash_charge: int = 0
+
+const HIT_ITIME: float = 2  
+const BOMB_ITIME: float = 6
+const FLASH_ITIME: float = 1
+
 var itime: float = 0
 
 var focused: bool = true
+
 var score: int = 0
 
 var _shot_gap_size: float
@@ -80,24 +90,50 @@ func shoot() -> void:
 func use_bomb() -> void:
 	if get_parent() is Level:
 		(get_parent() as Level)._bomb_active = true
+	else:
+		return  # The bomb won't work if we're not on the level anyways
 	
 	var bomb = bomb_template.instantiate() as Bomb
 	bomb.position = position
 	bomb.level_ref = get_parent() as Level
 	add_sibling(bomb)
 
+func use_flash_bomb() -> void:
+	if not get_parent() is Level:
+		return
+		
+	var flash = flashbomb_template.instantiate() as FlashBomb
+	flash.position = position
+	flash.level_ref = get_parent() as Level
+	add_sibling(flash)
+	
+
+## Grants the player [param time] seconds of invincibility time. [br]
+## If [param force_set] is false, this function will not reduce the player's 
+## invincibility window if [param time] is smaller than the current amount of invincibility time the player has left.[br]
+## This should be used when itime is granted, or set to a specific value. 
+func set_itime(time: float, force_set: bool = false) -> void:
+	if force_set:
+		itime = time
+	else:
+		itime = max(itime, time)
+
+
 func add_lives(count: int) -> void:
 	_lives += count
 	lives_changed.emit(_lives - count, _lives)
+
 
 func add_bombs(count: int) -> void:
 	_bombs += count
 	bombs_changed.emit(_bombs - count, _bombs)
 
+
 func add_points(points: int) -> void:
 	score += points
 	# TODO: Check for extra life thresholds
 	score_changed.emit(score-points, score)
+
 
 func die() -> void:
 	var wave = deathwave_template.instantiate()
@@ -105,8 +141,8 @@ func die() -> void:
 	wave.position = position
 	
 	_lives -= 1
-	itime = MAX_ITIME
-	
+	set_itime(HIT_ITIME)
+		
 	sfx_player_hit.play()
 	lives_changed.emit(_lives+1, _lives)
 	
@@ -117,12 +153,16 @@ func emit_stats():
 	lives_changed.emit(_lives, _lives)
 	bombs_changed.emit(_bombs, _bombs)
 	score_changed.emit(0, 0)
+	flash_changed.emit(_flash_charge, max_flash_charge)
+
 
 func _ready() -> void:
 	state = PlayerState.NORMAL
 	
 	_lives = lives
 	_bombs = bombs
+	
+	_flash_charge = 0
 	
 	var _shot_spread_rad: float = deg_to_rad(shot_spread)
 	var _focus_spread_rad: float = deg_to_rad(focus_spread)
@@ -187,10 +227,16 @@ func _physics_process(delta: float) -> void:
 		
 		if Input.is_action_pressed("secondary") and _bombs > 0:
 			_bomb_cooldown = 0
-			itime += 6
+			set_itime(BOMB_ITIME)
 			_bombs -= 1
 			bombs_changed.emit(_bombs+1, _bombs)
 			use_bomb()
+			
+	if Input.is_action_pressed("flash") and _flash_charge >= max_flash_charge:
+		set_itime(FLASH_ITIME)
+		_flash_charge = 0
+		flash_changed.emit(_flash_charge, max_flash_charge)
+		use_flash_bomb()
 
 
 func _on_player_hitbox_area_entered(area: Area2D) -> void:
@@ -205,6 +251,8 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
 	add_points(100)
+	_flash_charge = min(_flash_charge + 1, max_flash_charge)
+	flash_changed.emit(_flash_charge, max_flash_charge)
 	sfx_player_graze.play()
 
 

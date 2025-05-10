@@ -5,7 +5,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ncbtd"]
 radius = 1.0
-height = 24.0
+height = 20.0
 
 [node name="Bullet" type="Area2D" groups=["enemy_bullets"]]
 collision_layer = 2
@@ -17,5 +17,7 @@ z_index = 5
 texture = ExtResource("2_sobbc")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
+z_index = 5
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_ncbtd")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)

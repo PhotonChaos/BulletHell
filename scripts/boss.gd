@@ -51,6 +51,59 @@ var current_spell_index: int = -1;
 
 ## End of Spell Handling
 
+## Movement Handling
+
+class MovementDest:
+	var target: Vector2
+	var move_time: float
+	var start_wait_time: float 
+	var end_wait_time: float 
+	var easing: Callable
+	
+	var _move_time_counter: float = 0
+	
+	func _init(_target: Vector2, _move_time: float, _start_wait_time: float, _end_wait_time: float, _easing: Callable = ease_in_out) -> void:
+		target = _target
+		move_time = _move_time
+		start_wait_time = _start_wait_time
+		end_wait_time = _end_wait_time
+		easing = _easing
+	
+	## Produces the value that should be passed into movement lerp according to the easing function.
+	func get_lerp_value() -> float:
+		return easing.call(_move_time_counter / move_time)
+	
+	## Adds moved time to the 
+	func add_move_time(time: float) -> void:
+		_move_time_counter = min(move_time, _move_time_counter + time)
+	
+	## Consumes 0 <= [param x] <= 1 and produces a value in the range [0,1].[br]
+	## Translates a percentage of move time into a linear easing curve.
+	static func linear(x: float) -> float:
+		return x
+	
+	## Consumes 0 <= [param x] <= 1 and produces a value in the range [0,1].[br]
+	## Translates a percentage of move time into a quadratic easing curve.
+	static func quadratic(x: float) -> float:
+		return x*x
+		
+	## Consumes 0 <= [param x] <= 1 and produces a value in the range [0,1].[br]
+	## Represents a curve that slows down as [param x] appproaches 1
+	static func ease_out(x: float) -> float:
+		return sin(PI*0.5*x)
+	
+	## Consumes 0 <= [param x] <= 1 and produces a value in the range [0,1].[br]
+	## Represents a curve that slows down as [param x] appproaches 1
+	static func ease_in_out(x: float) -> float:
+		return 0.5*sin(PI*(x-0.5))+0.5
+
+
+## Queue for the boss to move in
+var move_queue: Array[MovementDest] = []
+var _move_time: float = 0
+## End of Movement Handling
+
+## Returns true if the boss should not be harmed by bombs this frame
 func is_bomb_immune() -> bool:
 	if bomb_immunity == BombImmunityLevel.NONE:
 		return false
@@ -62,7 +115,6 @@ func is_bomb_immune() -> bool:
 		return true
 	else:
 		return false
-
 
 ## Ends the current spell and begins the next one
 func next_spell() -> void:
@@ -77,26 +129,31 @@ func next_spell() -> void:
 		return
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
+	
 	current_spell.spell_defeated.connect(next_spell)
 	current_spell.spell_defeated.connect(func(): phase_defeated.emit(true))
 	current_spell.spell_defeated.connect(func(): _level.clear_bullet_wave(global_position, 2, true, true))
+	
 	current_spell.spell_started.connect(func(): phase_defeated.emit(false))
 	current_spell.spell_started.connect(func(): _level.clear_bullet_wave(global_position, 1, true, true))
+	
 	current_spell.hp_changed.connect(func(max: int, old: int, new: int): spell_hp_changed.emit(max, old, new))
 	current_spell.time_changed.connect(func(new: float): spell_time_changed.emit(new))
+	
 	add_child(current_spell)
 	
 	spell_card_started.emit(current_spell.spell_name)
 	
 	current_spell.start(_level)
 	
-
+	
 ## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
 ## Eases in and out for movement.
-func move_to(destination: Vector2, move_duration: float) -> void:
-	# TODO: Implement this.
-	pass
+func move_to(destination: Vector2, move_duration: float, start_delay: float, end_delay: float) -> void:
+	move_queue.push_back(MovementDest.new(destination, move_duration, start_delay, end_delay))
 
+func clear_move_queue() -> void:
+	move_queue.clear()
 
 func damage(amount: int) -> void:
 	if _level._bomb_active and is_bomb_immune():
@@ -107,7 +164,20 @@ func damage(amount: int) -> void:
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
 	next_spell()
-	
+
+func _physics_process(delta: float) -> void:
+	if len(move_queue) > 0:
+		var dest = move_queue[0]
+		if dest.start_wait_time > 0:
+			dest.start_wait_time -= delta
+			return
+		elif dest.get_lerp_value() < 1:
+			dest.add_move_time(delta)
+			position = position.lerp(dest.target, dest.get_lerp_value())
+		elif dest.end_wait_time > 0:
+			dest.end_wait_time -= delta
+		else:
+			move_queue.pop_front()
 
 
 func _on_hitbox_entered(area: Area2D) -> void:

@@ -35,7 +35,7 @@ var _boss: Boss = null
 var on_spell = false
 var started = false
 
-const WARMUP_DEFAULT: float = 1
+const WARMUP_DEFAULT: float = 2
 var warmup_timer: float = WARMUP_DEFAULT
 
 var hp_left: float = 0
@@ -53,7 +53,7 @@ var lifetime: int = 0
 
 ## Damages the current attack by [param amount]
 func damage(amount: int) -> void:
-	hp_left -= amount
+	hp_left -= amount if warmup_timer <= 0 else amount * (1- warmup_timer / WARMUP_DEFAULT)
 	
 	if on_spell:
 		hp_changed.emit(spell_hp, hp_left+amount, hp_left)
@@ -81,6 +81,10 @@ func start(level: Level) -> void:
 	hp_changed.emit(hp_left, 0, hp_left)
 	
 
+## Custom movement function for both attacks. Called once per physics frame, before the attacks.
+func movement() -> void:
+	pass
+
 ## The nonspell portion of the attack. Called once per physics frame.
 func nonspell() -> void:
 	pass
@@ -98,7 +102,7 @@ func _defeat():
 		hp_left = spell_hp
 		on_spell = true
 		lifetime = 0
-		
+		warmup_timer = WARMUP_DEFAULT
 		spell_started.emit()
 
 
@@ -114,6 +118,8 @@ func _physics_process(delta: float) -> void:
 	lifetime += 1
 	
 	time_changed.emit(time_left)
+	
+	movement()
 	
 	if on_spell:
 		spell()

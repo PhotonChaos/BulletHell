@@ -46,10 +46,10 @@ debug_color = Color(0.7, 0.7, 0.7, 0.0313726)
 
 [node name="Player" parent="." instance=ExtResource("2_lbhrr")]
 position = Vector2(181, 310)
-speed = 200.0
+speed = 250.0
 focus_speed = 100.0
-bombs = 8
-max_flash_charge = 100
+bombs = 5
+max_flash_charge = 35
 fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0

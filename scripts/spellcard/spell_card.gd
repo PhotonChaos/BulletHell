@@ -114,7 +114,7 @@ func _physics_process(delta: float) -> void:
 		warmup_timer -= delta
 		return
 	
-	time_left -= delta
+	time_left = max(0, time_left - delta)
 	lifetime += 1
 	
 	time_changed.emit(time_left)

@@ -31,6 +31,7 @@ signal flash_changed(value: int, max: int)
 @onready var sfx_player_hit: AudioStreamPlayer2D = $PlayerHitSFX
 @onready var sfx_player_graze: AudioStreamPlayer2D = $PlayerGrazeSFX
 @onready var sfx_player_item: AudioStreamPlayer2D = $PlayerItemSFX
+@onready var sfx_player_flashbomb_charge: AudioStreamPlayer2D = $PlayerFlashChargeSFX
 
 var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
@@ -253,13 +254,22 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
 	add_points(100)
+	
+	var old_flash = _flash_charge
+	
 	_flash_charge = min(_flash_charge + 1, max_flash_charge)
 	flash_changed.emit(_flash_charge, max_flash_charge)
+	
+	if old_flash < _flash_charge and _flash_charge == max_flash_charge:
+		sfx_player_flashbomb_charge.play()
+
+	sfx_player_graze.pitch_scale = randf_range(0.98, 1.02)
 	sfx_player_graze.play()
 
 
 func _on_item_hitbox_area_entered(area: Area2D) -> void:
 	if area is Item:
+		sfx_player_item.pitch_scale = randf_range(0.99, 1.01)
 		sfx_player_item.play()
 		(area as Item).apply(self)
 		area.queue_free()

@@ -7,7 +7,7 @@
 radius = 34.0588
 
 [node name="Bomb" type="AnimatedSprite2D"]
-z_index = -3
+z_index = -4
 sprite_frames = ExtResource("1_4kkau")
 script = ExtResource("2_vpdcx")
 damage = 300.0

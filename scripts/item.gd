@@ -11,9 +11,18 @@ enum ItemType {
 	 FULL_POWER
 }
 
-var _sprite_map = {
+static var _sprite_map = {
 	ItemType.POINT: preload("res://textures/items/point.png"),
-	ItemType.SMALL_POINT: preload("res://textures/items/small_point.png")
+	ItemType.SMALL_POINT: preload("res://textures/items/small_point.png"),
+	ItemType.LIFE: preload("res://textures/UI/heart_icon.png"),
+	ItemType.BOMB: preload("res://textures/UI/bomb_icon.png")
+}
+
+static var _sound_map = {
+	ItemType.POINT: preload("res://audio/SFX/click(5).wav"),
+	#ItemType.SMALL_POINT: preload("res://audio/SFX/click(5).wav"),  # Do not add this to the map. We handle this sound differently
+	ItemType.LIFE: preload("res://audio/SFX/LifeGain.wav"),
+	ItemType.BOMB: preload("res://audio/SFX/BombGain.wav")
 }
 
 # Value of the item, depends on item type:
@@ -23,8 +32,8 @@ var _sprite_map = {
 # In all other cases, this is not used.
 #var item_value_map: Dictionary[ItemType, int]
 
-const GRAVITY = 20
-const MAX_FALL_SPEED = 50
+const GRAVITY = 40
+const MAX_FALL_SPEED = 120
 
 const MAGNET_SPEED = 300
 
@@ -32,6 +41,8 @@ const MAGNET_SPEED = 300
 const POINT_VALUE_FULL = 10000
 const POWER_VALUE = 10
 const SMALL_POINT_VALUE = 50
+const BOMB_POINT_VALUE = 1000
+const LIFE_POINT_VALUE = 5000
 
 ## y-coordinate of max point value
 const POINT_OF_COLLECTION = 50
@@ -43,6 +54,20 @@ var _fall_speed = 0
 
 @export var item_type: ItemType
 
+
+static var _item_template: PackedScene = preload("res://scenes/pickup/Item.tscn")
+
+static func get_drop_dict(points: int, bombs: int, lives: int) -> Dictionary:
+	return {
+		ItemType.POINT: points,
+		ItemType.BOMB: bombs,
+		ItemType.LIFE: lives
+	}
+	
+static func new_item(type: ItemType):
+	var item = _item_template.instantiate() as Item
+	item.item_type = type
+	return item
 
 func _ready() -> void:
 	if item_type in _sprite_map:
@@ -59,8 +84,18 @@ func apply(player: Player) -> void:
 		player.add_points(SMALL_POINT_VALUE)
 	elif item_type == ItemType.BOMB:
 		player.add_bombs(1)
+		player.add_points(BOMB_POINT_VALUE)
 	elif item_type == ItemType.LIFE:
 		player.add_lives(1)
+		player.add_points(LIFE_POINT_VALUE)
+		
+	if item_type in _sound_map:
+		var stream = AudioStreamPlayer2D.new()
+		stream.stream = _sound_map[item_type]
+		stream.finished.connect(func(): stream.queue_free())
+		player.add_child(stream)
+		stream.play()
+
 
 func _physics_process(delta: float) -> void:
 	if GameController.get_player_pos().y <= POINT_OF_COLLECTION:

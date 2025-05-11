@@ -28,15 +28,23 @@ signal flash_changed(value: int, max: int)
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
 
-@onready var sfx_player_hit: AudioStreamPlayer2D = $PlayerHitSFX
-@onready var sfx_player_graze: AudioStreamPlayer2D = $PlayerGrazeSFX
-@onready var sfx_player_item: AudioStreamPlayer2D = $PlayerItemSFX
-@onready var sfx_player_flashbomb_charge: AudioStreamPlayer2D = $PlayerFlashChargeSFX
+@onready var sfx_player_hit: AudioStreamPlayer2D = $HitSFX
+@onready var sfx_player_graze: AudioStreamPlayer2D = $GrazeSFX
+#@onready var sfx_player_item: AudioStreamPlayer2D = $ItemSFX
+@onready var sfx_player_bullet_item: AudioStreamPlayer2D = $BulletItemSFX
+@onready var sfx_player_flashbomb_charge: AudioStreamPlayer2D = $FlashChargeSFX
+@onready var sfx_player_use_bomb: AudioStreamPlayer2D = $BombSFX
+@onready var sfx_player_use_flashbomb: AudioStreamPlayer2D = $FlashBombSFX
+@onready var sfx_player_shoot: AudioStreamPlayer2D = $ShotSFX
 
 var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
 var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
 var flashbomb_template: PackedScene = preload("res://scenes/player/flash_bomb.tscn")
 var deathwave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
+
+var item_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/click(5).wav")
+var bomb_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/BombGain.wav")
+var life_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/LifeGain.wav")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold
@@ -87,6 +95,9 @@ func shoot() -> void:
 		shot.rotation = angle_start + i*gap_size + PI/2
 		shot.velocity = Vector2.from_angle(angle_start + i*gap_size) * shot_velocity
 		add_sibling(shot)
+	
+	#sfx_player_shoot.pitch_scale = randf_range(0.95, 1.05)
+	sfx_player_shoot.play()
 
 func use_bomb() -> void:
 	if get_parent() is Level:
@@ -98,6 +109,7 @@ func use_bomb() -> void:
 	bomb.position = position
 	bomb.level_ref = get_parent() as Level
 	add_sibling(bomb)
+	sfx_player_use_bomb.play()
 
 func use_flash_bomb() -> void:
 	if not get_parent() is Level:
@@ -107,6 +119,7 @@ func use_flash_bomb() -> void:
 	flash.position = position
 	flash.level_ref = get_parent() as Level
 	add_sibling(flash)
+	sfx_player_use_flashbomb.play()
 	
 
 ## Grants the player [param time] seconds of invincibility time. [br]
@@ -128,6 +141,7 @@ func add_lives(count: int) -> void:
 func add_bombs(count: int) -> void:
 	_bombs += count
 	bombs_changed.emit(_bombs - count, _bombs)
+	
 
 
 func add_points(points: int) -> void:
@@ -138,7 +152,7 @@ func add_points(points: int) -> void:
 
 func die() -> void:
 	var wave = deathwave_template.instantiate() as DeathWave
-	add_sibling(wave)
+	call_deferred("add_sibling", wave)
 	wave.lifespan = HIT_ITIME
 	wave.position = position
 	wave._level_ref = get_parent() as Level
@@ -269,12 +283,16 @@ func _on_player_grazebox_area_entered(area: Area2D) -> void:
 
 func _on_item_hitbox_area_entered(area: Area2D) -> void:
 	if area is Item:
-		sfx_player_item.pitch_scale = randf_range(0.99, 1.01)
-		sfx_player_item.play()
-		(area as Item).apply(self)
-		area.queue_free()
+		var item = area as Item
+		
+		if item.item_type == Item.ItemType.SMALL_POINT:
+			sfx_player_bullet_item.pitch_scale = randf_range(0.99, 1.01)
+			sfx_player_bullet_item.play()
+		
+		item.apply(self)
+		item.queue_free()
 
-
+ 
 func _on_item_magnet_box_area_entered(area: Area2D) -> void:
 	if area is Item:
 		(area as Item).magnet_player = true

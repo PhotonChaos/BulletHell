@@ -12,10 +12,10 @@ signal bullet_fired
 
 signal boss_spawned
 signal boss_defeated
+signal boss_phases_changed(old: int, new: int)
 signal spell_started(name: String, boss_name: String)
 signal spell_time_updated(new: float)
 signal spell_hp_updated(max: int, old: int, new: int)
-
 
 enum BulletType {
 	BALL = 0,
@@ -134,7 +134,7 @@ func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
-	
+	bossInstance.phases_left_changed.connect(func(old, new): boss_phases_changed.emit(old, new))
 	call_deferred("add_child", bossInstance)
 
 # Bullet mechanics

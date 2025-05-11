@@ -34,6 +34,7 @@ var _boss: Boss = null
 # State variables
 var on_spell = false
 var started = false
+var dying = false
 
 const WARMUP_DEFAULT: float = 2
 var warmup_timer: float = WARMUP_DEFAULT
@@ -94,8 +95,11 @@ func spell() -> void:
 	pass
 
 ## Called whenever the current step of the attack is defeated. If on a nonspell, begins the spell portion
-func _defeat():	
-	if on_spell:
+func _defeat():
+	_drop_spell_items()
+	
+	if on_spell and not dying:
+		dying = true
 		spell_defeated.emit()
 	else:
 		time_left = spell_time_limit
@@ -105,6 +109,22 @@ func _defeat():
 		warmup_timer = WARMUP_DEFAULT
 		spell_started.emit()
 
+## Called to determine what items the attack should drop
+func get_drops() -> Dictionary:
+	return Item.get_drop_dict(0, 0, 0)
+
+func _drop_spell_items() -> void:
+	var items = get_drops()
+	
+	for itemType in [Item.ItemType.POINT, Item.ItemType.LIFE, Item.ItemType.BOMB]:
+		if not itemType in items: 
+			pass
+		
+		for i in range(items[itemType]):
+			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(20, 40) + global_position
+			var item = Item.new_item(itemType)
+			item.global_position = pos
+			get_parent().add_sibling(item)
 
 func _physics_process(delta: float) -> void:
 	if not started:

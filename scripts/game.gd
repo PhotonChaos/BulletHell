@@ -147,6 +147,7 @@ func play_next_level() -> void:
 	)
 	level_ref.spell_hp_updated.connect(func(max, old, new): main_ui.set_hp(new, max))
 	level_ref.spell_time_updated.connect(func(time): main_ui.set_time(time))
+	level_ref.boss_phases_changed.connect(func(old, new): main_ui.set_phases(new))
 	
 	add_child(level_ref)
 	player_ref.reparent(level_ref)

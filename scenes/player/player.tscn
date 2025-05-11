@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b5a8qqajkoryp"]
+[gd_scene load_steps=17 format=3 uid="uid://b5a8qqajkoryp"]
 
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player/player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
@@ -7,6 +7,9 @@
 [ext_resource type="AudioStream" uid="uid://cul6jc03mcold" path="res://audio/SFX/not_mine/click.mp3" id="5_qlg0r"]
 [ext_resource type="AudioStream" uid="uid://vdp0ujrss5mj" path="res://audio/SFX/click(5).wav" id="6_tuyoq"]
 [ext_resource type="AudioStream" uid="uid://b2tp5s8e66uoq" path="res://audio/SFX/powerUp.wav" id="7_0owmy"]
+[ext_resource type="AudioStream" uid="uid://c0cjmekmov8y1" path="res://audio/SFX/explosion.wav" id="8_qek5x"]
+[ext_resource type="AudioStream" uid="uid://c1gqc0uf2fda" path="res://audio/SFX/flashbomb.wav" id="9_5gtgg"]
+[ext_resource type="AudioStream" uid="uid://bic30hqgtu70c" path="res://audio/SFX/laserShoot(2).wav" id="10_h17s1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dqkch"]
 friction = 0.0
@@ -84,22 +87,37 @@ collision_mask = 8
 position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_qlg0r")
 
-[node name="PlayerHitSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="HitSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dqkch")
 bus = &"SFX"
 
-[node name="PlayerGrazeSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="GrazeSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_qlg0r")
 bus = &"SFX"
 
-[node name="PlayerItemSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="ItemSFX" type="AudioStreamPlayer2D" parent="."]
+visible = false
 stream = ExtResource("6_tuyoq")
 bus = &"SFX"
 
-[node name="PlayerFlashChargeSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="BulletItemSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_tuyoq")
+bus = &"SFX"
+
+[node name="FlashChargeSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_0owmy")
 volume_db = -1.18
 bus = &"SFX"
+
+[node name="BombSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_qek5x")
+
+[node name="FlashBombSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_5gtgg")
+
+[node name="ShotSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_h17s1")
+volume_db = -9.75
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]

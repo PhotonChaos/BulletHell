@@ -17,6 +17,7 @@ signal spell_hp_changed(max: int, old: int, new: int)
 ## Emits when the spell card time changes
 signal spell_time_changed(new: int)
 
+signal phases_left_changed(old: int, new: int)
 
 ## The name that displays in dialogue and under the bosses health bar 
 @export var boss_name: String
@@ -123,6 +124,9 @@ func next_spell() -> void:
 	
 	current_spell_index += 1
 	
+	phases_left_changed.emit(0, len(spell_cards)-current_spell_index)
+
+	
 	if current_spell_index >= len(spell_cards):
 		boss_defeated.emit()
 		queue_free()
@@ -130,12 +134,8 @@ func next_spell() -> void:
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
 	
-	current_spell.spell_defeated.connect(next_spell)
-	current_spell.spell_defeated.connect(func(): phase_defeated.emit(true))
-	current_spell.spell_defeated.connect(func(): _level.clear_bullet_wave(global_position, 2, true, true))
-	
-	current_spell.spell_started.connect(func(): phase_defeated.emit(false))
-	current_spell.spell_started.connect(func(): _level.clear_bullet_wave(global_position, 1, true, true))
+	current_spell.spell_started.connect(func(): defeat_phase(false))
+	current_spell.spell_defeated.connect(func(): defeat_phase(true))
 	
 	current_spell.hp_changed.connect(func(max: int, old: int, new: int): spell_hp_changed.emit(max, old, new))
 	current_spell.time_changed.connect(func(new: float): spell_time_changed.emit(new))
@@ -146,7 +146,7 @@ func next_spell() -> void:
 	
 	current_spell.start(_level)
 	
-	
+
 ## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
 ## Eases in and out for movement.
 func move_to(destination: Vector2, move_duration: float, start_delay: float, end_delay: float) -> void:
@@ -160,6 +160,15 @@ func damage(amount: int) -> void:
 		return
 		
 	current_spell.damage(amount)
+
+
+func defeat_phase(card: bool) -> void:
+	phase_defeated.emit(card)
+	
+	if card:
+		next_spell()
+	else:
+		_level.clear_bullet_wave(global_position, 1, true, true)
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
@@ -178,7 +187,6 @@ func _physics_process(delta: float) -> void:
 			dest.end_wait_time -= delta
 		else:
 			move_queue.pop_front()
-
 
 func _on_hitbox_entered(area: Area2D) -> void:
 	if area is PlayerShot and current_spell.started:

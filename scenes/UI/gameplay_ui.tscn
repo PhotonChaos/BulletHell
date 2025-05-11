@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=14 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
 [ext_resource type="LabelSettings" uid="uid://berx5f5qco7wl" path="res://ui/gameplay_ui.tres" id="3_bcwfe"]
 [ext_resource type="Texture2D" uid="uid://lchfyx5pruq1" path="res://textures/UI/flashbomb_ui.png" id="3_dyrh1"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
+[ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dyrh1"]
 font = ExtResource("4_haufa")
@@ -193,7 +194,7 @@ layout_mode = 2
 layout_mode = 0
 offset_left = 3.0
 offset_right = 361.0
-offset_bottom = 40.0
+offset_bottom = 30.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BossStats"]
 layout_mode = 2
@@ -218,8 +219,21 @@ label_settings = ExtResource("3_bcwfe")
 
 [node name="HealthBar" type="ProgressBar" parent="BossStats/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 value = 50.0
 show_percentage = false
+
+[node name="Control" type="Control" parent="BossStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="PhasesLeft" type="HBoxContainer" parent="BossStats/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="TextureRect" type="TextureRect" parent="BossStats/VBoxContainer/PhasesLeft"]
+layout_mode = 2
+texture = ExtResource("6_5nf6b")
+stretch_mode = 2
 
 [node name="TimeLeft" type="Label" parent="BossStats"]
 custom_minimum_size = Vector2(60, 0)

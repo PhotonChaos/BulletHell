@@ -3,6 +3,7 @@ extends Control
 
 var heart_icon = preload("res://textures/UI/heart_icon.png")
 var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
+var phase_icon = preload("res://textures/UI/bossPhases.png")
 
 # Right-side UI elements
 @onready var livesContainer = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer/HPIcons as HBoxContainer
@@ -17,6 +18,8 @@ var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
 @onready var timerLabel = $BossStats/TimeLeft as Label
 @onready var hpBar = $BossStats/VBoxContainer/HealthBar as ProgressBar
 @onready var bossStats = $BossStats as HBoxContainer
+@onready var phaseContainer = $BossStats/VBoxContainer/PhasesLeft as HBoxContainer
+
 
 var highScore: int = -1
 
@@ -66,6 +69,7 @@ func set_flash_charge(charge: float, max: float):
 	flashBombMeter.value = charge
 	flashBombMeter.max_value = max
 
+
 # Boss Methods
 
 func set_boss_stats(_visible: bool):
@@ -86,3 +90,16 @@ func set_time(time: float):
 func set_hp(hp: int, max: int):
 	hpBar.max_value = max
 	hpBar.value = hp
+
+func set_phases(num_phases: int) -> void:
+	for child in phaseContainer.get_children():
+		child.queue_free()
+	
+	var icon = TextureRect.new()
+	icon.texture = phase_icon
+	icon.stretch_mode = TextureRect.STRETCH_KEEP
+	icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	
+	for i in range(num_phases):
+		phaseContainer.add_child(icon)
+		

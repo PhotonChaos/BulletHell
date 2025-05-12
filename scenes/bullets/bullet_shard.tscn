@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxqj2q1qptatx"]
+
+[ext_resource type="Script" uid="uid://dfi0g7guqnkfg" path="res://scripts/bullet/bullet.gd" id="1_u7q64"]
+[ext_resource type="Texture2D" uid="uid://2xnli1gofgnk" path="res://textures/bullets/shard.png" id="2_u7q64"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v7oki"]
+radius = 3.0
+
+[node name="BulletShard" type="Area2D" groups=["enemy_bullets"]]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_u7q64")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
+texture = ExtResource("2_u7q64")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+z_index = 6
+shape = SubResource("CircleShape2D_v7oki")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)

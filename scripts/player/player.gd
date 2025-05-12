@@ -54,8 +54,12 @@ var _game_ref: GameController = null
 const BOMB_COOLDOWN: float = 4
 var _bomb_cooldown: float = BOMB_COOLDOWN
 
+const MAX_LIVES: int = 6
+const MAX_BOMBS: int = 6
+
 var _lives: int
 var _bombs: int
+
 
 var _flash_charge: int = 0
 
@@ -134,13 +138,15 @@ func set_itime(time: float, force_set: bool = false) -> void:
 
 
 func add_lives(count: int) -> void:
-	_lives += count
-	lives_changed.emit(_lives - count, _lives)
+	var old = _lives
+	_lives = min(_lives+count, MAX_LIVES)
+	lives_changed.emit(old, _lives)
 
 
 func add_bombs(count: int) -> void:
-	_bombs += count
-	bombs_changed.emit(_bombs - count, _bombs)
+	var old = _bombs
+	_bombs = min(_bombs+count, MAX_BOMBS)
+	bombs_changed.emit(old, _bombs)
 	
 
 
@@ -265,6 +271,9 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 		return
 	
 	if area is Bullet:
+		if (area as Bullet).harmless:
+			return  # Harmless bullets should pass through the player
+		
 		area.queue_free()
 	
 	die()

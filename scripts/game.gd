@@ -38,6 +38,9 @@ extends Node2D
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
+@onready var _sfx_boss_phase_defeat = preload("res://audio/SFX/BossBeat.wav") as AudioStreamWAV
+@onready var _sfx_boss_full_defeat  = preload("res://audio/SFX/BossFullKill.wav") as AudioStreamWAV
+
 static var _game_instance: GameController = null
 
 enum GameState {
@@ -143,6 +146,7 @@ func play_next_level() -> void:
 	level_ref.bgm_changed.connect(play_bgm)
 
 	level_ref.boss_defeated.connect(func(): main_ui.set_boss_stats(false))
+	level_ref.boss_defeated.connect(func(): play_boss_death_sfx(true))
 	level_ref.boss_defeated.connect(func(): game_bgm.stop())
 	
 	level_ref.spell_started.connect(func(spell_name, boss_name):
@@ -153,14 +157,19 @@ func play_next_level() -> void:
 	level_ref.spell_hp_updated.connect(func(max, old, new): main_ui.set_hp(new, max))
 	level_ref.spell_time_updated.connect(func(time): main_ui.set_time(time))
 	level_ref.boss_phases_changed.connect(func(old, new): main_ui.set_phases(new))
-	level_ref.boss_phase_defeated.connect(play_boss_death_sfx)
+	level_ref.boss_phase_defeated.connect(func(): play_boss_death_sfx(false))
 	
 	add_child(level_ref)
 	player_ref.reparent(level_ref)
 	level_thread.start(level_ref.play)
 
 
-func play_boss_death_sfx() -> void:
+func play_boss_death_sfx(full_kill: bool) -> void:
+	if full_kill:
+		boss_death_sfx.stream = _sfx_boss_full_defeat
+	else:
+		boss_death_sfx.stream = _sfx_boss_phase_defeat
+		
 	boss_death_sfx.play()
 
 

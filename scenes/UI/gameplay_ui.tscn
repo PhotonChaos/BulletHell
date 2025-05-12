@@ -203,18 +203,18 @@ size_flags_horizontal = 3
 [node name="HBoxContainer" type="HBoxContainer" parent="BossStats/VBoxContainer"]
 layout_mode = 2
 
-[node name="SpellName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
+[node name="BossName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Spell Name"
+text = "Boss Name"
 label_settings = ExtResource("3_bcwfe")
 
 [node name="Control" type="Control" parent="BossStats/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BossName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
+[node name="SpellName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Boss Name"
+text = "Spell Name"
 label_settings = ExtResource("3_bcwfe")
 
 [node name="HealthBar" type="ProgressBar" parent="BossStats/VBoxContainer"]

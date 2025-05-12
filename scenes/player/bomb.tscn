@@ -10,7 +10,7 @@ radius = 34.0588
 z_index = -4
 sprite_frames = ExtResource("1_4kkau")
 script = ExtResource("2_vpdcx")
-damage = 300.0
+damage = 100.0
 duration = 3.0
 
 [node name="Hitbox" type="Area2D" parent="."]

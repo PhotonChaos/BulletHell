@@ -12,7 +12,7 @@ enum ItemType {
 }
 
 static var _sprite_map = {
-	ItemType.POINT: preload("res://textures/items/point.png"),
+	ItemType.POINT: preload("res://textures/items/point_alt.png"),
 	ItemType.SMALL_POINT: preload("res://textures/items/small_point.png"),
 	ItemType.LIFE: preload("res://textures/UI/heart_icon.png"),
 	ItemType.BOMB: preload("res://textures/UI/bomb_icon.png")

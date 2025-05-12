@@ -14,6 +14,9 @@ var rotation_offset: float = PI / 2
 ## Whether the bullet survives bombs
 var strong: bool = false
 
+## If set to true, the bullet will not harm the player
+var harmless: bool = false
+
 func _ready():
 	var collider = get_node_or_null("Hitbox") as CollisionShape2D
 	
@@ -32,6 +35,9 @@ func init(template: BulletStats = null) -> void:
 	if template:
 		velocity = template.velocity
 		acceleration = template.acceleration
+
+func get_sprite() -> Sprite2D:
+	return $Sprite2D
 
 func _physics_process(delta: float) -> void:
 	velocity += 0.5 * acceleration * delta

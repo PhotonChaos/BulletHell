@@ -6,6 +6,7 @@ extends Area2D
 ## Emits when the boss runs out of spell cards
 signal boss_defeated
 
+## Name will be empty if it's a nonspell
 signal spell_card_started(name: String)
 
 ## Emits when the current spell card or nonspell has been defeated
@@ -45,6 +46,9 @@ enum BombImmunityLevel { ## The level of immunity a boss has to damage while a b
 	 ## The boss cannot ever be damaged by bombs
 	TOTAL
 }
+
+const MOVEMENT_LEFT_BOUND: float = 40.0
+const MOVEMENT_RIGHT_BOUND: float = 320
 
 var _level: Level = null
 
@@ -142,7 +146,7 @@ func next_spell() -> void:
 	
 	current_spell_index += 1
 	
-	phases_left_changed.emit(0, len(spell_cards)-current_spell_index)
+	phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
 
 	
 	if current_spell_index >= len(spell_cards):
@@ -160,7 +164,7 @@ func next_spell() -> void:
 	
 	add_child(current_spell)
 	
-	spell_card_started.emit(current_spell.spell_name)
+	spell_card_started.emit("")
 	
 	current_spell.start(_level)
 
@@ -171,6 +175,7 @@ func defeat_phase(card: bool) -> void:
 	if card:
 		next_spell()
 	else:
+		spell_card_started.emit(current_spell.spell_name)
 		_level.clear_bullet_wave(global_position, 1, true, true)
 
 func _ready() -> void:

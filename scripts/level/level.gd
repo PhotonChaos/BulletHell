@@ -22,7 +22,8 @@ signal bgm_changed(bgm: BGMAudio)
 enum BulletType {
 	BALL = 0,
 	SMALL_BALL,
-	KNIFE
+	KNIFE,
+	SHARD
 }
 
 @export var title: String
@@ -45,7 +46,8 @@ const X_MIDPOINT = 181
 const bullet_library: Dictionary = {
 	BulletType.BALL: preload('res://scenes/bullets/bullet.tscn'),
 	BulletType.KNIFE: preload('res://scenes/bullets/bullet_knife.tscn'),
-	BulletType.SMALL_BALL: preload('res://scenes/bullets/bullet_small.tscn')
+	BulletType.SMALL_BALL: preload('res://scenes/bullets/bullet_small.tscn'),
+	BulletType.SHARD: preload("res://scenes/bullets/bullet_shard.tscn")
 }
 
 var _player_ref: Player = null
@@ -89,7 +91,7 @@ func get_starting_bgm() -> BGMAudio:
 
 
 func change_bgm(music: BGMAudio) -> void:
-	bgm_changed.emit(music)
+	bgm_changed.emit.call_deferred(music)
 
 # ############
 # Utility Functions
@@ -189,15 +191,15 @@ func spawn_bullet(_position: Vector2, type: BulletType, args: BulletStats=null) 
 
 ## Spawns a shotgun-burst containing [param count] bullets of [param type], 
 ## spread evenly across an arc of [param spread]. [br]
-## The arc is centred on a vector rotated by [param rotation] degrees, and the 
+## The arc is centred on a vector rotated by [param _rotation] radians, and the 
 ## bullets spawn [param distance] away from [param position] along the aim vector.[br]
 ## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].[br]
 ## Also, the bullets will be added as children of the game controller.
 ## Returns an array containing the bullets, ordered from lowest angle aim vector to highest.
-func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:
+func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, _rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:	
 	var bullets: Array[Bullet] = []
 	var angle_gap = spread / (count-1) if count > 0 else 0
-	var start_angle = rotation - spread / 2
+	var start_angle = _rotation - spread / 2
 	
 	for i in range(count):
 		var bullet_dir = start_angle + angle_gap * i
@@ -225,10 +227,16 @@ func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: fl
 
 
 func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
-	if spawn_point:
-		spawn_item(bullet.global_position, Item.ItemType.SMALL_POINT).magnet_player = true
+	# Disable collision the first frame so the player isn't hurt
+	bullet.harmless = true 
+		
+	var bullet_tween: Tween = get_tree().create_tween().set_parallel(true)
+	bullet_tween.tween_property(bullet.get_sprite(), "scale", Vector2.ONE * 1.3, 0.1)
+	bullet_tween.tween_property(bullet.get_sprite(), "modulate", Color.TRANSPARENT, 0.1)
+	bullet_tween.tween_callback(bullet.queue_free).set_delay(0.1)
 	
-	bullet.queue_free()
+	if spawn_point:
+		call_deferred("spawn_item", bullet.global_position, Item.ItemType.SMALL_POINT, true)
 
 
 ## Turns all bullets onscreen into points. [br]
@@ -252,11 +260,12 @@ func clear_bullet_wave(pos: Vector2, duration: float, points: bool, hard: bool) 
 
 ## Spawns an item of [param type] at [param _position].[br]
 ## Returns a refernece to the item node.
-func spawn_item(_position: Vector2, type: Item.ItemType) -> Item:
+func spawn_item(_position: Vector2, type: Item.ItemType, magnet: bool=false) -> Item:
 	var item: Item = _item_template.instantiate()
 	
 	item.position = _position
 	item.item_type = type
+	item.magnet_player = magnet
 	
 	add_child(item)
 	

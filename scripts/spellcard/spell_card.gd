@@ -27,6 +27,8 @@ signal time_changed(new: float)
 ## Whether or not this is a survival spell. If true, the player cannot damage the boss, and must wait out the timer.
 @export var is_timeout: bool
 
+static var _turret_template: PackedScene = preload("res://scenes/boss_turret.tscn")
+
 # References
 var _level: Level = null
 var _boss: Boss = null
@@ -47,14 +49,27 @@ var lifetime: int = 0
 ####################
 ## Utility Functions
 
-# TODO: Add these
+# TODO: Add utility functions for stuff like lifetime % something == 0
+
+func spawn_turret(dest: Vector2, travel_time: float) -> BossTurret:
+	var turret: BossTurret = _turret_template.instantiate()
+	
+	add_child(turret)
+	turret.new_destination(dest, travel_time)
+	
+	return turret
+
+func clear_turrets() -> void:
+	for child in get_children():
+		if child is BossTurret:
+			child.queue_free()
 
 ####################
 ## Core Functions
 
 ## Damages the current attack by [param amount]
 func damage(amount: int) -> void:
-	hp_left -= amount if warmup_timer <= 0 else amount * (1- warmup_timer / WARMUP_DEFAULT)
+	hp_left -= amount if warmup_timer <= 0 else amount * (1- warmup_timer / WARMUP_DEFAULT)**3
 	
 	if on_spell:
 		hp_changed.emit(spell_hp, hp_left+amount, hp_left)
@@ -87,11 +102,21 @@ func start(level: Level) -> void:
 func movement() -> void:
 	pass
 
-## The nonspell portion of the attack. Called once per physics frame.
+## Called on the first frame of the nonspell, before [method nonspell] is called.
+func nonspell_setup() -> void:
+	pass
+
+## The nonspell portion of the attack. Called once per physics frame.[br]
+## Note: [member SpellCard.lifetime] starts at 1
 func nonspell() -> void:
 	pass
 
-## The spell portion of the attack. Called once per physics frame.
+## Called on the first frame of the spell, before [method spell] is called.
+func spell_setup() -> void:
+	pass
+	
+## The spell portion of the attack. Called once per physics frame.[br]
+## Note: [member SpellCard.lifetime] starts at 1
 func spell() -> void:
 	pass
 
@@ -102,6 +127,7 @@ func _defeat():
 	if on_spell:
 		spell_defeated.emit()
 	else:
+		clear_turrets()
 		time_left = spell_time_limit
 		hp_left = spell_hp
 		on_spell = true
@@ -143,8 +169,14 @@ func _physics_process(delta: float) -> void:
 	movement()
 	
 	if on_spell:
+		if lifetime == 1:
+			spell_setup()
+			
 		spell()
 	else:
+		if lifetime == 1:
+			nonspell_setup()
+			
 		nonspell()
 		
 	if time_left <= 0:

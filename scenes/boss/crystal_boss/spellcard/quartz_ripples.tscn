@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgjsgcajoewvb"]
+
+[ext_resource type="Script" uid="uid://b5w8paw1757xj" path="res://scenes/boss/crystal_boss/spellcard/quartz_ripples.gd" id="1_48u55"]
+
+[node name="QuartzRipples" type="Node2D"]
+script = ExtResource("1_48u55")
+metadata/_custom_type_script = "uid://bqfvpb22cobwe"

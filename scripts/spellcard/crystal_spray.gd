@@ -17,4 +17,4 @@ func spell():
 		_level.bullet_ring(_boss.position, Level.BulletType.SMALL_BALL, 8, spell_rotation, 10, 20, 50)
 
 func get_drops() -> Dictionary:
-	return Item.get_drop_dict(1, 4, 2)
+	return Item.get_drop_dict(1, 0, 0)

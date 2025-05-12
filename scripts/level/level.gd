@@ -184,7 +184,12 @@ func spawn_bullet(_position: Vector2, type: BulletType, args: BulletStats=null) 
 	var bullet: Bullet = get_bullet_template(type).instantiate()
 	
 	bullet.position = _position
+	bullet.scale = Vector2.ZERO
 	bullet.init(args)
+	
+	# TODO: Figure out whether it's better to bulk-tween these in the burst methods instead of this.
+	var tween = get_tree().create_tween()
+	tween.tween_property(bullet, "scale", Vector2.ONE, 0.1)
 	
 	return bullet
 

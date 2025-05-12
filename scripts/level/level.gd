@@ -12,10 +12,12 @@ signal bullet_fired
 
 signal boss_spawned
 signal boss_defeated
+signal boss_phase_defeated
 signal boss_phases_changed(old: int, new: int)
 signal spell_started(name: String, boss_name: String)
 signal spell_time_updated(new: float)
 signal spell_hp_updated(max: int, old: int, new: int)
+signal bgm_changed(bgm: BGMAudio)
 
 enum BulletType {
 	BALL = 0,
@@ -62,6 +64,8 @@ func setup(player_ref: Player) -> void:
 ## Begin the level script in a new thread.[br]
 ## Make sure to call [method Level.setup()] first!
 func play() -> void:
+	change_bgm(get_starting_bgm())
+	
 	_level_thread = Thread.new()
 	
 	_level_thread.start(_play)
@@ -76,6 +80,15 @@ func play() -> void:
 func _play() -> void:
 	print_rich("[color=red]ERROR: Do not instantiate Level directly, use a subclass![/color]")
 
+
+## Produces the BGM asset that the level should use at the start.[br]
+## Usually, you don't change BGM aside from the boss, but if you need to, call [method Level.change_bgm].
+func get_starting_bgm() -> BGMAudio:
+	return null
+
+
+func change_bgm(music: BGMAudio) -> void:
+	bgm_changed.emit(music)
 
 # ############
 # Utility Functions
@@ -135,6 +148,9 @@ func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
 	bossInstance.phases_left_changed.connect(func(old, new): boss_phases_changed.emit(old, new))
+	bossInstance.phase_defeated.connect(func(was_spellz): boss_phase_defeated.emit())
+
+	call_deferred("change_bgm", bossInstance.boss_theme)
 	call_deferred("add_child", bossInstance)
 
 # Bullet mechanics
@@ -212,14 +228,14 @@ func clear_all_bullets(hard_clear=false):
 	for bullet: Bullet in bullets:
 		clear_bullet(bullet, true)
 
-
+## Spawns a wave that clears the bullets onscreen.
 func clear_bullet_wave(pos: Vector2, duration: float, points: bool, hard: bool) -> void:
 	var wave = _boss_death_wave_template.instantiate() as DeathWave
 	wave.position = pos
 	wave.lifespan = duration 
 	wave.invisible = true
 	wave._level_ref = self
-	add_child(wave)
+	call_deferred("add_child", wave)
 
 # Other spawning
 
@@ -231,6 +247,6 @@ func spawn_item(_position: Vector2, type: Item.ItemType) -> Item:
 	item.position = _position
 	item.item_type = type
 	
-	call_deferred("add_child", item)
+	add_child(item)
 	
 	return item

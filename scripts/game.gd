@@ -30,6 +30,8 @@ extends Node2D
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
+@onready var boss_death_sfx = $BossDeathSoundPlayer as AudioStreamPlayer2D
+@onready var game_bgm: AudioStreamPlayer = $GameBGM
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
 @onready var pause_ui = $PauseLayer/PauseMenu as PauseMenuUI
 
@@ -138,8 +140,11 @@ func play_next_level() -> void:
 	# Connect signals
 	level_ref.level_finished.connect(_on_level_finished)
 	level_ref.bullet_fired.connect(_on_bullet_fired)
-	
+	level_ref.bgm_changed.connect(play_bgm)
+
 	level_ref.boss_defeated.connect(func(): main_ui.set_boss_stats(false))
+	level_ref.boss_defeated.connect(func(): game_bgm.stop())
+	
 	level_ref.spell_started.connect(func(spell_name, boss_name):
 		main_ui.set_boss_stats(true)
 		main_ui.set_boss_name(boss_name)
@@ -148,11 +153,25 @@ func play_next_level() -> void:
 	level_ref.spell_hp_updated.connect(func(max, old, new): main_ui.set_hp(new, max))
 	level_ref.spell_time_updated.connect(func(time): main_ui.set_time(time))
 	level_ref.boss_phases_changed.connect(func(old, new): main_ui.set_phases(new))
+	level_ref.boss_phase_defeated.connect(play_boss_death_sfx)
 	
 	add_child(level_ref)
 	player_ref.reparent(level_ref)
 	level_thread.start(level_ref.play)
 
+
+func play_boss_death_sfx() -> void:
+	boss_death_sfx.play()
+
+
+func play_bgm(song: BGMAudio) -> void:
+	if not song:
+		print("Tried to play null song.")
+		return
+	
+	print_rich("[b]Now Playing:[/b] ", song.artist, " - [i]", song.song_name, "[/i]")
+	game_bgm.stream = song.audio
+	game_bgm.play()
 
 func _on_bullet_fired() -> void:
 	play_sfx = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=13 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bulletShoot1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
+[ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/BossBeat.wav" id="8_gee14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(504, 442)
@@ -48,7 +49,8 @@ debug_color = Color(0.7, 0.7, 0.7, 0.0313726)
 position = Vector2(181, 310)
 speed = 250.0
 focus_speed = 100.0
-bombs = 5
+lives = 2
+bombs = 3
 max_flash_charge = 35
 fire_rate = 20.0
 shot_count = 5
@@ -64,6 +66,12 @@ bus = &"SFX"
 [node name="EnemyDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_iywne")
 bus = &"SFX"
+
+[node name="BossDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_gee14")
+
+[node name="GameBGM" type="AudioStreamPlayer" parent="."]
+bus = &"BGM"
 
 [node name="Walls" type="Node2D" parent="."]
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://gyuva7wf3822"]
+[gd_scene load_steps=6 format=3 uid="uid://gyuva7wf3822"]
 
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_sphx7"]
 [ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="2_bj3dq"]
+[ext_resource type="Resource" uid="uid://4vbkq5wuo86w" path="res://audio/music/bosses/crystal_boss/junko_remix.tres" id="2_f1rpc"]
 [ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/boss.png" id="2_npn3v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]
@@ -13,6 +14,7 @@ collision_mask = 4
 script = ExtResource("1_sphx7")
 boss_name = "Crystal"
 boss_title = "The Testing Dummy"
+boss_theme = ExtResource("2_f1rpc")
 spell_cards = Array[PackedScene]([ExtResource("2_bj3dq")])
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 

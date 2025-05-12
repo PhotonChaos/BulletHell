@@ -28,6 +28,9 @@ signal phases_left_changed(old: int, new: int)
 ## When the boss should be immune to bomb damage
 @export var bomb_immunity: BombImmunityLevel = BombImmunityLevel.NONE
 
+## The music that plays in the background over the boss fight
+@export var boss_theme: BGMAudio
+
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
 @export var spell_cards: Array[PackedScene]
 
@@ -117,6 +120,21 @@ func is_bomb_immune() -> bool:
 	else:
 		return false
 
+
+## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
+## Eases in and out for movement.
+func move_to(destination: Vector2, move_duration: float, start_delay: float, end_delay: float) -> void:
+	move_queue.push_back(MovementDest.new(destination, move_duration, start_delay, end_delay))
+
+func clear_move_queue() -> void:
+	move_queue.clear()
+
+func damage(amount: int) -> void:
+	if _level._bomb_active and is_bomb_immune():
+		return
+		
+	current_spell.damage(amount)
+
 ## Ends the current spell and begins the next one
 func next_spell() -> void:
 	if current_spell != null:
@@ -145,21 +163,6 @@ func next_spell() -> void:
 	spell_card_started.emit(current_spell.spell_name)
 	
 	current_spell.start(_level)
-	
-
-## Moves the boss to [param destination] over the course of [param move_duration] seconds.[br]
-## Eases in and out for movement.
-func move_to(destination: Vector2, move_duration: float, start_delay: float, end_delay: float) -> void:
-	move_queue.push_back(MovementDest.new(destination, move_duration, start_delay, end_delay))
-
-func clear_move_queue() -> void:
-	move_queue.clear()
-
-func damage(amount: int) -> void:
-	if _level._bomb_active and is_bomb_immune():
-		return
-		
-	current_spell.damage(amount)
 
 
 func defeat_phase(card: bool) -> void:

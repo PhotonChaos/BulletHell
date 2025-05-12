@@ -165,7 +165,7 @@ func die() -> void:
 	
 
 ## Causes the player to emit all of it's stat changed signals
-## Order is lives, bombs, score
+## Order is lives, bombs, score, flash charge
 func emit_stats():
 	lives_changed.emit(_lives, _lives)
 	bombs_changed.emit(_bombs, _bombs)
@@ -198,6 +198,10 @@ func _ready() -> void:
 #func _draw():
 	#draw_line(Vector2.ZERO, Vector2(0, -1000), Color.RED)
 
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	# TODO: Handle player movement here maybe
+	pass
 
 func _physics_process(delta: float) -> void:
 	# Moving

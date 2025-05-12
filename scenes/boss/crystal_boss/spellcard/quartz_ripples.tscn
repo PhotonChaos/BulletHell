@@ -4,4 +4,5 @@
 
 [node name="QuartzRipples" type="Node2D"]
 script = ExtResource("1_48u55")
+spell_name = "Quartz Ripples"
 metadata/_custom_type_script = "uid://bqfvpb22cobwe"

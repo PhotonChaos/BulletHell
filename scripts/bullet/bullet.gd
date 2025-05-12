@@ -17,6 +17,8 @@ var strong: bool = false
 ## If set to true, the bullet will not harm the player
 var harmless: bool = false
 
+var type: Level.BulletType
+
 func _ready():
 	var collider = get_node_or_null("Hitbox") as CollisionShape2D
 	

@@ -1,6 +1,6 @@
 extends SpellCard
 
-const BURST_PLAYER_OFFSETS = [Vector2(130, -50), Vector2(150, -10)]
+const BURST_PLAYER_OFFSETS = [Vector2(70, -50), Vector2(150, -10)]
 
 var next_move_frames: int = 60*5
 
@@ -12,13 +12,13 @@ func nonspell_setup():
 		spawn_turret(global_position + offsetb, 1)
 
 func nonspell():
-	if lifetime > 60 and lifetime % 2 == 0 and floor(lifetime / 25) % 2 == 0:
+	if lifetime > 60 and lifetime % 2 == 0 and floor(lifetime / 20) % 2 == 1:
 		for offset in BURST_PLAYER_OFFSETS:
 			var offsetb = Vector2(-offset.x, offset.y)
 			var player_point_angle_a = (-(_boss.position + offset - GameController.get_player_pos())).angle()
 			var player_point_angle_b = (-(_boss.position + offsetb - GameController.get_player_pos())).angle()
-			_level.bullet_burst(_boss.position + offset,  Level.BulletType.SHARD, 3, deg_to_rad(45), player_point_angle_a + randf_range(0, PI/19), 4, 90, 0)
-			_level.bullet_burst(_boss.position + offsetb, Level.BulletType.SHARD, 3, deg_to_rad(45), player_point_angle_b + randf_range(0, PI/19), 4, 90, 0)
+			_level.bullet_burst(_boss.position + offset,  Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_a + randf_range(0, PI/32), 4, 90, 0)
+			_level.bullet_burst(_boss.position + offsetb, Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_b + randf_range(0, PI/32), 4, 90, 0)
 
 
 var spell_rotation: float = 0

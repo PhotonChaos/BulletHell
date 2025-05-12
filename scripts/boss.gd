@@ -171,12 +171,12 @@ func next_spell() -> void:
 
 func defeat_phase(card: bool) -> void:
 	phase_defeated.emit(card)
+	_level.clear_bullet_wave(global_position, 1, true, true)
 	
 	if card:
 		next_spell()
 	else:
 		spell_card_started.emit(current_spell.spell_name)
-		_level.clear_bullet_wave(global_position, 1, true, true)
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)

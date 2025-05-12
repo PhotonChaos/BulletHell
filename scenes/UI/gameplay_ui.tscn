@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=17 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://lchfyx5pruq1" path="res://textures/UI/flashbomb_ui.png" id="3_dyrh1"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
 [ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
+[ext_resource type="Texture2D" uid="uid://bql312u8ubupg" path="res://textures/UI/music.png" id="7_1i81k"]
+[ext_resource type="FontFile" uid="uid://dig053nwgpxcp" path="res://ui/fonts/m5x7.ttf" id="8_8qdoy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dyrh1"]
 font = ExtResource("4_haufa")
@@ -33,6 +35,9 @@ font_size = 11
 font = ExtResource("4_haufa")
 font_size = 20
 
+[sub_resource type="LabelSettings" id="LabelSettings_l2xif"]
+font = ExtResource("8_8qdoy")
+
 [node name="GameplayUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -44,6 +49,7 @@ theme = ExtResource("1_wf0n7")
 script = ExtResource("2_bcwfe")
 
 [node name="GeneralSection" type="ColorRect" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -242,3 +248,36 @@ size_flags_horizontal = 8
 text = "999.00"
 label_settings = SubResource("LabelSettings_om5qg")
 vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -21.0
+offset_right = 152.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MusicIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_1i81k")
+expand_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MusicCredit" type="Label" parent="VBoxContainer/HBoxContainer"]
+z_index = -1
+layout_mode = 2
+text = "NyxTheShield - Pure Furies, Whereabouts of the Heart"
+label_settings = SubResource("LabelSettings_l2xif")
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2

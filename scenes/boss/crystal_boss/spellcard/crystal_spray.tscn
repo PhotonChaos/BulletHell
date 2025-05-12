@@ -5,8 +5,6 @@
 [node name="CrystalSpray" type="Node2D"]
 script = ExtResource("1_k8q8q")
 spell_name = "Crystal Spray"
-nonspell_hp = 2000
 nonspell_time_limit = 99
-spell_hp = 3500
 spell_time_limit = 90
 metadata/_custom_type_script = "uid://bqfvpb22cobwe"

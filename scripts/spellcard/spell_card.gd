@@ -13,16 +13,16 @@ signal time_changed(new: float)
 
 @export_subgroup("Non-spell")
 ## HP of the unnamed attack before the spell.
-@export var nonspell_hp: int
+@export var nonspell_hp: int = 2000
 
 ## Time limit of the unnamed attack before the spell.
-@export_range(1, 1000) var nonspell_time_limit: int
+@export_range(1, 1000) var nonspell_time_limit: int = 60
 
 @export_subgroup("Spell")
 ## HP of the spell.
-@export var spell_hp: int
+@export var spell_hp: int = 3500
 ## Time limit of the spell in seconds
-@export_range(1, 1000) var spell_time_limit: int
+@export_range(1, 1000) var spell_time_limit: int = 60
 
 ## Whether or not this is a survival spell. If true, the player cannot damage the boss, and must wait out the timer.
 @export var is_timeout: bool

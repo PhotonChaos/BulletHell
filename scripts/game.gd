@@ -178,7 +178,7 @@ func play_bgm(song: BGMAudio) -> void:
 		print("Tried to play null song.")
 		return
 	
-	print_rich("[b]Now Playing:[/b] ", song.artist, " - [i]", song.song_name, "[/i]")
+	main_ui.show_bgm_credit(song.artist, song.song_name)
 	game_bgm.stream = song.audio
 	game_bgm.play()
 

@@ -20,9 +20,16 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 @onready var bossStats = $BossStats as HBoxContainer
 @onready var phaseContainer = $BossStats/VBoxContainer/PhasesLeft as HBoxContainer
 
+# Music UI elements
+@onready var musicLabel = $VBoxContainer/HBoxContainer/MusicCredit as Label
+@onready var musicIcon = $VBoxContainer/HBoxContainer/MusicIcon as TextureRect
+@onready var musicBox = $VBoxContainer as VBoxContainer
 
 var highScore: int = -1
 
+
+func _ready() -> void:
+	musicBox.hide()
 
 func set_lives(lives: int):
 	for child in livesContainer.get_children():
@@ -103,3 +110,22 @@ func set_phases(num_phases: int) -> void:
 	for i in range(num_phases):
 		phaseContainer.add_child(icon)
 		
+func show_bgm_credit(artist: String, song_name: String) -> void:
+	const CREDIT_Y_OFFSET = 10
+	
+	musicBox.show()
+	musicBox.position.y = 339.0 - CREDIT_Y_OFFSET
+	
+	musicLabel.text = artist + " - " + song_name
+	musicLabel.modulate = Color.TRANSPARENT
+	musicIcon.modulate = Color.TRANSPARENT
+	
+	var tw = get_tree().create_tween()
+	
+	tw.tween_property(musicBox, "position:y", 339.0, 1)
+	tw.parallel().tween_property(musicLabel, "modulate", Color.WHITE, 1)
+	tw.parallel().tween_property(musicIcon, "modulate", Color.WHITE, 1)
+	tw.tween_interval(3)
+	tw.tween_property(musicLabel, "modulate", Color.TRANSPARENT, 1)
+	tw.parallel().tween_property(musicIcon, "modulate", Color.TRANSPARENT, 1)
+	tw.parallel().tween_property(musicBox, "position:y", 339.0 + CREDIT_Y_OFFSET, 1)

@@ -1,6 +1,6 @@
 extends Level
 
-@onready var bossy = preload("res://scenes/boss/crystal_boss/crystal_boss.tscn")
+@onready var bossy = preload("res://scenes/boss/crystal_boss.tscn")
 
 func _play() -> void:
 	#for i in range(5):

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://gyuva7wf3822"]
 
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_sphx7"]
-[ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="2_bj3dq"]
+[ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/spellcard/crystal_spray.tscn" id="2_bj3dq"]
 [ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/boss.png" id="2_npn3v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]

@@ -61,8 +61,7 @@ func damage(amount: int) -> void:
 	else: 
 		hp_changed.emit(nonspell_hp, hp_left+amount, hp_left)
 	
-	if hp_left <= 0 and not dying:
-		dying = true
+	if hp_left <= 0:
 		_defeat()
 
 
@@ -99,13 +98,13 @@ func spell() -> void:
 func _defeat():
 	_drop_spell_items()
 	
-	if on_spell:
+	if on_spell and not dying:
+		dying = true
 		spell_defeated.emit()
 	else:
 		time_left = spell_time_limit
 		hp_left = spell_hp
 		on_spell = true
-		dying = false
 		lifetime = 0
 		warmup_timer = WARMUP_DEFAULT
 		spell_started.emit()
@@ -125,7 +124,7 @@ func _drop_spell_items() -> void:
 			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(20, 40) + global_position
 			var item = Item.new_item(itemType)
 			item.global_position = pos
-			get_parent().call_deferred("add_sibling", item)
+			get_parent().add_sibling(item)
 
 func _physics_process(delta: float) -> void:
 	if not started:

@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://b2tp5s8e66uoq" path="res://audio/SFX/powerUp.wav" id="7_0owmy"]
 [ext_resource type="AudioStream" uid="uid://c0cjmekmov8y1" path="res://audio/SFX/explosion.wav" id="8_qek5x"]
 [ext_resource type="AudioStream" uid="uid://c1gqc0uf2fda" path="res://audio/SFX/flashbomb.wav" id="9_5gtgg"]
-[ext_resource type="AudioStream" uid="uid://bic30hqgtu70c" path="res://audio/SFX/laserShoot(2).wav" id="10_h17s1"]
+[ext_resource type="AudioStream" uid="uid://hoiidgdj4d54" path="res://audio/SFX/not_mine/laserShoot.wav" id="10_h17s1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dqkch"]
 friction = 0.0

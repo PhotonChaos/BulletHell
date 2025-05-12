@@ -36,6 +36,7 @@ enum BulletType {
 var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 var _boss_death_wave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
+var _boss_death_particles: PackedScene = preload("res://scenes/fx/fx_boss_explosion.tscn")
 
 const DEFAULT_BULLET_TYPE = BulletType.BALL
 const X_MIDPOINT = 181
@@ -143,17 +144,27 @@ func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	bossInstance._level = self
 	
 	boss_spawned.emit()
+	bossInstance.boss_defeated.connect(func(): boss_death_particles(bossInstance.position))
+	bossInstance.boss_defeated.connect(func(): clear_bullet_wave(bossInstance.position, 1, true, true))
 	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
+	
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
 	bossInstance.phases_left_changed.connect(func(old, new): boss_phases_changed.emit(old, new))
 	bossInstance.phase_defeated.connect(func(was_spellz): boss_phase_defeated.emit())
-
+	
 	call_deferred("change_bgm", bossInstance.boss_theme)
 	call_deferred("add_child", bossInstance)
 
 # Bullet mechanics
+
+func boss_death_particles(pos: Vector2) -> void:
+	var particles = _boss_death_particles.instantiate() as GPUParticles2D
+	add_child(particles)
+	particles.position = pos
+	particles.finished.connect(func(): particles.queue_free())
+	particles.emitting = true
 
 ## Produces the template for the bullet with id [param name]
 func get_bullet_template(name: BulletType) -> PackedScene:

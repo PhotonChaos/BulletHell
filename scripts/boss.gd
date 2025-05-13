@@ -146,9 +146,6 @@ func next_spell() -> void:
 	
 	current_spell_index += 1
 	
-	phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
-
-	
 	if current_spell_index >= len(spell_cards):
 		boss_defeated.emit()
 		queue_free()
@@ -176,10 +173,12 @@ func defeat_phase(card: bool) -> void:
 	if card:
 		next_spell()
 	else:
+		phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
 		spell_card_started.emit(current_spell.spell_name)
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
+	phases_left_changed.emit(0, len(spell_cards)) # No -1 offset here bc we start on a nonspell
 	next_spell()
 
 func _physics_process(delta: float) -> void:

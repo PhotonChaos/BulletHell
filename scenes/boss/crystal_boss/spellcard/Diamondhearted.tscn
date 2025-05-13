@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd8qfo1h75i4i"]
+
+[ext_resource type="Script" uid="uid://cq4jn7bth8a1s" path="res://scenes/boss/crystal_boss/spellcard/diamondhearted.gd" id="1_mkxw6"]
+
+[node name="Diamondhearted" type="Node2D"]
+script = ExtResource("1_mkxw6")
+metadata/_custom_type_script = "uid://bqfvpb22cobwe"

@@ -11,14 +11,14 @@ enum ItemType {
 	 FULL_POWER
 }
 
-static var _sprite_map = {
+const _sprite_map = {
 	ItemType.POINT: preload("res://textures/items/point_alt.png"),
 	ItemType.SMALL_POINT: preload("res://textures/items/small_point.png"),
 	ItemType.LIFE: preload("res://textures/UI/heart_icon.png"),
 	ItemType.BOMB: preload("res://textures/UI/bomb_icon.png")
 }
 
-static var _sound_map = {
+const _sound_map = {
 	ItemType.POINT: preload("res://audio/SFX/click(5).wav"),
 	#ItemType.SMALL_POINT: preload("res://audio/SFX/click(5).wav"),  # Do not add this to the map. We handle this sound differently
 	ItemType.LIFE: preload("res://audio/SFX/LifeGain.wav"),
@@ -55,7 +55,7 @@ var _fall_speed = 0
 @export var item_type: ItemType
 
 
-static var _item_template: PackedScene = preload("res://scenes/pickup/Item.tscn")
+const _item_template: PackedScene = preload("res://scenes/pickup/Item.tscn")
 
 static func get_drop_dict(points: int, bombs: int, lives: int) -> Dictionary:
 	return {

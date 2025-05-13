@@ -16,8 +16,9 @@ collision_mask = 4
 script = ExtResource("1_sphx7")
 boss_name = "Crystal"
 boss_title = "The Testing Dummy"
+bomb_immunity = 1
 boss_theme = ExtResource("2_f1rpc")
-spell_cards = Array[PackedScene]([ExtResource("5_0qcvj"), ExtResource("3_ctll2"), ExtResource("2_bj3dq")])
+spell_cards = Array[PackedScene]([ExtResource("3_ctll2"), ExtResource("5_0qcvj"), ExtResource("2_bj3dq")])
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

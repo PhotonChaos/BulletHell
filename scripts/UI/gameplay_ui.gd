@@ -102,12 +102,13 @@ func set_phases(num_phases: int) -> void:
 	for child in phaseContainer.get_children():
 		child.queue_free()
 	
-	var icon = TextureRect.new()
-	icon.texture = phase_icon
-	icon.stretch_mode = TextureRect.STRETCH_KEEP
-	icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-	
 	for i in range(num_phases):
+		var icon = TextureRect.new()
+		
+		icon.texture = phase_icon
+		icon.stretch_mode = TextureRect.STRETCH_KEEP
+		icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+		
 		phaseContainer.add_child(icon)
 		
 func show_bgm_credit(artist: String, song_name: String) -> void:

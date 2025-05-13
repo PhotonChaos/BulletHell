@@ -27,7 +27,7 @@ signal time_changed(new: float)
 ## Whether or not this is a survival spell. If true, the player cannot damage the boss, and must wait out the timer.
 @export var is_timeout: bool
 
-static var _turret_template: PackedScene = preload("res://scenes/boss_turret.tscn")
+const _turret_template: PackedScene = preload("res://scenes/boss_turret.tscn")
 
 # References
 var _level: Level = null

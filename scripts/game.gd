@@ -34,6 +34,7 @@ extends Node2D
 @onready var game_bgm: AudioStreamPlayer = $GameBGM
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
 @onready var pause_ui = $PauseLayer/PauseMenu as PauseMenuUI
+@onready var game_over_ui = $GameOverLayer/GameOverMenu as GameOverMenu
 
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
@@ -48,6 +49,7 @@ enum GameState {
 	GAME_STARTED,
 	GAME_DIALOGUE,
 	GAME_PAUSED,
+	GAME_OVER,
 	END_CREDITS
 }
 
@@ -73,10 +75,30 @@ static func get_player_pos() -> Vector2:
 
 
 ## SFX Methods
+
 static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
 
+func play_boss_death_sfx(full_kill: bool) -> void:
+	if full_kill:
+		boss_death_sfx.stream = _sfx_boss_full_defeat
+	else:
+		boss_death_sfx.stream = _sfx_boss_phase_defeat
+		
+	boss_death_sfx.play()
+
+
+func play_bgm(song: BGMAudio) -> void:
+	if not song:
+		print("Tried to play null song.")
+		return
+	
+	main_ui.show_bgm_credit(song.artist, song.song_name)
+	game_bgm.stream = song.audio
+	game_bgm.play()
+
+## Info methods
 
 func is_ingame() -> bool:
 	return state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE or state == GameState.GAME_PAUSED
@@ -85,6 +107,8 @@ func is_ingame() -> bool:
 func is_paused() -> bool:
 	return state == GameState.GAME_PAUSED
 
+
+## Standard Methods
 
 func _ready() -> void:
 	_game_instance = self
@@ -99,6 +123,7 @@ func _ready() -> void:
 	_last_state = state
 	
 	pause_ui.hide()
+	game_over_ui.hide()
 	
 	if len(levels) > 0:
 		level_thread = Thread.new()
@@ -118,7 +143,7 @@ func _process(delta: float) -> void:
 ## Pauses or unpauses the game, depending on [param paused]. True to pause, false to unpause.[br]
 ## Does nothing if we aren't ingame.
 func set_pause(paused: bool) -> void:
-	if state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE:
+	if state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE or state == GameState.GAME_OVER:
 		_last_state = state
 		state = GameState.GAME_PAUSED
 		get_tree().paused = true
@@ -163,27 +188,22 @@ func play_next_level() -> void:
 	player_ref.reparent(level_ref)
 	level_thread.start(level_ref.play)
 
-
-func play_boss_death_sfx(full_kill: bool) -> void:
-	if full_kill:
-		boss_death_sfx.stream = _sfx_boss_full_defeat
-	else:
-		boss_death_sfx.stream = _sfx_boss_phase_defeat
+## Instantly restarts the game.
+func restart_game() -> void:
+	if player_ref.get_parent() != self:
+		player_ref.reparent(self)
 		
-	boss_death_sfx.play()
+	_game_instance = null
+	get_tree().paused = false
+	get_tree().reload_current_scene()
 
-
-func play_bgm(song: BGMAudio) -> void:
-	if not song:
-		print("Tried to play null song.")
-		return
-	
-	main_ui.show_bgm_credit(song.artist, song.song_name)
-	game_bgm.stream = song.audio
-	game_bgm.play()
+################
+# Event Methods
+#
 
 func _on_bullet_fired() -> void:
 	play_sfx = true
+
 
 func _on_level_finished() -> void:
 	if current_level + 1 == len(levels):
@@ -200,12 +220,16 @@ func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 
 func _on_player_bombs_changed(old: int, new: int) -> void:
 	main_ui.set_bombs(new)
-	# TODO: Sound Effect
 
 
 func _on_player_lives_changed(old: int, new: int) -> void:
-	main_ui.set_lives(new)
-	# TODO: Sound Effect 
+	if new <= 0:
+		state = GameState.GAME_OVER
+		set_pause(true)
+		game_over_ui.show()
+	
+	main_ui.set_lives(new-1)
+	
 
 
 func _on_player_score_changed(old: int, new: int) -> void:
@@ -215,3 +239,9 @@ func _on_player_score_changed(old: int, new: int) -> void:
 
 func _on_player_flash_changed(value: int, max: int) -> void:
 	main_ui.set_flash_charge(value, max)
+
+
+func _on_game_over_menu_restart() -> void:
+	game_over_ui.hide()
+	set_pause(false)
+	call_deferred("restart_game")

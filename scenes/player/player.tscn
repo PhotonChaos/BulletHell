@@ -18,7 +18,7 @@ friction = 0.0
 size = Vector2(16, 29)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
-radius = 2.0
+radius = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
 radius = 12.0
@@ -96,7 +96,6 @@ stream = ExtResource("5_qlg0r")
 bus = &"SFX"
 
 [node name="ItemSFX" type="AudioStreamPlayer2D" parent="."]
-visible = false
 stream = ExtResource("6_tuyoq")
 bus = &"SFX"
 

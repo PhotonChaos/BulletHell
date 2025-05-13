@@ -179,14 +179,16 @@ func get_bullet_template(name: BulletType) -> PackedScene:
 
 ## Spawns a bullet of [param type] at [param position] with properties [param args].[br]
 ## Returns a reference to the new bullet.
-func spawn_bullet(_position: Vector2, type: BulletType, args: BulletStats=null) -> Bullet:
+func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vector2, a: Vector2) -> Bullet:
 	# TODO: Make this work with object pooling
 	var bullet: Bullet = get_bullet_template(type).instantiate()
 	
 	bullet.position = _position
 	bullet.scale = Vector2.ZERO
-	bullet.init(args)
 	bullet.type = type
+	bullet.velocity = v
+	bullet.acceleration = a
+	bullet.rotation = _rotation
 	
 	# TODO: Figure out whether it's better to bulk-tween these in the burst methods instead of this.
 	var tween = get_tree().create_tween()
@@ -204,18 +206,14 @@ func spawn_bullet(_position: Vector2, type: BulletType, args: BulletStats=null) 
 ## Returns an array containing the bullets, ordered from lowest angle aim vector to highest.
 func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, _rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:	
 	var bullets: Array[Bullet] = []
-	var angle_gap = spread / (count-1) if count > 0 else 0
+	var angle_gap = spread / (count-1) if count > 1 else 0
 	var start_angle = _rotation - spread / 2
 	
 	for i in range(count):
 		var bullet_dir = start_angle + angle_gap * i
 		var point_dir = Vector2.from_angle(bullet_dir)
 		
-		var bullet: Bullet = spawn_bullet(_position + point_dir * dist, type)
-		
-		bullet.rotation = bullet_dir
-		bullet.velocity = point_dir * v
-		bullet.acceleration = point_dir * a
+		var bullet: Bullet = spawn_bullet(_position + point_dir * dist, type, bullet_dir, point_dir * v, point_dir * a)
 		
 		bullets.append(bullet)
 	

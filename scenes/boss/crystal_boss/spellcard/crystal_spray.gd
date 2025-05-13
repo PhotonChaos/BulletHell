@@ -12,7 +12,7 @@ func nonspell_setup():
 		spawn_turret(global_position + offsetb, 1)
 
 func nonspell():
-	if lifetime > 60 and lifetime % 2 == 0 and floor(lifetime / 20) % 2 == 1:
+	if lifetime > 60 and lifetime % 2 == 0 and floor(lifetime / 20) % 2 == 0:
 		for offset in BURST_PLAYER_OFFSETS:
 			var offsetb = Vector2(-offset.x, offset.y)
 			var player_point_angle_a = (-(_boss.position + offset - GameController.get_player_pos())).angle()

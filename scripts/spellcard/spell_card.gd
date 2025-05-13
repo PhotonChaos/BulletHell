@@ -37,6 +37,7 @@ var _boss: Boss = null
 var on_spell = false
 var started = false
 var dying = false
+var setup_complete = false
 
 const WARMUP_DEFAULT: float = 2
 var warmup_timer: float = WARMUP_DEFAULT
@@ -55,7 +56,9 @@ func spawn_turret(dest: Vector2, travel_time: float) -> BossTurret:
 	var turret: BossTurret = _turret_template.instantiate()
 	
 	add_child(turret)
-	turret.new_destination(dest, travel_time)
+	
+	var turretMove: Tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	turretMove.tween_property(turret, "global_position", dest, travel_time)
 	
 	return turret
 
@@ -107,7 +110,6 @@ func nonspell_setup() -> void:
 	pass
 
 ## The nonspell portion of the attack. Called once per physics frame.[br]
-## Note: [member SpellCard.lifetime] starts at 1
 func nonspell() -> void:
 	pass
 
@@ -116,7 +118,6 @@ func spell_setup() -> void:
 	pass
 	
 ## The spell portion of the attack. Called once per physics frame.[br]
-## Note: [member SpellCard.lifetime] starts at 1
 func spell() -> void:
 	pass
 
@@ -132,6 +133,7 @@ func _defeat():
 		hp_left = spell_hp
 		on_spell = true
 		dying = false
+		setup_complete = false
 		lifetime = 0
 		warmup_timer = WARMUP_DEFAULT
 		spell_started.emit()
@@ -157,27 +159,30 @@ func _physics_process(delta: float) -> void:
 	if not started:
 		return
 	
+	if not setup_complete and lifetime == 0:
+		setup_complete = true
+		
+		if on_spell:
+			spell_setup()
+		else:
+			nonspell_setup()
+	
 	if warmup_timer > 0:
 		warmup_timer -= delta
 		return
 	
-	time_left = max(0, time_left - delta)
-	lifetime += 1
-	
+	time_left = max(0, time_left - delta)	
 	time_changed.emit(time_left)
 	
 	movement()
 	
 	if on_spell:
-		if lifetime == 1:
-			spell_setup()
-			
 		spell()
 	else:
-		if lifetime == 1:
-			nonspell_setup()
-			
 		nonspell()
-		
+	
+	# Update lifetime after, so that it starts at zero.
+	lifetime += 1
+
 	if time_left <= 0:
 		_defeat()

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4d0ktav1jh72"]
+
+[ext_resource type="Script" uid="uid://d2t1m6rwqxrgu" path="res://scenes/boss/crystal_boss/spellcard/glass_chains.gd" id="1_007ml"]
+
+[node name="GlassChains" type="Node2D"]
+script = ExtResource("1_007ml")
+spell_name = "Glass Chains"
+nonspell_hp = 200
+metadata/_custom_type_script = "uid://bqfvpb22cobwe"

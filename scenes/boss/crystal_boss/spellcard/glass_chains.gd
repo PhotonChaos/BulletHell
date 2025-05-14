@@ -1,12 +1,12 @@
 extends SpellCard
 
 func nonspell_setup() -> void:
-	var turrets = []
+	var _turrets = []
 	
-	turrets.push_back(spawn_turret(global_position + Vector2(-40,0), 1))
-	turrets.push_back(spawn_turret(global_position + Vector2(40, 0), 1))
+	_turrets.push_back(spawn_turret(global_position + Vector2(-40,0), 1))
+	_turrets.push_back(spawn_turret(global_position + Vector2(40, 0), 1))
 	
-	for i in turrets:
+	for i in _turrets:
 		i.reparent(self)
 
 
@@ -18,9 +18,9 @@ func nonspell() -> void:
 	if lifetime % 60 == 0:
 		var random_walk = randf_range(20,40) * randi_range(-1, 1)
 		
-		if global_position.x + random_walk < Boss.MOVEMENT_LEFT_BOUND:
+		if global_position.x + random_walk < Boss.MOVEMENT_LEFT_BOUND + 30:
 			random_walk += 90
-		if global_position.x + random_walk > Boss.MOVEMENT_RIGHT_BOUND:
+		if global_position.x + random_walk > Boss.MOVEMENT_RIGHT_BOUND - 30:
 			random_walk -= 90
 		
 		var tw = get_tree().create_tween().set_trans(Tween.TRANS_QUAD)

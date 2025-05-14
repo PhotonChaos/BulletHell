@@ -21,7 +21,7 @@ func spell() -> void:
 		_level.bullet_ring(global_position, Level.BulletType.SMALL_BALL, 2, last_trajectory, 3, 0, 40)
 
 func get_time_scaler() -> float:
-	return max(0, 1-(float(lifetime)/((spell_time_limit-10)*60)))
+	return max(0, 1-(float(lifetime)/((spell_time_limit-5)*60)))
 
 
 func charge_at_player(delay: float) -> void:
@@ -48,4 +48,4 @@ func bullet_burst() -> void:
 
 
 func get_drops() -> Dictionary:
-	return Item.get_drop_dict(25, 0, 1) if on_spell else Item.get_drop_dict(0, 0, 0)
+	return Item.get_drop_dict(25, 1, 1) if on_spell else Item.get_drop_dict(0, 0, 0)

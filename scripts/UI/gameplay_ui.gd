@@ -28,8 +28,6 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 # Boss Tracker
 @onready var bossPos = $BossPosIndicator as TextureRect
 
-var highScore: int = -1
-
 
 func _ready() -> void:
 	musicBox.hide()
@@ -68,11 +66,11 @@ func set_bombs(bombs: int):
 
 
 func set_score(score: int):
-	if score > highScore:
-		highScore = score
-		highScoreLabel.text = "High Score: " + str(highScore)
-	
 	scoreLabel.text = "Score: " + str(score)
+
+
+func set_high_score(score: int):
+	highScoreLabel.text = "High Score: " + str(score)
 
 
 func set_flash_charge(charge: float, max: float):

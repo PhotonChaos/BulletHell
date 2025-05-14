@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=15 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bulletShoot1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://lmhik51vbob" path="res://scenes/UI/game_over_menu.tscn" id="5_0tnpc"]
+[ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/BossBeat.wav" id="8_gee14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
@@ -42,6 +43,11 @@ layer = 3
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
 visible = false
+offset_right = -278.0
+
+[node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]
+
+[node name="EndScoreScreen" parent="ScoreSummaryLayer" instance=ExtResource("6_vtaks")]
 offset_right = -278.0
 
 [node name="BulletBounds" type="Area2D" parent="."]
@@ -114,9 +120,11 @@ shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [connection signal="restart" from="GameOverLayer/GameOverMenu" to="." method="_on_game_over_menu_restart"]
+[connection signal="restart" from="ScoreSummaryLayer/EndScoreScreen" to="." method="_on_end_score_screen_restart"]
 [connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
 [connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
 [connection signal="flash_changed" from="Player" to="." method="_on_player_flash_changed"]
+[connection signal="high_score_changed" from="Player" to="." method="_on_player_high_score_changed"]
 [connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]
 [connection signal="score_changed" from="Player" to="." method="_on_player_score_changed"]

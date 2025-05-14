@@ -136,6 +136,8 @@ func _defeat():
 		setup_complete = false
 		lifetime = 0
 		warmup_timer = WARMUP_DEFAULT
+		
+		hp_changed.emit(hp_left, 0, hp_left)
 		spell_started.emit()
 
 ## Called to determine what items the attack should drop

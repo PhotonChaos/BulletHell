@@ -4,6 +4,7 @@ extends RigidBody2D
 signal lives_changed(old: int, new: int)
 signal bombs_changed(old: int, new: int)
 signal score_changed(old: int, new: int)
+signal high_score_changed(old: int, new: int)
 signal flash_changed(value: int, max: int)
 
 ## Player Settings
@@ -72,6 +73,7 @@ var itime: float = 0
 
 var focused: bool = true
 
+static var high_score: int = 0
 var score: int = 0
 
 var _shot_gap_size: float
@@ -153,6 +155,11 @@ func add_bombs(count: int) -> void:
 
 func add_points(points: int) -> void:
 	score += points
+	if score > high_score:
+		var old = high_score
+		high_score = score
+		high_score_changed.emit(old, high_score)
+	
 	# TODO: Check for extra life thresholds
 	score_changed.emit(score-points, score)
 
@@ -182,6 +189,7 @@ func emit_stats():
 	lives_changed.emit(_lives, _lives)
 	bombs_changed.emit(_bombs, _bombs)
 	score_changed.emit(0, 0)
+	high_score_changed.emit(high_score, high_score)
 	flash_changed.emit(_flash_charge, max_flash_charge)
 
 

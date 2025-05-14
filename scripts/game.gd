@@ -35,6 +35,7 @@ extends Node2D
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
 @onready var pause_ui = $PauseLayer/PauseMenu as PauseMenuUI
 @onready var game_over_ui = $GameOverLayer/GameOverMenu as GameOverMenu
+@onready var results_ui = $ScoreSummaryLayer/EndScoreScreen as EndScoreScreen
 
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
@@ -50,6 +51,7 @@ enum GameState {
 	GAME_DIALOGUE,
 	GAME_PAUSED,
 	GAME_OVER,
+	RESULTS_SCREEN,
 	END_CREDITS
 }
 
@@ -126,6 +128,7 @@ func _ready() -> void:
 	
 	pause_ui.hide()
 	game_over_ui.hide()
+	results_ui.hide()
 	
 	game_bgm.finished.connect(func(): game_bgm.play())
 	
@@ -174,8 +177,12 @@ func play_next_level() -> void:
 	level_ref.bullet_fired.connect(_on_bullet_fired)
 	level_ref.bgm_changed.connect(play_bgm)
 
-	level_ref.boss_defeated.connect(func(): main_ui.set_boss_stats(false))
-	level_ref.boss_defeated.connect(func(): play_boss_death_sfx(true))
+	level_ref.boss_defeated.connect(func(): 
+		main_ui.set_boss_stats(false)
+		play_boss_death_sfx(true)
+		results_ui.show()
+		results_ui.end_transition()
+	)
 	level_ref.boss_defeated.connect(func(): game_bgm.stop())
 	
 	level_ref.spell_started.connect(func(spell_name, boss_name):
@@ -239,6 +246,8 @@ func _on_player_score_changed(old: int, new: int) -> void:
 	# TODO: Add the points text when the player picks up an item
 	main_ui.set_score(new)
 
+func _on_player_high_score_changed(old: int, new: int) -> void:
+	main_ui.set_high_score(new)
 
 func _on_player_flash_changed(value: int, max: int) -> void:
 	main_ui.set_flash_charge(value, max)
@@ -247,4 +256,8 @@ func _on_player_flash_changed(value: int, max: int) -> void:
 func _on_game_over_menu_restart() -> void:
 	game_over_ui.hide()
 	set_pause(false)
+	call_deferred("restart_game")
+	
+
+func _on_end_score_screen_restart() -> void:
 	call_deferred("restart_game")

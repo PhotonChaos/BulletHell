@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=3 uid="uid://dmqrsuxqm0g51"]
+
+[ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_imb4l"]
+[ext_resource type="Script" uid="uid://clq80ykdmgq1c" path="res://scripts/UI/end_score_screen.gd" id="2_p0e11"]
+[ext_resource type="FontFile" uid="uid://ywywof1amix1" path="res://ui/fonts/ShylockNbpRegular-zjE1.ttf" id="2_v2nbv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_imb4l"]
+font_size = 44
+
+[sub_resource type="LabelSettings" id="LabelSettings_p0e11"]
+font = ExtResource("2_v2nbv")
+
+[sub_resource type="LabelSettings" id="LabelSettings_v2nbv"]
+font = ExtResource("2_v2nbv")
+
+[node name="EndScoreScreen" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_imb4l")
+script = ExtResource("2_p0e11")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3375, 0.75, 0, 0.521569)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -119.0
+offset_right = 119.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="WinTitle" type="Label" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "YOU WIN!"
+label_settings = SubResource("LabelSettings_imb4l")
+
+[node name="ScoreStats" type="VBoxContainer" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+
+[node name="LivesBonus" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/LivesBonus"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lives Remaining:  5"
+label_settings = SubResource("LabelSettings_p0e11")
+
+[node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/LivesBonus"]
+layout_mode = 2
+text = "x10000"
+label_settings = SubResource("LabelSettings_v2nbv")
+
+[node name="BombsBonus" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/BombsBonus"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bombs Remaining:  5"
+label_settings = SubResource("LabelSettings_p0e11")
+
+[node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/BombsBonus"]
+layout_mode = 2
+text = "x2000"
+label_settings = SubResource("LabelSettings_v2nbv")
+
+[node name="PerfectBonus" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/PerfectBonus"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Perfect Clears:  5"
+label_settings = SubResource("LabelSettings_p0e11")
+
+[node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/PerfectBonus"]
+layout_mode = 2
+text = "x50000"
+label_settings = SubResource("LabelSettings_v2nbv")
+
+[node name="TotalBonus" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/TotalBonus"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Total Bonus:"
+label_settings = SubResource("LabelSettings_p0e11")
+
+[node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/TotalBonus"]
+layout_mode = 2
+text = "1000000000"
+label_settings = SubResource("LabelSettings_v2nbv")
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/VBoxContainer/ScoreStats"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
+[node name="ScoreTotal" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/ScoreTotal"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Final Score:"
+label_settings = SubResource("LabelSettings_p0e11")
+
+[node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/ScoreTotal"]
+layout_mode = 2
+text = "1000000000"
+label_settings = SubResource("LabelSettings_v2nbv")
+
+[node name="Control" type="Control" parent="ColorRect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="QuitButton" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
+[connection signal="pressed" from="ColorRect/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

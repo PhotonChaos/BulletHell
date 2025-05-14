@@ -7,6 +7,9 @@ signal score_changed(old: int, new: int)
 signal high_score_changed(old: int, new: int)
 signal flash_changed(value: int, max: int)
 
+## Used to determine perfect clears of spells
+signal hit_or_bomb 
+
 ## Player Settings
 @export var speed: float
 @export var focus_speed: float

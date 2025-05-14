@@ -180,8 +180,14 @@ func play_next_level() -> void:
 	level_ref.boss_defeated.connect(func(): 
 		main_ui.set_boss_stats(false)
 		play_boss_death_sfx(true)
-		results_ui.show()
-		results_ui.end_transition()
+		
+		state = GameState.RESULTS_SCREEN
+		
+		get_tree().create_timer(3).timeout.connect(func():
+			results_ui.show()
+			results_ui.end_transition(player_ref.lives, player_ref.bombs, 0, player_ref.score)
+			player_ref.add_points(results_ui.calculate_bonus(player_ref.lives, player_ref.bombs, 0))
+		)
 	)
 	level_ref.boss_defeated.connect(func(): game_bgm.stop())
 	

@@ -59,7 +59,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/LivesBonus"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Lives Remaining:  5"
+text = "Lives Remaining:  "
 label_settings = SubResource("LabelSettings_p0e11")
 
 [node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/LivesBonus"]
@@ -73,7 +73,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/BombsBonus"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Bombs Remaining:  5"
+text = "Bombs Remaining:  "
 label_settings = SubResource("LabelSettings_p0e11")
 
 [node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/BombsBonus"]
@@ -87,7 +87,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/PerfectBonus"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Perfect Clears:  5"
+text = "Perfect Clears:  "
 label_settings = SubResource("LabelSettings_p0e11")
 
 [node name="Label2" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/PerfectBonus"]

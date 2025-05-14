@@ -23,16 +23,20 @@ func spell() -> void:
 func get_time_scaler() -> float:
 	return max(0, 1-(float(lifetime)/((spell_time_limit-10)*60)))
 
+
 func charge_at_player(delay: float) -> void:
 	last_player_pos = GameController.get_player_pos()
 	last_trajectory = (global_position - last_player_pos).angle()
 	
 	var charge_tween = get_tree().create_tween().set_trans(Tween.TRANS_QUAD)
 	var tween_time =  1 + 0.75*get_time_scaler()
-	print(tween_time)
+
 	charge_tween.tween_interval(delay)
 	charge_tween.tween_property(_boss, "position", last_player_pos, tween_time)
 	charge_tween.tween_callback(bullet_burst)
+	
+	_boss.move_tweens.push_back(charge_tween)
+
 
 func bullet_burst() -> void:
 	for i in range(40):

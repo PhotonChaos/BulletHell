@@ -74,6 +74,9 @@ func damage(amount: int) -> void:
 	if not on_spell and (nonspell_hp == 0 or nonspell_time_limit == 0):
 		return
 	
+	if on_spell and is_timeout:
+		return
+	
 	hp_left -= amount if warmup_timer <= 0 else amount * (1- warmup_timer / WARMUP_DEFAULT)**3
 	
 	if on_spell:

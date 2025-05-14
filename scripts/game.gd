@@ -233,7 +233,6 @@ func _on_player_lives_changed(old: int, new: int) -> void:
 		game_over_ui.show()
 	
 	main_ui.set_lives(new-1)
-	
 
 
 func _on_player_score_changed(old: int, new: int) -> void:

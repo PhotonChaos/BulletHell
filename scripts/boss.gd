@@ -196,9 +196,12 @@ func defeat_phase(card: bool) -> void:
 	
 	if card:		
 		# Nonspells can't be timeouts.
+		current_spell.started = false
+		current_spell.clear_turrets()
+		
 		reset_tween.parallel().tween_property($Sprite2D, "modulate", Color.WHITE, 0.5)
 		reset_tween.tween_callback(next_spell)
-		$Hitbox.set_deferred("disabled", false)
+		set_deferred("collision_mask", 0b100)
 	else:
 		current_spell.started = false
 		phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
@@ -206,7 +209,7 @@ func defeat_phase(card: bool) -> void:
 		
 		if current_spell.is_timeout:
 			reset_tween.parallel().tween_property($Sprite2D, "modulate", Color(1,1,1,0.5), 0.5)
-			$Hitbox.set_deferred("disabled", true)
+			set_deferred("collision_mask", 0)
 		
 		reset_tween.tween_callback(func(): current_spell.started = true)
 	

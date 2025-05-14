@@ -283,6 +283,8 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 		area.queue_free()
 		
 	sfx_player_hit.play()
+	
+	set_itime(deathbomb_window)
 	await get_tree().create_timer(deathbomb_window).timeout.connect(die)
 
 

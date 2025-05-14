@@ -21,7 +21,7 @@ size = Vector2(16, 29)
 radius = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
-radius = 12.0
+radius = 13.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
 radius = 36.0139
@@ -60,6 +60,7 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxSprite/PlayerHitbox"]
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_onrkg")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)
 
 [node name="PlayerGrazebox" type="Area2D" parent="."]
 collision_layer = 0

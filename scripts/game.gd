@@ -18,12 +18,7 @@ extends Node2D
 #  10. Player Hitbox
 
 # TODO list
-#  [*] Add a level system
-#    [*] Make bullets a child of the Level node
-#    [*] Level node is abstract, levels are subclasses of the base Level node
-#    [*] Level base class has all the bullet spawn/clear methods
-#    [*] Level base class has enemy spawning methods
-#    [ ] Level base class has dialogue starting methods
+# [ ] Level base class has dialogue starting methods
 # [ ] Figure out SFX for level stuff
 
 @export var levels: Array[PackedScene]

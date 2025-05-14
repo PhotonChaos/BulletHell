@@ -181,6 +181,7 @@ func die() -> void:
 	wave._level_ref = get_parent() as Level
 	wave.give_points = false
 	_lives -= 1
+	_bombs = max(_bombs, bombs)  # Refresh bombs, but don't take extras away
 	set_itime(HIT_ITIME)
 	
 	lives_changed.emit(_lives+1, _lives)

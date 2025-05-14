@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_imb4l"]
 [ext_resource type="Script" uid="uid://clq80ykdmgq1c" path="res://scripts/UI/end_score_screen.gd" id="2_p0e11"]
-[ext_resource type="FontFile" uid="uid://ywywof1amix1" path="res://ui/fonts/ShylockNbpRegular-zjE1.ttf" id="2_v2nbv"]
+[ext_resource type="FontFile" uid="uid://ywywof1amix1" path="res://ui/fonts/shylock.ttf" id="2_v2nbv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_imb4l"]
 font_size = 44

@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://gvidqnmxu8yf"
-path="res://.godot/imported/BossBeat.wav-a05f24c504398b7354e20e96c6cd3ddb.sample"
+uid="uid://fc14hxxcvcom"
+path="res://.godot/imported/life_gain.wav-871587e42702f077298352cb3fc795db.sample"
 
 [deps]
 
-source_file="res://audio/SFX/BossBeat.wav"
-dest_files=["res://.godot/imported/BossBeat.wav-a05f24c504398b7354e20e96c6cd3ddb.sample"]
+source_file="res://audio/SFX/life_gain.wav"
+dest_files=["res://.godot/imported/life_gain.wav-871587e42702f077298352cb3fc795db.sample"]
 
 [params]
 

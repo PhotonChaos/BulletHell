@@ -11,6 +11,8 @@ config_version=5
 [application]
 
 config/name="BulletHell"
+config/description="Bullet hell game!!"
+config/version="0.1.0"
 run/main_scene="uid://uk6quv3bwyb6"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://textures/icon.svg"
@@ -26,6 +28,12 @@ window/size/viewport_height=360
 window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
+
+[file_customization]
+
+folder_colors={
+"res://export/": "gray"
+}
 
 [global_group]
 

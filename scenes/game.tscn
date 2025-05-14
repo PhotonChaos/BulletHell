@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_p57ef"]
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
-[ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bulletShoot1.wav" id="4_lbhrr"]
+[ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bullet_shoot_1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://lmhik51vbob" path="res://scenes/UI/game_over_menu.tscn" id="5_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
-[ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/BossBeat.wav" id="8_gee14"]
+[ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(504, 442)

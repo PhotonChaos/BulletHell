@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=6 format=3 uid="uid://burtlrkgl63lg"]
 
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="1_6tukj"]
-[ext_resource type="FontFile" uid="uid://dheo5shechy1r" path="res://ui/fonts/Retro Gaming.ttf" id="1_g1fjd"]
+[ext_resource type="FontFile" uid="uid://dheo5shechy1r" path="res://ui/fonts/retro_gaming.ttf" id="1_g1fjd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g1fjd"]
 

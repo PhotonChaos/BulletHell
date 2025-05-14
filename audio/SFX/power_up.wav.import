@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://w4am70p2q21d"
-path="res://.godot/imported/BombGain.wav-bb031b6cc0760775c038ccd2a72cadbd.sample"
+uid="uid://b2tp5s8e66uoq"
+path="res://.godot/imported/power_up.wav-a7fc3950069f345bfc3f6ccd00371708.sample"
 
 [deps]
 
-source_file="res://audio/SFX/BombGain.wav"
-dest_files=["res://.godot/imported/BombGain.wav-bb031b6cc0760775c038ccd2a72cadbd.sample"]
+source_file="res://audio/SFX/power_up.wav"
+dest_files=["res://.godot/imported/power_up.wav-a7fc3950069f345bfc3f6ccd00371708.sample"]
 
 [params]
 

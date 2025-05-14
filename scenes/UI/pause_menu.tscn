@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_bl585"]
 [ext_resource type="Script" uid="uid://dnj20qo4sfict" path="res://scripts/UI/pause_menu.gd" id="1_qo2fb"]
 [ext_resource type="PackedScene" uid="uid://by3v0a2t44smh" path="res://scenes/UI/options_menu.tscn" id="3_mko1u"]
-[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://audio/SFX/hitHurt.wav" id="4_feath"]
+[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://audio/SFX/hit_hurt.wav" id="4_feath"]
 
 [node name="PauseMenu" type="Control"]
 process_mode = 3

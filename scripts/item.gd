@@ -21,8 +21,8 @@ const _sprite_map = {
 const _sound_map = {
 	ItemType.POINT: preload("res://audio/SFX/click(5).wav"),
 	#ItemType.SMALL_POINT: preload("res://audio/SFX/click(5).wav"),  # Do not add this to the map. We handle this sound differently
-	ItemType.LIFE: preload("res://audio/SFX/LifeGain.wav"),
-	ItemType.BOMB: preload("res://audio/SFX/BombGain.wav")
+	ItemType.LIFE: preload("res://audio/SFX/life_gain.wav"),
+	ItemType.BOMB: preload("res://audio/SFX/bomb_gain.wav")
 }
 
 # Value of the item, depends on item type:
@@ -55,7 +55,7 @@ var _fall_speed = 0
 @export var item_type: ItemType
 
 
-const _item_template: PackedScene = preload("res://scenes/pickup/Item.tscn")
+const _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
 static func get_drop_dict(points: int, bombs: int, lives: int) -> Dictionary:
 	return {

@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://ywywof1amix1"
-path="res://.godot/imported/ShylockNbpRegular-zjE1.ttf-09a35735ee711340e7b2ecedd24c262e.fontdata"
+path="res://.godot/imported/shylock.ttf-a512dce8c8fc5939e35863470efb3c31.fontdata"
 
 [deps]
 
-source_file="res://ui/fonts/ShylockNbpRegular-zjE1.ttf"
-dest_files=["res://.godot/imported/ShylockNbpRegular-zjE1.ttf-09a35735ee711340e7b2ecedd24c262e.fontdata"]
+source_file="res://ui/fonts/shylock.ttf"
+dest_files=["res://.godot/imported/shylock.ttf-a512dce8c8fc5939e35863470efb3c31.fontdata"]
 
 [params]
 

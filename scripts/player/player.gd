@@ -48,8 +48,8 @@ var flashbomb_template: PackedScene = preload("res://scenes/player/flash_bomb.ts
 var deathwave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
 
 var item_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/click(5).wav")
-var bomb_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/BombGain.wav")
-var life_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/LifeGain.wav")
+var bomb_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/bomb_gain.wav")
+var life_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/life_gain.wav")
 
 @onready var shot_threshold: float = 1/fire_rate
 @onready var shot_cooldown: float = shot_threshold

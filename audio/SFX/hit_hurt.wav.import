@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://fc14hxxcvcom"
-path="res://.godot/imported/LifeGain.wav-f7fcd115372fd732567fc3799eeadbe6.sample"
+uid="uid://k61e757lhigq"
+path="res://.godot/imported/hit_hurt.wav-cf60f5176033d6eb1d4c93e37f2995d4.sample"
 
 [deps]
 
-source_file="res://audio/SFX/LifeGain.wav"
-dest_files=["res://.godot/imported/LifeGain.wav-f7fcd115372fd732567fc3799eeadbe6.sample"]
+source_file="res://audio/SFX/hit_hurt.wav"
+dest_files=["res://.godot/imported/hit_hurt.wav-cf60f5176033d6eb1d4c93e37f2995d4.sample"]
 
 [params]
 

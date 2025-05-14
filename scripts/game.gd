@@ -40,8 +40,8 @@ extends Node2D
 @onready var enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 @onready var item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 
-@onready var _sfx_boss_phase_defeat = preload("res://audio/SFX/BossBeat.wav") as AudioStreamWAV
-@onready var _sfx_boss_full_defeat  = preload("res://audio/SFX/BossFullKill.wav") as AudioStreamWAV
+@onready var _sfx_boss_phase_defeat = preload("res://audio/SFX/boss_beat.wav") as AudioStreamWAV
+@onready var _sfx_boss_full_defeat  = preload("res://audio/SFX/boss_full_kill.wav") as AudioStreamWAV
 
 static var _game_instance: GameController = null
 

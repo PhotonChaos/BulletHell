@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://i47o1khx8cip"
-path="res://.godot/imported/BossFullKill.wav-fef053466eb1835c11392b2e736e7746.sample"
+path="res://.godot/imported/boss_full_kill.wav-c096b405b1472bd1b778a1d27b4e91a6.sample"
 
 [deps]
 
-source_file="res://audio/SFX/BossFullKill.wav"
-dest_files=["res://.godot/imported/BossFullKill.wav-fef053466eb1835c11392b2e736e7746.sample"]
+source_file="res://audio/SFX/boss_full_kill.wav"
+dest_files=["res://.godot/imported/boss_full_kill.wav-c096b405b1472bd1b778a1d27b4e91a6.sample"]
 
 [params]
 

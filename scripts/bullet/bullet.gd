@@ -4,6 +4,16 @@ extends Area2D
 var velocity: Vector2 = Vector2.ZERO
 var acceleration: Vector2 = Vector2.ZERO
 
+## If the magnitude of [member Bullet.velocity] would be brought below this, it is instead brought to exactly this.[br]
+## This is intended to be used when acceleration is parallel (but possibly reversed from) velocity[br]
+## NYI
+var min_velocity: float
+
+## If the magnitude of [member Bullet.velocity] would be brought above this, it is instead brought to exactly this.[br]
+## This is intended to be used when acceleration is parallel (but possibly reversed from) velocity[br]
+## NYI
+var max_velocity: float
+
 ## Whether the bullet should auto-rotate in the direction of its velocity.
 var rotate_to_velocity: bool = true
 

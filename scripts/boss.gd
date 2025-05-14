@@ -109,6 +109,9 @@ class MovementDest:
 ## Queue for the boss to move in
 var move_queue: Array[MovementDest] = []
 var _move_time: float = 0
+
+var move_tweens: Array[Tween] = []
+
 ## End of Movement Handling
 
 ## Returns true if the boss should not be harmed by bombs this frame
@@ -130,14 +133,25 @@ func is_bomb_immune() -> bool:
 func move_to(destination: Vector2, move_duration: float, start_delay: float, end_delay: float) -> void:
 	move_queue.push_back(MovementDest.new(destination, move_duration, start_delay, end_delay))
 
+
+func tween_move_to(destination: Vector2, move_duration: float) -> Tween:
+	var tw: Tween = get_tree().create_tween().set_trans(Tween.TRANS_QUAD)
+	
+	tw.tween_property(self, "position", destination, move_duration)
+	move_tweens.push_back(tw)
+	
+	return tw
+
 func clear_move_queue() -> void:
 	move_queue.clear()
+
 
 func damage(amount: int) -> void:
 	if _level._bomb_active and is_bomb_immune():
 		return
 		
 	current_spell.damage(amount)
+
 
 ## Ends the current spell and begins the next one
 func next_spell() -> void:
@@ -164,17 +178,38 @@ func next_spell() -> void:
 	spell_card_started.emit("")
 	
 	current_spell.start(_level)
-
+	
 
 func defeat_phase(card: bool) -> void:
 	phase_defeated.emit(card)
-	_level.clear_bullet_wave(global_position, 1, true, true)
 	
-	if card:
-		next_spell()
+	# Only spawn the clear wave if we're not skipping the spell
+	if not (card == false and (current_spell.nonspell_hp == 0 or current_spell.nonspell_time_limit == 0)):
+		_level.clear_bullet_wave(global_position, 1, true, true)
+			
+	for t in move_tweens:
+		t.kill()
+	move_tweens.clear()
+	
+	var reset_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO)
+	reset_tween.tween_property(self, "position", Vector2(Level.X_MIDPOINT, 100), 1.5)
+	
+	if card:		
+		# Nonspells can't be timeouts.
+		reset_tween.parallel().tween_property($Sprite2D, "modulate", Color.WHITE, 0.5)
+		reset_tween.tween_callback(next_spell)
+		$Hitbox.set_deferred("disabled", false)
 	else:
+		current_spell.started = false
 		phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
 		spell_card_started.emit(current_spell.spell_name)
+		
+		if current_spell.is_timeout:
+			reset_tween.parallel().tween_property($Sprite2D, "modulate", Color(1,1,1,0.5), 0.5)
+			$Hitbox.set_deferred("disabled", true)
+		
+		reset_tween.tween_callback(func(): current_spell.started = true)
+	
 
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
@@ -182,8 +217,11 @@ func _ready() -> void:
 	next_spell()
 
 func _physics_process(delta: float) -> void:
+	GameController.update_boss_pos(global_position.x + $Sprite2D.get_rect().position.x)
+	
 	if len(move_queue) > 0:
 		var dest = move_queue[0]
+		
 		if dest.start_wait_time > 0:
 			dest.start_wait_time -= delta
 			return
@@ -194,6 +232,7 @@ func _physics_process(delta: float) -> void:
 			dest.end_wait_time -= delta
 		else:
 			move_queue.pop_front()
+
 
 func _on_hitbox_entered(area: Area2D) -> void:
 	if area is PlayerShot and current_spell.started:

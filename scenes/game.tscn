@@ -41,6 +41,7 @@ layer = 3
 
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
+visible = false
 offset_right = -278.0
 
 [node name="BulletBounds" type="Area2D" parent="."]
@@ -60,6 +61,7 @@ focus_speed = 100.0
 lives = 3
 bombs = 3
 max_flash_charge = 35
+deathbomb_window = 0.11
 fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0

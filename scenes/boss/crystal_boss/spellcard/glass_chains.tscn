@@ -4,6 +4,5 @@
 
 [node name="GlassChains" type="Node2D"]
 script = ExtResource("1_007ml")
-spell_name = "Glass Chains"
-nonspell_hp = 200
+spell_name = "Glass Prison"
 metadata/_custom_type_script = "uid://bqfvpb22cobwe"

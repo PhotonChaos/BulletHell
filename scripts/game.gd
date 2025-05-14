@@ -80,6 +80,9 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
 
+static func update_boss_pos(boss_x: float):
+	_game_instance.main_ui.set_boss_pos(boss_x)
+
 func play_boss_death_sfx(full_kill: bool) -> void:
 	if full_kill:
 		boss_death_sfx.stream = _sfx_boss_full_defeat
@@ -109,7 +112,6 @@ func is_paused() -> bool:
 
 
 ## Standard Methods
-
 func _ready() -> void:
 	_game_instance = self
 	
@@ -124,6 +126,8 @@ func _ready() -> void:
 	
 	pause_ui.hide()
 	game_over_ui.hide()
+	
+	game_bgm.finished.connect(func(): game_bgm.play())
 	
 	if len(levels) > 0:
 		level_thread = Thread.new()

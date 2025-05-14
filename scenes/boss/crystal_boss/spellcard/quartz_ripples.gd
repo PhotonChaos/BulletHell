@@ -26,4 +26,5 @@ func spell() -> void:
 			
 		_level.bullet_ring(global_position, Level.BulletType.BALL, 8, 0, 9, 80, 0)
 	
-	
+func get_drops() -> Dictionary:
+	return Item.get_drop_dict(15, 1, 0) if on_spell else Item.get_drop_dict(15, 0, 0)

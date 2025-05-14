@@ -63,9 +63,8 @@ func spawn_turret(dest: Vector2, travel_time: float) -> BossTurret:
 	return turret
 
 func clear_turrets() -> void:
-	for child in get_children():
-		if child is BossTurret:
-			child.queue_free()
+	for turret in get_tree().get_nodes_in_group("boss_turrets"):
+		turret.queue_free()
 
 ####################
 ## Core Functions
@@ -94,9 +93,7 @@ func start(level: Level) -> void:
 		hp_left = nonspell_hp
 		time_left = nonspell_time_limit
 	else:
-		hp_left = spell_hp
-		time_left = spell_time_limit
-		on_spell = true
+		_defeat()
 		
 	hp_changed.emit(hp_left, 0, hp_left)
 	

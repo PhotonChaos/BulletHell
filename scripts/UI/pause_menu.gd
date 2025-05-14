@@ -41,4 +41,4 @@ func _on_options_menu_sfx_test() -> void:
 	
 
 func _on_quit_button_pressed() -> void:
-	pass # TODO: Quitting to menu
+	get_tree().quit()

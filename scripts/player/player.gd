@@ -13,7 +13,8 @@ signal flash_changed(value: int, max: int)
 @export var bombs: int
 ## Charge needed to use flash bomb
 @export var max_flash_charge: int
-#@export var deathbomb_timer: float
+## The time in seconds the player has to bomb after getting hit to save themselves
+@export_range(0, 2) var deathbomb_window: float
 @export_group("Player Shot")
 @export_range(1, 100) var fire_rate: float
 @export_range(1, 7) var shot_count: int
@@ -157,6 +158,12 @@ func add_points(points: int) -> void:
 
 
 func die() -> void:
+	if (get_parent() as Level)._bomb_active:
+		# This is to allow for the deathbomb window. 
+		# Besides, you should be invincible when your bomb is onscreen no matter what.
+		print("DEATHBOMBED")
+		return
+	
 	var wave = deathwave_template.instantiate() as DeathWave
 	call_deferred("add_sibling", wave)
 	wave.lifespan = HIT_ITIME
@@ -165,8 +172,7 @@ func die() -> void:
 	wave.give_points = false
 	_lives -= 1
 	set_itime(HIT_ITIME)
-		
-	sfx_player_hit.play()
+	
 	lives_changed.emit(_lives+1, _lives)
 	
 
@@ -275,8 +281,9 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 			return  # Harmless bullets should pass through the player
 		
 		area.queue_free()
-	
-	die()
+		
+	sfx_player_hit.play()
+	await get_tree().create_timer(deathbomb_window).timeout.connect(die)
 
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:

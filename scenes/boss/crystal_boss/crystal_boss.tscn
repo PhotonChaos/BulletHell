@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://gyuva7wf3822"]
+[gd_scene load_steps=9 format=3 uid="uid://gyuva7wf3822"]
 
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_sphx7"]
 [ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="2_bj3dq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/boss.png" id="2_npn3v"]
 [ext_resource type="PackedScene" uid="uid://dgjsgcajoewvb" path="res://scenes/boss/crystal_boss/spellcard/quartz_ripples.tscn" id="3_ctll2"]
 [ext_resource type="PackedScene" uid="uid://d4d0ktav1jh72" path="res://scenes/boss/crystal_boss/spellcard/glass_chains.tscn" id="5_0qcvj"]
+[ext_resource type="PackedScene" uid="uid://dd8qfo1h75i4i" path="res://scenes/boss/crystal_boss/spellcard/Diamondhearted.tscn" id="5_b0kb4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]
 size = Vector2(37, 67)
@@ -18,7 +19,7 @@ boss_name = "Crystal"
 boss_title = "The Testing Dummy"
 bomb_immunity = 1
 boss_theme = ExtResource("2_f1rpc")
-spell_cards = Array[PackedScene]([ExtResource("3_ctll2"), ExtResource("5_0qcvj"), ExtResource("2_bj3dq")])
+spell_cards = Array[PackedScene]([ExtResource("5_0qcvj"), ExtResource("3_ctll2"), ExtResource("5_b0kb4"), ExtResource("2_bj3dq")])
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

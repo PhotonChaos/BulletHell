@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=19 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
@@ -37,6 +37,15 @@ font_size = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_l2xif"]
 font = ExtResource("8_8qdoy")
+
+[sub_resource type="Gradient" id="Gradient_8qdoy"]
+colors = PackedColorArray(1, 0, 0.233333, 0.784314, 1, 0, 0.233333, 0.0509804)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l2xif"]
+gradient = SubResource("Gradient_8qdoy")
+width = 16
+height = 8
+fill_from = Vector2(1, 1)
 
 [node name="GameplayUI" type="Control"]
 layout_mode = 3
@@ -281,3 +290,17 @@ label_settings = SubResource("LabelSettings_l2xif")
 
 [node name="Control" type="Control" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="BossPosIndicator" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -8.0
+offset_right = 16.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_l2xif")

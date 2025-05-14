@@ -25,6 +25,9 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 @onready var musicIcon = $VBoxContainer/HBoxContainer/MusicIcon as TextureRect
 @onready var musicBox = $VBoxContainer as VBoxContainer
 
+# Boss Tracker
+@onready var bossPos = $BossPosIndicator as TextureRect
+
 var highScore: int = -1
 
 
@@ -77,8 +80,10 @@ func set_flash_charge(charge: float, max: float):
 	flashBombMeter.max_value = max
 
 
-# Boss Methods
+func set_boss_pos(boss_x: float):
+	bossPos.position.x = boss_x
 
+# Boss Methods
 func set_boss_stats(_visible: bool):
 	if _visible:
 		bossStats.show()

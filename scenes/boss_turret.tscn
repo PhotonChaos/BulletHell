@@ -3,6 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://bksrfx3ysn7ko" path="res://textures/turretNew.png" id="1_jhawc"]
 [ext_resource type="Script" uid="uid://bthrp3fbjoq2g" path="res://boss_turret.gd" id="2_2cfr6"]
 
-[node name="BossTurret" type="Sprite2D"]
+[node name="BossTurret" type="Sprite2D" groups=["boss_turrets"]]
 texture = ExtResource("1_jhawc")
 script = ExtResource("2_2cfr6")

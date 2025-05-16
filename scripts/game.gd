@@ -180,8 +180,8 @@ func play_next_level() -> void:
 		
 		get_tree().create_timer(3).timeout.connect(func():
 			results_ui.show()
-			results_ui.end_transition(player_ref.lives, player_ref.bombs, 0, player_ref.score)
-			player_ref.add_points(results_ui.calculate_bonus(player_ref.lives, player_ref.bombs, 0))
+			results_ui.end_transition(player_ref._lives, player_ref._bombs, 0, player_ref.score)
+			player_ref.add_points(results_ui.calculate_bonus(player_ref._lives, player_ref._bombs, 0))
 		)
 	)
 	level_ref.boss_defeated.connect(func(): game_bgm.stop())

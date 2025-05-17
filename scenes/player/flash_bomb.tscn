@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bvjw3vniiu3mg" path="res://scripts/player/flash_bomb.gd" id="1_yn1ir"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n5oul"]
-radius = 17.0294
+radius = 50.2494
 
 [node name="FlashBomb" type="Area2D"]
 collision_layer = 0
@@ -13,6 +13,7 @@ script = ExtResource("1_yn1ir")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -3
+scale = Vector2(3, 3)
 texture = ExtResource("1_ny6bt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

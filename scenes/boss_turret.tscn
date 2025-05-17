@@ -4,5 +4,6 @@
 [ext_resource type="Script" uid="uid://bthrp3fbjoq2g" path="res://scripts/boss_turret.gd" id="2_2cfr6"]
 
 [node name="BossTurret" type="Sprite2D" groups=["boss_turrets"]]
+scale = Vector2(3, 3)
 texture = ExtResource("1_jhawc")
 script = ExtResource("2_2cfr6")

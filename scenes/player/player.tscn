@@ -15,20 +15,20 @@
 friction = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
-size = Vector2(16, 29)
+size = Vector2(42, 81)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
 radius = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
-radius = 13.0
+radius = 40.4475
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
-radius = 36.0139
+radius = 76.0263
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
-radius = 7.0
-height = 28.0
+radius = 17.0
+height = 82.0
 
 [node name="Player" type="RigidBody2D" groups=["player"]]
 physics_material_override = SubResource("PhysicsMaterial_dqkch")
@@ -39,17 +39,19 @@ lives = 5
 bombs = 4
 
 [node name="PlayerWallCollider" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1.5)
+position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_dqkch")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 z_index = -1
+scale = Vector2(3, 3)
 texture = ExtResource("1_onrkg")
 
 [node name="HitboxSprite" type="Sprite2D" parent="."]
 z_index = 10
 position = Vector2(0, 2)
+scale = Vector2(3, 3)
 texture = ExtResource("3_i3pqv")
 
 [node name="PlayerHitbox" type="Area2D" parent="HitboxSprite" groups=["boss"]]
@@ -67,7 +69,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGrazebox"]
-position = Vector2(0, 2)
+position = Vector2(0, 4)
 shape = SubResource("CircleShape2D_i3pqv")
 debug_color = Color(0, 0.7, 0.396667, 0.419608)
 
@@ -85,7 +87,7 @@ collision_layer = 0
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemHitbox"]
-position = Vector2(0, 1)
+position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_qlg0r")
 
 [node name="HitSFX" type="AudioStreamPlayer2D" parent="."]

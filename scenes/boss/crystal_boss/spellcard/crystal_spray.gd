@@ -1,6 +1,6 @@
 extends SpellCard
 
-const BURST_PLAYER_OFFSETS = [Vector2(70, -50), Vector2(150, -10)]
+const BURST_PLAYER_OFFSETS = [Vector2(70, -50)*3, Vector2(150, -10)*3]
 
 var next_move_frames: int = 60*5
 
@@ -19,8 +19,8 @@ func nonspell():
 			var offsetb = Vector2(-offset.x, offset.y)
 			var player_point_angle_a = (-(_boss.position + offset - GameController.get_player_pos())).angle()
 			var player_point_angle_b = (-(_boss.position + offsetb - GameController.get_player_pos())).angle()
-			_level.bullet_burst(_boss.position + offset,  Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_a + randf_range(0, PI/32), 4, 90, 0)
-			_level.bullet_burst(_boss.position + offsetb, Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_b + randf_range(0, PI/32), 4, 90, 0)
+			_level.bullet_burst(_boss.position + offset,  Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_a + randf_range(0, PI/32), 4, 90*3, 0)
+			_level.bullet_burst(_boss.position + offsetb, Level.BulletType.SHARD, 3, deg_to_rad(55), player_point_angle_b + randf_range(0, PI/32), 4, 90*3, 0)
 
 
 var spell_rotation: float = 0
@@ -32,7 +32,7 @@ func spell():
 	
 	if lifetime % 2 == 0:
 		spell_rotation += sin(deg_to_rad(lifetime) * 0.5)
-		_level.bullet_ring(_boss.position, Level.BulletType.SMALL_BALL, 8, spell_rotation, 10, 20, 50)
+		_level.bullet_ring(_boss.position, Level.BulletType.SMALL_BALL, 8, spell_rotation, 10*3, 20*3, 50*3)
 
 
 func get_drops() -> Dictionary:

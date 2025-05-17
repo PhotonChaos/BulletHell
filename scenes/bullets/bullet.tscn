@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c8ol1rccp00dl" path="res://textures/bullets/bullet.png" id="2_lj7gv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v7oki"]
-radius = 6.0
+radius = 15.0
 
 [node name="Bullet" type="Area2D" groups=["enemy_bullets"]]
 collision_layer = 2
@@ -13,6 +13,7 @@ script = ExtResource("1_5f1na")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 5
+scale = Vector2(3, 3)
 texture = ExtResource("2_lj7gv")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]

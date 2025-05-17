@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://foakqa7q2o21" path="res://textures/player_attack.png" id="1_ywk7l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rd6w6"]
-size = Vector2(10, 18)
+size = Vector2(28, 52)
 
 [node name="PlayerShot" type="Area2D"]
 collision_layer = 4
@@ -14,6 +14,7 @@ damage = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -2
+scale = Vector2(3, 3)
 texture = ExtResource("1_ywk7l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

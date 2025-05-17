@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dd8qfo1h75i4i" path="res://scenes/boss/crystal_boss/spellcard/diamondhearted.tscn" id="5_b0kb4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]
-size = Vector2(37, 67)
+size = Vector2(116, 198)
 
 [node name="CrystalBoss" type="Area2D"]
 collision_layer = 2
@@ -23,9 +23,10 @@ spell_cards = Array[PackedScene]([ExtResource("5_0qcvj"), ExtResource("3_ctll2")
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
 texture = ExtResource("2_npn3v")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 1.5)
+position = Vector2(0, 7)
 shape = SubResource("RectangleShape2D_npn3v")
 debug_color = Color(0.970831, 0, 0.452073, 0.42)

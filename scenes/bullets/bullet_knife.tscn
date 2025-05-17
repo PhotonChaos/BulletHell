@@ -14,10 +14,12 @@ script = ExtResource("1_sobbc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 5
+scale = Vector2(3, 3)
 texture = ExtResource("2_sobbc")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 z_index = 5
 position = Vector2(0, 1)
+scale = Vector2(3, 3)
 shape = SubResource("CapsuleShape2D_ncbtd")
 debug_color = Color(0.970831, 0, 0.452073, 0.42)

@@ -25,9 +25,9 @@ buses/default_bus_layout="uid://bbh8m3164eob0"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=2
+window/size/mode=3
+window/size/borderless=true
 window/stretch/mode="viewport"
-window/stretch/scale_mode="integer"
 
 [file_customization]
 

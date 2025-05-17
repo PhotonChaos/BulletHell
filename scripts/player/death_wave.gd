@@ -1,7 +1,7 @@
 class_name DeathWave
 extends Area2D
 
-const MAX_SCALE = 45
+const MAX_SCALE = 45*3
 
 var lifespan = Player.HIT_ITIME 
 var invisible: bool = false

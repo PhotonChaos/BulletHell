@@ -25,12 +25,15 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 @onready var musicIcon = $VBoxContainer/HBoxContainer/MusicIcon as TextureRect
 @onready var musicBox = $VBoxContainer as VBoxContainer
 
+var musicY
+
 # Boss Tracker
 @onready var bossPos = $BossPosIndicator as TextureRect
 
 
 func _ready() -> void:
 	musicBox.hide()
+	musicY = musicBox.position.y
 
 func set_lives(lives: int):
 	for child in livesContainer.get_children():
@@ -115,10 +118,10 @@ func set_phases(num_phases: int) -> void:
 		phaseContainer.add_child(icon)
 		
 func show_bgm_credit(artist: String, song_name: String) -> void:
-	const CREDIT_Y_OFFSET = 10
+	const CREDIT_Y_OFFSET = 30
 	
 	musicBox.show()
-	musicBox.position.y = 339.0 - CREDIT_Y_OFFSET
+	musicBox.position.y = musicY - CREDIT_Y_OFFSET
 	
 	musicLabel.text = artist + " - " + song_name
 	musicLabel.modulate = Color.TRANSPARENT
@@ -126,10 +129,10 @@ func show_bgm_credit(artist: String, song_name: String) -> void:
 	
 	var tw = get_tree().create_tween()
 	
-	tw.tween_property(musicBox, "position:y", 339.0, 1)
+	tw.tween_property(musicBox, "position:y", musicY, 1)
 	tw.parallel().tween_property(musicLabel, "modulate", Color.WHITE, 1)
 	tw.parallel().tween_property(musicIcon, "modulate", Color.WHITE, 1)
 	tw.tween_interval(3)
 	tw.tween_property(musicLabel, "modulate", Color.TRANSPARENT, 1)
 	tw.parallel().tween_property(musicIcon, "modulate", Color.TRANSPARENT, 1)
-	tw.parallel().tween_property(musicBox, "position:y", 339.0 + CREDIT_Y_OFFSET, 1)
+	tw.parallel().tween_property(musicBox, "position:y", musicY + CREDIT_Y_OFFSET, 1)

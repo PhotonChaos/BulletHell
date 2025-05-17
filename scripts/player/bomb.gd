@@ -7,7 +7,7 @@ extends AnimatedSprite2D
 @onready var area = $Hitbox as Area2D
 
 const DAMAGE_GAP = 0.5
-const MAX_SCALE = Vector2(20, 20)
+const MAX_SCALE = Vector2(60, 60)
 const MIN_SCALE = Vector2(0.1, 0.1)
 
 var level_ref: Level

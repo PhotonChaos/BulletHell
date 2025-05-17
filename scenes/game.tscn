@@ -12,16 +12,16 @@
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
-size = Vector2(504, 442)
+size = Vector2(1514, 1278)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbhrr"]
-size = Vector2(651, 6)
+size = Vector2(1315.5, 64.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iywne"]
-size = Vector2(6, 364)
+size = Vector2(48, 1096)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
-size = Vector2(4, 364)
+size = Vector2(41, 1035)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -48,31 +48,31 @@ offset_right = -278.0
 [node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]
 
 [node name="EndScoreScreen" parent="ScoreSummaryLayer" instance=ExtResource("6_vtaks")]
-offset_right = -278.0
+visible = false
+offset_right = -685.0
 
 [node name="BulletBounds" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletBounds"]
-position = Vector2(205, 176)
+position = Vector2(634, 550)
 shape = SubResource("RectangleShape2D_e2o6t")
-debug_color = Color(0.7, 0.7, 0.7, 0.0313726)
+debug_color = Color(0.970831, 0, 0.452073, 0.42)
 
 [node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(181, 310)
-speed = 230.0
-focus_speed = 100.0
+position = Vector2(609, 843)
+speed = 690.0
+focus_speed = 300.0
 lives = 3
 bombs = 3
-max_flash_charge = 35
+max_flash_charge = 40
 deathbomb_window = 0.2
 fire_rate = 20.0
 shot_count = 5
 shot_spread = 45.0
 focus_spread = 15.0
-shot_velocity = 900.0
+shot_velocity = 2700.0
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
@@ -94,28 +94,28 @@ bus = &"BGM"
 [node name="BottomWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
-position = Vector2(323, 361)
+position = Vector2(646.25, 1078)
 shape = SubResource("RectangleShape2D_lbhrr")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="TopWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
-position = Vector2(315, -1)
+position = Vector2(606, 9)
 shape = SubResource("RectangleShape2D_lbhrr")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="LeftWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
-position = Vector2(-1, 182)
+position = Vector2(-7, 553)
 shape = SubResource("RectangleShape2D_iywne")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="RightWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
-position = Vector2(362, 183)
+position = Vector2(1236, 549.5)
 shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 

@@ -32,20 +32,21 @@ const _sound_map = {
 # In all other cases, this is not used.
 #var item_value_map: Dictionary[ItemType, int]
 
-const GRAVITY = 40
-const MAX_FALL_SPEED = 120
+const GRAVITY = 120
+const MAX_FALL_SPEED = 360
+const MAGNET_SPEED = 900
 
-const MAGNET_SPEED = 300
+## y-coordinate of max point value
+const POINT_OF_COLLECTION = 150
+
 
 # Item values
 const POINT_VALUE_FULL = 10000
-const POWER_VALUE = 10
+const POWER_VALUE = 10  # NYI
 const SMALL_POINT_VALUE = 50
 const BOMB_POINT_VALUE = 1000
 const LIFE_POINT_VALUE = 5000
 
-## y-coordinate of max point value
-const POINT_OF_COLLECTION = 50
 
 var magnet_player = false
 var _fall_speed = 0

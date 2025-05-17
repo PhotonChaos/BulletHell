@@ -37,6 +37,7 @@ font_size = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_l2xif"]
 font = ExtResource("8_8qdoy")
+font_size = 48
 
 [sub_resource type="Gradient" id="Gradient_8qdoy"]
 colors = PackedColorArray(1, 0, 0.233333, 0.784314, 1, 0, 0.233333, 0.0509804)
@@ -64,10 +65,10 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -278.0
+offset_left = -681.0
 grow_horizontal = 0
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.531713, 0.531713, 0.531713, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GeneralSection"]
 layout_mode = 1
@@ -206,10 +207,12 @@ label_settings = SubResource("LabelSettings_1i81k")
 layout_mode = 2
 
 [node name="BossStats" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 3.0
-offset_right = 361.0
-offset_bottom = 30.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -682.0
+offset_bottom = 38.0
+grow_horizontal = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BossStats"]
 layout_mode = 2
@@ -263,8 +266,8 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -21.0
-offset_right = 152.0
+offset_top = -42.0
+offset_right = 927.0
 grow_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
@@ -280,6 +283,7 @@ texture = ExtResource("7_1i81k")
 expand_mode = 2
 
 [node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
 [node name="MusicCredit" type="Label" parent="VBoxContainer/HBoxContainer"]

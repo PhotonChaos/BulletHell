@@ -220,7 +220,8 @@ func _ready() -> void:
 	next_spell()
 
 func _physics_process(delta: float) -> void:
-	GameController.update_boss_pos(global_position.x + $Sprite2D.get_rect().position.x)
+	var box: Rect2 = ($Hitbox as CollisionShape2D).shape.get_rect()
+	GameController.update_boss_pos(global_position.x + box.position.x, box.size.x)
 	
 	if len(move_queue) > 0:
 		var dest = move_queue[0]

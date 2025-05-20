@@ -81,8 +81,9 @@ func set_flash_charge(charge: float, max: float):
 	flashBombMeter.max_value = max
 
 
-func set_boss_pos(boss_x: float):
+func set_boss_pos(boss_x: float, boss_width: float):
 	bossPos.position.x = boss_x
+	bossPos.size.x = boss_width
 
 # Boss Methods
 func set_boss_stats(_visible: bool):

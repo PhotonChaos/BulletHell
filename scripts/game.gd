@@ -77,8 +77,10 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
 
-static func update_boss_pos(boss_x: float):
-	_game_instance.main_ui.set_boss_pos(boss_x)
+
+static func update_boss_pos(boss_x: float, boss_width: float):
+	_game_instance.main_ui.set_boss_pos(boss_x, boss_width)
+
 
 func play_boss_death_sfx(full_kill: bool) -> void:
 	if full_kill:

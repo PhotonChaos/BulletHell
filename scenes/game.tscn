@@ -43,6 +43,7 @@ layer = 3
 
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
+visible = false
 offset_right = -681.0
 
 [node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]

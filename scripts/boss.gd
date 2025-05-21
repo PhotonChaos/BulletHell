@@ -192,7 +192,7 @@ func defeat_phase(card: bool) -> void:
 	move_tweens.clear()
 	
 	var reset_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO)
-	reset_tween.tween_property(self, "position", Vector2(Level.X_MIDPOINT, 100), 1.5)
+	reset_tween.tween_property(self, "position", Level.BOSS_DEFAULT_POSITION, 1.5)
 	
 	if card:		
 		# Nonspells can't be timeouts.

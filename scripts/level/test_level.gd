@@ -13,5 +13,5 @@ func _play() -> void:
 	#
 	#sleep(3)
 	
-	spawn_boss(bossy, Vector2(X_MIDPOINT, 100))
+	spawn_boss(bossy, Level.BOSS_DEFAULT_POSITION)
 	sleep(1000)

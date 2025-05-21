@@ -155,7 +155,7 @@ func _drop_spell_items() -> void:
 			pass
 		
 		for i in range(items[itemType]):
-			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(20, 40) + global_position
+			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(60, 120) + global_position
 			var item = Item.new_item(itemType)
 			item.global_position = pos
 			get_parent().call_deferred("add_sibling", item)

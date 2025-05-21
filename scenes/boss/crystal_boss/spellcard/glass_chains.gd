@@ -22,16 +22,15 @@ func nonspell() -> void:
 			random_walk += 90
 		if global_position.x + random_walk > Boss.MOVEMENT_RIGHT_BOUND - 30:
 			random_walk -= 90
-		
-		var tw = get_tree().create_tween().set_trans(Tween.TRANS_QUAD)
-		tw.tween_property(_boss, "position:x", global_position.x + random_walk, 1)
+		print(random_walk)
+		_boss.tween_move_to(global_position + Vector2(random_walk,0), 0.80)
 
 var turrets = []
 
 func spell_setup() -> void:
 	for i in range(6):
-		turrets.push_back(spawn_turret(Vector2(Boss.MOVEMENT_LEFT_BOUND - 20, global_position.y - 200 + 80*i)*3, 0.5))
-		turrets.push_back(spawn_turret(Vector2(Boss.MOVEMENT_RIGHT_BOUND + 20, global_position.y - 200 + 80*i)*3, 0.5))
+		turrets.push_back(spawn_turret(Level.BOSS_DEFAULT_POSITION + Vector2(-500, -440 + 240*i), 0.5))
+		turrets.push_back(spawn_turret(Level.BOSS_DEFAULT_POSITION + Vector2( 500, -440 + 240*i), 0.5))
 
 
 func spell() -> void:

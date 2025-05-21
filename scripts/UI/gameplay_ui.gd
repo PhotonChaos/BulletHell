@@ -35,37 +35,54 @@ func _ready() -> void:
 	musicBox.hide()
 	musicY = musicBox.position.y
 
+func _set_icons(container: HBoxContainer, count: int, texture: Resource):
+	for child in container.get_children():
+		child.queue_free()
+		
+	for i in range(count):
+		var icon = TextureRect.new()
+		
+		icon.texture = texture
+		icon.position = Vector2(0, 4)
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
+		
+		container.add_child(icon)
+
+
 func set_lives(lives: int):
-	for child in livesContainer.get_children():
-		child.queue_free()
-		
-	for i in range(lives):
-		var icon = TextureRect.new()
-		
-		icon.texture = heart_icon
-		icon.position = Vector2(0, 4)
-		icon.stretch_mode = TextureRect.STRETCH_KEEP
-		icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		
-		livesContainer.add_child(icon)
+	_set_icons(livesContainer, lives, heart_icon)
+	#for child in livesContainer.get_children():
+		#child.queue_free()
+		#
+	#for i in range(lives):
+		#var icon = TextureRect.new()
+		#
+		#icon.texture = heart_icon
+		#icon.position = Vector2(0, 4)
+		#icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		#icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
+		#
+		#livesContainer.add_child(icon)
 
 
-func set_bombs(bombs: int):	
-	if bombs < 0:
-		bombs = 0
-	
-	for child in bombsContainer.get_children():
-		child.queue_free()
-		
-	for i in range(bombs):
-		var icon = TextureRect.new()
-		
-		icon.texture = bomb_icon
-		icon.position = Vector2(0, 4)
-		icon.stretch_mode = TextureRect.STRETCH_KEEP
-		icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-		
-		bombsContainer.add_child(icon)
+func set_bombs(bombs: int):
+	_set_icons(bombsContainer, bombs, bomb_icon)
+	#if bombs < 0:
+		#bombs = 0
+	#
+	#for child in bombsContainer.get_children():
+		#child.queue_free()
+		#
+	#for i in range(bombs):
+		#var icon = TextureRect.new()
+		#
+		#icon.texture = bomb_icon
+		#icon.position = Vector2(0, 4)
+		#icon.stretch_mode = TextureRect.STRETCH_KEEP
+		#icon.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+		#
+		#bombsContainer.add_child(icon)
 
 
 func set_score(score: int):

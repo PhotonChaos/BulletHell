@@ -56,12 +56,13 @@ collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletBounds"]
+visible = false
 position = Vector2(634, 550)
 shape = SubResource("RectangleShape2D_e2o6t")
 debug_color = Color(0.970831, 0, 0.452073, 0.42)
 
 [node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(609, 843)
+position = Vector2(620, 843)
 speed = 690.0
 focus_speed = 300.0
 lives = 3

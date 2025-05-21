@@ -40,7 +40,7 @@ var _boss_death_wave_template: PackedScene = preload("res://scenes/player/death_
 var _boss_death_particles: PackedScene = preload("res://scenes/fx/fx_boss_explosion.tscn")
 
 const DEFAULT_BULLET_TYPE = BulletType.BALL
-const BOSS_DEFAULT_POSITION = Vector2(543, 300)
+const BOSS_DEFAULT_POSITION = Vector2(620, 300)
 
 # Screw it, I'm just gonna hardcode this.
 const bullet_library: Dictionary = {

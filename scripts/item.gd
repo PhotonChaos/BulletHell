@@ -34,10 +34,10 @@ const _sound_map = {
 
 const GRAVITY = 120
 const MAX_FALL_SPEED = 360
-const MAGNET_SPEED = 900
+const MAGNET_SPEED = 1000
 
 ## y-coordinate of max point value
-const POINT_OF_COLLECTION = 150
+const POINT_OF_COLLECTION = 180
 
 
 # Item values
@@ -94,6 +94,7 @@ func apply(player: Player) -> void:
 		var stream = AudioStreamPlayer2D.new()
 		stream.stream = _sound_map[item_type]
 		stream.finished.connect(func(): stream.queue_free())
+		stream.bus = &"SFX"
 		player.add_child(stream)
 		stream.play()
 

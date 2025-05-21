@@ -47,8 +47,8 @@ enum BombImmunityLevel { ## The level of immunity a boss has to damage while a b
 	TOTAL
 }
 
-const MOVEMENT_LEFT_BOUND: float = 40.0
-const MOVEMENT_RIGHT_BOUND: float = 320
+const MOVEMENT_LEFT_BOUND: float = 120
+const MOVEMENT_RIGHT_BOUND: float = 320*3
 
 var _level: Level = null
 

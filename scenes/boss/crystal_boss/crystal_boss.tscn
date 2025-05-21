@@ -23,6 +23,7 @@ spell_cards = Array[PackedScene]([ExtResource("2_bj3dq"), ExtResource("5_0qcvj")
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
 scale = Vector2(3, 3)
 texture = ExtResource("2_npn3v")
 

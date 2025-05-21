@@ -9,6 +9,7 @@ signal dead
 # TODO: Maybe add an on hit signal
 
 @export_range(1, 100000) var starting_health: int = 20
+@export var harms_player: bool = true
 
 var health: int
 

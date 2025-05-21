@@ -32,6 +32,7 @@ signal hit_or_bomb
 
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
+@onready var hitbox: Area2D = $HitboxSprite/PlayerHitbox
 
 @onready var sfx_player_hit: AudioStreamPlayer2D = $HitSFX
 @onready var sfx_player_graze: AudioStreamPlayer2D = $GrazeSFX
@@ -70,7 +71,7 @@ var _flash_charge: int = 0
 
 const HIT_ITIME: float = 2  
 const BOMB_ITIME: float = 6
-const FLASH_ITIME: float = 1
+const FLASH_ITIME: float = 0.7
 
 var itime: float = 0
 
@@ -250,6 +251,18 @@ func _physics_process(delta: float) -> void:
 	
 	linear_velocity = frame_move.normalized() * get_move_speed()
 	
+	if itime > 0 and itime - delta <= 0:
+		var hit = false
+		for area in hitbox.get_overlapping_areas():
+			if area is Bullet:
+				(get_parent() as Level).clear_bullet(area, false)
+				hit = true
+				break
+			elif area is Killable and (area as Killable).harms_player or area is Boss:
+				hit = true
+				break
+		if hit:
+			die()
 	itime = max(0, itime - delta)
 	
 	

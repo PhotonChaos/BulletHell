@@ -44,7 +44,6 @@ shape = SubResource("RectangleShape2D_dqkch")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
-z_index = -1
 scale = Vector2(3, 3)
 texture = ExtResource("1_onrkg")
 

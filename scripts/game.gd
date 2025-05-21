@@ -12,8 +12,8 @@ extends Node2D
 #  -4. Bomb Sprite
 #  -3. Flash Bomb Sprite
 #  -2. Player Shots
-#  -1. Player Sprite
-#   0. Default
+#  -1. Boss Sprite
+#   0. Default (Player Sprite Here)
 #   5. Enemy Bullets
 #  10. Player Hitbox
 

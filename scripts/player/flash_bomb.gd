@@ -1,6 +1,8 @@
 class_name FlashBomb
 extends Area2D
 
+signal bomb_finished
+
 var level_ref: Level
 var lifetime: float
 const DAMAGE = 20
@@ -11,6 +13,7 @@ func _ready() -> void:
 	var tw: Tween = get_tree().create_tween()
 	tw.tween_interval(lifetime)
 	tw.tween_property($Sprite2D, "modulate", Color.TRANSPARENT, 0.2)
+	tw.tween_callback(bomb_finished.emit)
 	tw.tween_callback(queue_free)
 
 

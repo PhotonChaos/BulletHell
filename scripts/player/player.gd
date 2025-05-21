@@ -66,7 +66,7 @@ const MAX_BOMBS: int = 6
 var _lives: int
 var _bombs: int
 
-
+var _flash_active: bool = false
 var _flash_charge: int = 0
 
 const HIT_ITIME: float = 2  
@@ -129,7 +129,12 @@ func use_flash_bomb() -> void:
 	var flash = flashbomb_template.instantiate() as FlashBomb
 	flash.position = position
 	flash.level_ref = get_parent() as Level
+	
+	_flash_active = true
+	flash.bomb_finished.connect(func(): _flash_active = false)
+	
 	add_sibling(flash)
+	
 	sfx_player_use_flashbomb.play()
 	
 
@@ -316,13 +321,14 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 func _on_player_grazebox_area_entered(area: Area2D) -> void:
 	add_points(100)
 	
-	var old_flash = _flash_charge
-	
-	_flash_charge = min(_flash_charge + 1, max_flash_charge)
-	flash_changed.emit(_flash_charge, max_flash_charge)
-	
-	if old_flash < _flash_charge and _flash_charge == max_flash_charge:
-		sfx_player_flashbomb_charge.play()
+	if not _flash_active:
+		var old_flash = _flash_charge
+		
+		_flash_charge = min(_flash_charge + 1, max_flash_charge)
+		flash_changed.emit(_flash_charge, max_flash_charge)
+		
+		if old_flash < _flash_charge and _flash_charge == max_flash_charge:
+			sfx_player_flashbomb_charge.play()
 
 	sfx_player_graze.pitch_scale = randf_range(0.98, 1.02)
 	sfx_player_graze.play()

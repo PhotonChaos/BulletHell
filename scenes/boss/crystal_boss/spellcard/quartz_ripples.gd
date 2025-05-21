@@ -3,8 +3,8 @@ extends SpellCard
 
 func nonspell() -> void:
 	if lifetime % 4 == 0:
-		_level.bullet_ring(global_position, Level.BulletType.KNIFE, 5, deg_to_rad(lifetime/4)*7, 9, 10, 70)
-		_level.bullet_ring(global_position, Level.BulletType.KNIFE, 5, -deg_to_rad(lifetime/4)*7, 9, 30, 70)
+		_level.bullet_ring(global_position, Level.BulletType.KNIFE, 5, deg_to_rad(lifetime/4)*7, 9, 10, 70*3)
+		_level.bullet_ring(global_position, Level.BulletType.KNIFE, 5, -deg_to_rad(lifetime/4)*7, 9, 30, 70*3)
 
 
 

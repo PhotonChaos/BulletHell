@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
 [ext_resource type="Texture2D" uid="uid://bql312u8ubupg" path="res://textures/UI/music.png" id="7_1i81k"]
 [ext_resource type="FontFile" uid="uid://dig053nwgpxcp" path="res://ui/fonts/m5x7.ttf" id="8_8qdoy"]
-[ext_resource type="Script" uid="uid://clstty55csoiq" path="res://scenes/UI/boss_pos_indicator.gd" id="9_l2xif"]
+[ext_resource type="Script" uid="uid://clstty55csoiq" path="res://scripts/UI/boss_pos_indicator.gd" id="9_l2xif"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dyrh1"]
 font = ExtResource("4_haufa")
@@ -217,6 +217,7 @@ layout_mode = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_left = 8.0
 offset_right = -682.0
 offset_bottom = 69.0
 grow_horizontal = 2

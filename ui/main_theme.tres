@@ -15,7 +15,7 @@ bg_color = Color(1, 0.3545, 0.641258, 1)
 expand_margin_bottom = 5.0
 
 [resource]
-Button/font_sizes/font_size = 40
+Button/font_sizes/font_size = 80
 Button/fonts/font = ExtResource("1_6tukj")
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)

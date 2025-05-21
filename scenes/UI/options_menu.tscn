@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ncwmwak2vba1" path="res://scripts/UI/options_menu.gd" id="2_3t8k5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m3vow"]
-font_size = 44
+font_size = 88
 
 [node name="OptionsMenu" type="Control"]
 layout_mode = 3
@@ -18,9 +18,12 @@ script = ExtResource("2_3t8k5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -328.0
+offset_right = 328.0
 grow_horizontal = 2
 grow_vertical = 2
 

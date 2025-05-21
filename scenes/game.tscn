@@ -36,14 +36,14 @@ layer = 2
 
 [node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
 visible = false
+offset_right = -681.0
 
 [node name="GameOverLayer" type="CanvasLayer" parent="."]
 layer = 3
 
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
-visible = false
-offset_right = -278.0
+offset_right = -681.0
 
 [node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]
 
@@ -91,6 +91,7 @@ stream = ExtResource("8_gee14")
 bus = &"BGM"
 
 [node name="Walls" type="Node2D" parent="."]
+visible = false
 
 [node name="BottomWall" type="StaticBody2D" parent="Walls"]
 

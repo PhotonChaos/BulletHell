@@ -5,13 +5,15 @@
 [ext_resource type="FontFile" uid="uid://ywywof1amix1" path="res://ui/fonts/shylock.ttf" id="2_v2nbv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_imb4l"]
-font_size = 44
+font_size = 88
 
 [sub_resource type="LabelSettings" id="LabelSettings_p0e11"]
 font = ExtResource("2_v2nbv")
+font_size = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_v2nbv"]
 font = ExtResource("2_v2nbv")
+font_size = 32
 
 [node name="EndScoreScreen" type="Control"]
 process_mode = 3
@@ -128,12 +130,16 @@ text = "1000000000"
 label_settings = SubResource("LabelSettings_v2nbv")
 
 [node name="Control" type="Control" parent="ColorRect/VBoxContainer"]
-custom_minimum_size = Vector2(0, 3)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="RestartButton" type="Button" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
 text = "Play Again"
+
+[node name="Control2" type="Control" parent="ColorRect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
 
 [node name="QuitButton" type="Button" parent="ColorRect/VBoxContainer"]
 layout_mode = 2

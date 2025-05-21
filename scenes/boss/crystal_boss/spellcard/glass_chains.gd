@@ -16,7 +16,7 @@ func nonspell() -> void:
 		_level.bullet_ring(global_position + Vector2(40, 0)*3, Level.BulletType.SHARD, 2, -deg_to_rad(lifetime*4), 10, 60*3)
 	
 	if lifetime % 60 == 0:
-		var random_walk = randf_range(20,40) * randi_range(-1, 1)
+		var random_walk = randf_range(60,120) * randi_range(-1, 1)
 		
 		if global_position.x + random_walk < Boss.MOVEMENT_LEFT_BOUND + 30:
 			random_walk += 90

@@ -145,16 +145,15 @@ func _process(delta: float) -> void:
 
 
 ## Pauses or unpauses the game, depending on [param paused]. True to pause, false to unpause.[br]
-## Does nothing if we aren't ingame.
+## Sets the game state to [enum GameState.GAME_PAUSED]. 
 func set_pause(paused: bool) -> void:
-	if state == GameState.GAME_STARTED or state == GameState.GAME_DIALOGUE or state == GameState.GAME_OVER:
+	if state == GameState.GAME_PAUSED:
+		state = _last_state
+		get_tree().paused = false
+	else:
 		_last_state = state
 		state = GameState.GAME_PAUSED
 		get_tree().paused = true
-		
-	elif state == GameState.GAME_PAUSED:
-		state = _last_state
-		get_tree().paused = false
 
 func play_next_level() -> void:
 	current_level += 1
@@ -238,8 +237,8 @@ func _on_player_bombs_changed(old: int, new: int) -> void:
 
 func _on_player_lives_changed(old: int, new: int) -> void:
 	if new <= 0:
-		state = GameState.GAME_OVER
 		set_pause(true)
+		state = GameState.GAME_OVER
 		game_over_ui.show()
 	
 	main_ui.set_lives(new-1)

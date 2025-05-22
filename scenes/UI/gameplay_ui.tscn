@@ -89,7 +89,7 @@ z_index = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 23.0
+offset_right = 30.0
 grow_vertical = 2
 color = Color(0.533333, 0.533333, 0.533333, 1)
 
@@ -98,7 +98,7 @@ z_index = 1
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 1216.0
+offset_left = 1209.0
 offset_right = 1239.0
 grow_vertical = 2
 color = Color(0.533333, 0.533333, 0.533333, 1)
@@ -286,9 +286,9 @@ layout_mode = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 32.0
+offset_left = 39.0
 offset_top = 29.0
-offset_right = -704.0
+offset_right = -718.0
 offset_bottom = 98.0
 grow_horizontal = 2
 
@@ -333,11 +333,15 @@ texture = ExtResource("6_5nf6b")
 expand_mode = 3
 stretch_mode = 2
 
+[node name="Control" type="Control" parent="BossStats"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
 [node name="TimeLeft" type="Label" parent="BossStats"]
 custom_minimum_size = Vector2(104, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-text = "99.01"
+text = "00.00"
 label_settings = SubResource("LabelSettings_om5qg")
 vertical_alignment = 1
 

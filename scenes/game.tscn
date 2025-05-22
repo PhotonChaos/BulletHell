@@ -15,13 +15,13 @@
 size = Vector2(1514, 1278)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbhrr"]
-size = Vector2(1315.5, 64.5)
+size = Vector2(1275.75, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iywne"]
-size = Vector2(54, 1096)
+size = Vector2(37, 1073)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
-size = Vector2(40.5, 1035)
+size = Vector2(46.5, 1035)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -36,7 +36,10 @@ layer = 2
 
 [node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
 visible = false
-offset_right = -681.0
+offset_left = 30.0
+offset_top = 23.0
+offset_right = -711.0
+offset_bottom = -23.0
 
 [node name="GameOverLayer" type="CanvasLayer" parent="."]
 layer = 3
@@ -44,13 +47,19 @@ layer = 3
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
 visible = false
-offset_right = -681.0
+offset_left = 30.0
+offset_top = 23.0
+offset_right = -711.0
+offset_bottom = -23.0
 
 [node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]
 
 [node name="EndScoreScreen" parent="ScoreSummaryLayer" instance=ExtResource("6_vtaks")]
 visible = false
-offset_right = -685.0
+offset_left = 30.0
+offset_top = 23.0
+offset_right = -711.0
+offset_bottom = -23.0
 
 [node name="BulletBounds" type="Area2D" parent="."]
 collision_layer = 0
@@ -97,28 +106,28 @@ visible = false
 [node name="BottomWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
-position = Vector2(646.25, 1078)
+position = Vector2(646.25, 1068)
 shape = SubResource("RectangleShape2D_lbhrr")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="TopWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
-position = Vector2(606, 9)
+position = Vector2(625.875, 9)
 shape = SubResource("RectangleShape2D_lbhrr")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="LeftWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
-position = Vector2(-4, 553)
+position = Vector2(9.5, 541.5)
 shape = SubResource("RectangleShape2D_iywne")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="RightWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
-position = Vector2(1236.25, 549.5)
+position = Vector2(1233.25, 549.5)
 shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 

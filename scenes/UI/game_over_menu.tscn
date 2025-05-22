@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dnsdgd6ajwkce" path="res://scripts/UI/game_over_menu.gd" id="2_ls16c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ls16c"]
-font_size = 44
+font_size = 88
 
 [node name="GameOverMenu" type="Control"]
 layout_mode = 3
@@ -39,6 +39,7 @@ alignment = 1
 layout_mode = 2
 text = "GAME OVER"
 label_settings = SubResource("LabelSettings_ls16c")
+horizontal_alignment = 1
 
 [node name="Control" type="Control" parent="ColorRect/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)

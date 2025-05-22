@@ -172,7 +172,7 @@ func add_points(points: int) -> void:
 	# TODO: Check for extra life thresholds
 	score_changed.emit(score-points, score)
 
-
+## Kills the player as if they got hit by a bullet. Does not kill the player if a bomb is active.
 func die() -> void:
 	if (get_parent() as Level)._bomb_active:
 		# This is to allow for the deathbomb window. 
@@ -187,14 +187,15 @@ func die() -> void:
 	wave._level_ref = get_parent() as Level
 	wave.give_points = false
 	_lives -= 1
+	var old_bombs = _bombs
 	_bombs = max(_bombs, bombs)  # Refresh bombs, but don't take extras away
 	set_itime(HIT_ITIME)
 	
 	lives_changed.emit(_lives+1, _lives)
-	
+	bombs_changed.emit(old_bombs, _bombs)
 
 ## Causes the player to emit all of it's stat changed signals
-## Order is lives, bombs, score, flash charge
+## Order is lives, bombs, score, high score, flash charge
 func emit_stats():
 	lives_changed.emit(_lives, _lives)
 	bombs_changed.emit(_bombs, _bombs)

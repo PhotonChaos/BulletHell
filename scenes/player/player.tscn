@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b5a8qqajkoryp"]
+[gd_scene load_steps=16 format=3 uid="uid://b5a8qqajkoryp"]
 
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player/player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="1_onrkg"]
@@ -10,9 +10,6 @@
 [ext_resource type="AudioStream" uid="uid://c0cjmekmov8y1" path="res://audio/SFX/explosion.wav" id="8_qek5x"]
 [ext_resource type="AudioStream" uid="uid://c1gqc0uf2fda" path="res://audio/SFX/flashbomb.wav" id="9_5gtgg"]
 [ext_resource type="AudioStream" uid="uid://hoiidgdj4d54" path="res://audio/SFX/not_mine/laserShoot.wav" id="10_h17s1"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dqkch"]
-friction = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
 size = Vector2(42, 81)
@@ -30,10 +27,7 @@ radius = 76.0263
 radius = 17.0
 height = 82.0
 
-[node name="Player" type="RigidBody2D" groups=["player"]]
-physics_material_override = SubResource("PhysicsMaterial_dqkch")
-gravity_scale = 0.0
-lock_rotation = true
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_4flbx")
 lives = 5
 bombs = 4
@@ -120,7 +114,6 @@ stream = ExtResource("9_5gtgg")
 stream = ExtResource("10_h17s1")
 volume_db = -9.75
 
-[connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
 [connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]
 [connection signal="area_entered" from="ItemMagnetBox" to="." method="_on_item_magnet_box_area_entered"]

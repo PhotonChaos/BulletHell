@@ -1,5 +1,5 @@
 class_name Player
-extends RigidBody2D
+extends CharacterBody2D
 
 signal lives_changed(old: int, new: int)
 signal bombs_changed(old: int, new: int)
@@ -229,10 +229,6 @@ func _ready() -> void:
 	#draw_line(Vector2.ZERO, Vector2(0, -1000), Color.RED)
 
 
-func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	# TODO: Handle player movement here maybe
-	pass
-
 func _physics_process(delta: float) -> void:
 	# Moving
 	if not focused and Input.is_action_pressed("focus"):
@@ -242,19 +238,6 @@ func _physics_process(delta: float) -> void:
 		focused = false
 		hitbox_sprite.visible = false
 	
-	var frame_move = Vector2.ZERO
-	
-	if Input.is_action_pressed("move_left"):
-		frame_move += Vector2.LEFT
-	elif Input.is_action_pressed("move_right"):
-		frame_move += Vector2.RIGHT
-	
-	if Input.is_action_pressed("move_up"):
-		frame_move += Vector2.UP
-	elif Input.is_action_pressed("move_down"):
-		frame_move += Vector2.DOWN
-	
-	linear_velocity = frame_move.normalized() * get_move_speed()
 	
 	if itime > 0 and itime - delta <= 0:
 		var hit = false
@@ -270,6 +253,20 @@ func _physics_process(delta: float) -> void:
 			die()
 	itime = max(0, itime - delta)
 	
+	var frame_move = Vector2.ZERO
+	
+	if Input.is_action_pressed("move_left"):
+		frame_move += Vector2.LEFT
+	elif Input.is_action_pressed("move_right"):
+		frame_move += Vector2.RIGHT
+	
+	if Input.is_action_pressed("move_up"):
+		frame_move += Vector2.UP
+	elif Input.is_action_pressed("move_down"):
+		frame_move += Vector2.DOWN
+	
+	velocity = frame_move.normalized() * get_move_speed()
+	move_and_slide()
 	
 	## From this point onwards, nothing runs in cutscene or during pause
 	if state != PlayerState.NORMAL:

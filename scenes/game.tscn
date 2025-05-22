@@ -18,10 +18,10 @@ size = Vector2(1514, 1278)
 size = Vector2(1315.5, 64.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iywne"]
-size = Vector2(48, 1096)
+size = Vector2(54, 1096)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
-size = Vector2(41, 1035)
+size = Vector2(40.5, 1035)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -111,14 +111,14 @@ debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 [node name="LeftWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
-position = Vector2(-7, 553)
+position = Vector2(-4, 553)
 shape = SubResource("RectangleShape2D_iywne")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
 [node name="RightWall" type="StaticBody2D" parent="Walls"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
-position = Vector2(1236, 549.5)
+position = Vector2(1236.25, 549.5)
 shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 

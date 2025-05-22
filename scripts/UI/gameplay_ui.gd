@@ -21,9 +21,9 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 @onready var phaseContainer = $BossStats/VBoxContainer/PhasesLeft as HBoxContainer
 
 # Music UI elements
-@onready var musicLabel = $VBoxContainer/HBoxContainer/MusicCredit as Label
-@onready var musicIcon = $VBoxContainer/HBoxContainer/MusicIcon as TextureRect
-@onready var musicBox = $VBoxContainer as VBoxContainer
+@onready var musicLabel = $MusicCredits/HBoxContainer/MusicCredit as Label
+@onready var musicIcon = $MusicCredits/HBoxContainer/MusicIcon as TextureRect
+@onready var musicBox = $MusicCredits as VBoxContainer
 
 var musicY
 

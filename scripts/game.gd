@@ -130,7 +130,7 @@ func play_boss_death_sfx(full_kill: bool) -> void:
 
 func play_bgm(song: BGMAudio) -> void:
 	if not song:
-		print("Tried to play null song.")
+		Logger.warning("Tried to play null song")
 		return
 	
 	main_ui.show_bgm_credit(song.artist, song.song_name)
@@ -149,7 +149,6 @@ func is_paused() -> bool:
 
 ## Standard Methods
 func _ready() -> void:
-	print(OS.get_thread_caller_id())
 	_game_instance = self
 	
 	main_ui.set_boss_stats(false)

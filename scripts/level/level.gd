@@ -92,7 +92,7 @@ func play() -> void:
 ## This is what is overridden in subclasses, do not call this directly.[br]
 ## The level_end signal is sent out immediately after this method finishes executing.
 func _play() -> void:
-	print_rich("[color=red]ERROR: Do not instantiate Level directly, use a subclass![/color]")
+	Logger.error("Do not instantiate Level directly, use a subclass!")
 
 
 ## Produces the BGM asset that the level should use at the start.[br]
@@ -119,9 +119,7 @@ func start_dialogue(chain: DialogueChain):
 	call_deferred("emit_signal", "dialogue_started", chain)
 
 ## This [i]should[/i] get called on the main thread
-func on_dialogue_event(event_name: String, params: Array):
-	print(OS.get_thread_caller_id())
-	
+func on_dialogue_event(event_name: String, params: Array):	
 	if event_name == DIALOGUE_CUE_BOSS_SPAWN:
 		spawn_boss(params[0], BOSS_DEFAULT_POSITION, BOSS_OFFSCREEN_POSITION)
 	elif event_name == DIALOGUE_CUE_BOSS_START:
@@ -206,7 +204,7 @@ func boss_death_particles(pos: Vector2) -> void:
 ## Produces the template for the bullet with id [param name]
 func get_bullet_template(name: BulletType) -> PackedScene:
 	if not (name in bullet_library):
-		print_rich("[color=yellow]Warning:[/color] Unknown bullet type '"+BulletType.keys()[name]+"'")
+		Logger.warning("Unknown bullet type '"+BulletType.keys()[name]+"'")
 		name = DEFAULT_BULLET_TYPE
 		
 	return bullet_library[name]

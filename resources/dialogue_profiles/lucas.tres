@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DialogueProfile" load_steps=2 format=3 uid="uid://5fbh5wjmvctw"]
+
+[ext_resource type="Script" uid="uid://bl6in5scwqfoq" path="res://scripts/resources/dialogue_profile.gd" id="1_crbxa"]
+
+[resource]
+script = ExtResource("1_crbxa")
+character_id = "lucas"
+character_name = "Lucas Lacus"
+character_title = "Gravitational Bird"
+character_color = Color(0.698039, 0.847059, 0.807843, 1)
+portraits = Dictionary[String, Texture2D]({})
+metadata/_custom_type_script = "uid://bl6in5scwqfoq"

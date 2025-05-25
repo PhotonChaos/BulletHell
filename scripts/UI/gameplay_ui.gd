@@ -5,6 +5,8 @@ var heart_icon = preload("res://textures/UI/heart_icon.png")
 var bomb_icon  = preload("res://textures/UI/bomb_icon.png")
 var phase_icon = preload("res://textures/UI/bossPhases.png")
 
+@export var dialogueProfiles: Array[DialogueProfile]
+
 # Right-side UI elements
 @onready var livesContainer = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer/HPIcons as HBoxContainer
 @onready var bombsContainer = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer/BombIcons as HBoxContainer
@@ -39,14 +41,18 @@ var musicY
 @onready var bossPos = $BossPosIndicator as TextureRect
 
 # Dialogue Variables
+const DEFAULT_COLOR: Color = Color.WHITE
+const DEFAULT_NAME: String = "???"
+const DEFAULT_EMOTION: String = "neutral"
+
+var dialogueRegistry: Dictionary[String, DialogueProfile]
+
 var dialogueStartingWidth: float
 var dialogueStartingHeight: float
 var nameplateStartColor: Color
 
 var leftPlateShown: bool
 var rightPlateShown: bool
-var leftPlateActive: bool
-var rightPlateActive: bool
 
 
 func _ready() -> void:
@@ -60,8 +66,13 @@ func _ready() -> void:
 	
 	leftPlateShown = false
 	rightPlateShown = false
-	leftPlateActive = false
-	rightPlateActive = false
+	
+	# Setup dialogue registry
+	dialogueRegistry = {}
+	
+	for profile in dialogueProfiles:
+		dialogueRegistry[profile.character_id] = profile
+	
 
 
 func _set_icons(container: HBoxContainer, count: int, texture: Resource):
@@ -139,9 +150,53 @@ func hide_dialogue() -> Tween:
 	
 	return tw
 
+func activate_nameplate(left: bool):
+	pass
+	
+func show_nameplate(left: bool):
+	pass
+
 ## Shows a line of dialogue. 
 func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: String):
+	var _name = DEFAULT_NAME
+	var _color = DEFAULT_COLOR
+	var portrait: Texture2D
+	
+	if dialogueRegistry.has(speaker_id):
+		_name = dialogueRegistry[speaker_id].character_name
+		_color = dialogueRegistry[speaker_id].character_color
+		
+		if dialogueRegistry[speaker_id].portraits.has(emotion_id):
+			portrait = dialogueRegistry[speaker_id].portraits[emotion_id]
+		elif dialogueRegistry[speaker_id].portraits.has(DEFAULT_EMOTION):
+			Logger.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
+			portrait = dialogueRegistry[speaker_id].portraits[DEFAULT_EMOTION]
+		else:
+			Logger.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
+			Logger.warning("Fallback emotion neutral also missing portrait for speaker " + speaker_id + ". Defaulting to empty image.")
+			portrait = Texture2D.new()
+	
+	var activeNameplate: ColorRect
+	var activeNameplateText: Label
+	var inactiveNameplate: ColorRect
+	
+	if side == "L":
+		activeNameplate = dialogueNameplateLeft
+		activeNameplateText = dialogueNameplateLeftText
+		inactiveNameplate = dialogueNameplateRight
+	else:
+		activeNameplate = dialogueNameplateRight
+		activeNameplateText = dialogueNameplateRightText
+		inactiveNameplate = dialogueNameplateLeft
+	
+	activeNameplate.show()
+	inactiveNameplate.hide()
+	
+	activeNameplateText.text = _name
+	activeNameplateText.set("theme_override_colors/font_color", _color)
+	
 	dialogueText.text = text
+	dialogueText.set("theme_override_colors/font_color", _color)
 
 
 func introduce_speaker(speaker_id: String, on_left: bool):

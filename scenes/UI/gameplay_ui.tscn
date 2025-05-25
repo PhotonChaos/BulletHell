@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=24 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
@@ -45,14 +45,6 @@ font_size = 44
 [sub_resource type="LabelSettings" id="LabelSettings_1i81k"]
 font_size = 44
 
-[sub_resource type="LabelSettings" id="LabelSettings_om5qg"]
-font = ExtResource("4_haufa")
-font_size = 40
-
-[sub_resource type="LabelSettings" id="LabelSettings_l2xif"]
-font = ExtResource("8_8qdoy")
-font_size = 48
-
 [sub_resource type="Gradient" id="Gradient_8qdoy"]
 colors = PackedColorArray(1, 0, 0.233333, 0.784314, 1, 0, 0.233333, 0.0509804)
 
@@ -61,6 +53,17 @@ gradient = SubResource("Gradient_8qdoy")
 width = 16
 height = 16
 fill_from = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_om5qg"]
+font = ExtResource("4_haufa")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_l2xif"]
+font = ExtResource("8_8qdoy")
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_hndcy"]
+font_size = 22
 
 [node name="GameplayUI" type="Control"]
 layout_mode = 3
@@ -282,105 +285,6 @@ label_settings = SubResource("LabelSettings_1i81k")
 [node name="BombIcons" type="HBoxContainer" parent="GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer"]
 layout_mode = 2
 
-[node name="BossStats" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 39.0
-offset_top = 29.0
-offset_right = -718.0
-offset_bottom = 98.0
-grow_horizontal = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BossStats"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="BossStats/VBoxContainer"]
-layout_mode = 2
-
-[node name="BossName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Boss Name"
-label_settings = ExtResource("3_bcwfe")
-
-[node name="Control" type="Control" parent="BossStats/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SpellName" type="Label" parent="BossStats/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Spell Name"
-label_settings = ExtResource("3_bcwfe")
-
-[node name="HealthBar" type="ProgressBar" parent="BossStats/VBoxContainer"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-size_flags_vertical = 1
-value = 50.0
-show_percentage = false
-
-[node name="Control" type="Control" parent="BossStats/VBoxContainer"]
-layout_mode = 2
-
-[node name="PhasesLeft" type="HBoxContainer" parent="BossStats/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="BossStats/VBoxContainer/PhasesLeft"]
-layout_mode = 2
-texture = ExtResource("6_5nf6b")
-expand_mode = 3
-stretch_mode = 2
-
-[node name="Control" type="Control" parent="BossStats"]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 2
-
-[node name="TimeLeft" type="Label" parent="BossStats"]
-custom_minimum_size = Vector2(104, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-text = "00.00"
-label_settings = SubResource("LabelSettings_om5qg")
-vertical_alignment = 1
-
-[node name="MusicCredits" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 33.0
-offset_top = -65.0
-offset_right = 960.0
-offset_bottom = -23.0
-grow_vertical = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MusicCredits"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Control2" type="Control" parent="MusicCredits/HBoxContainer"]
-layout_mode = 2
-
-[node name="MusicIcon" type="TextureRect" parent="MusicCredits/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("7_1i81k")
-expand_mode = 2
-
-[node name="Control" type="Control" parent="MusicCredits/HBoxContainer"]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 2
-
-[node name="MusicCredit" type="Label" parent="MusicCredits/HBoxContainer"]
-z_index = -1
-layout_mode = 2
-text = "NyxTheShield - Pure Furies, Whereabouts of the Heart"
-label_settings = SubResource("LabelSettings_l2xif")
-
-[node name="Control" type="Control" parent="MusicCredits"]
-layout_mode = 2
-
 [node name="BossPosIndicator" type="TextureRect" parent="."]
 z_index = 2
 layout_mode = 1
@@ -396,3 +300,189 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = SubResource("GradientTexture2D_l2xif")
 script = ExtResource("9_l2xif")
+
+[node name="GameOverlay" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 23.0
+offset_right = 1209.0
+offset_bottom = 1057.0
+
+[node name="BossStats" type="HBoxContainer" parent="GameOverlay"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_right = -11.0
+offset_bottom = 66.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverlay/BossStats"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameOverlay/BossStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="BossName" type="Label" parent="GameOverlay/BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Boss Name"
+label_settings = ExtResource("3_bcwfe")
+
+[node name="Control" type="Control" parent="GameOverlay/BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpellName" type="Label" parent="GameOverlay/BossStats/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Spell Name"
+label_settings = ExtResource("3_bcwfe")
+
+[node name="HealthBar" type="ProgressBar" parent="GameOverlay/BossStats/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 1
+value = 50.0
+show_percentage = false
+
+[node name="Control" type="Control" parent="GameOverlay/BossStats/VBoxContainer"]
+layout_mode = 2
+
+[node name="PhasesLeft" type="HBoxContainer" parent="GameOverlay/BossStats/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="GameOverlay/BossStats/VBoxContainer/PhasesLeft"]
+layout_mode = 2
+texture = ExtResource("6_5nf6b")
+expand_mode = 3
+stretch_mode = 2
+
+[node name="Control" type="Control" parent="GameOverlay/BossStats"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="TimeLeft" type="Label" parent="GameOverlay/BossStats"]
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "00.00"
+label_settings = SubResource("LabelSettings_om5qg")
+vertical_alignment = 1
+
+[node name="MusicCredits" type="VBoxContainer" parent="GameOverlay"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -52.0
+offset_right = 935.0
+offset_bottom = -10.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameOverlay/MusicCredits"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="GameOverlay/MusicCredits/HBoxContainer"]
+layout_mode = 2
+
+[node name="MusicIcon" type="TextureRect" parent="GameOverlay/MusicCredits/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_1i81k")
+expand_mode = 2
+
+[node name="Control" type="Control" parent="GameOverlay/MusicCredits/HBoxContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="MusicCredit" type="Label" parent="GameOverlay/MusicCredits/HBoxContainer"]
+z_index = -1
+layout_mode = 2
+text = "NyxTheShield - Pure Furies, Whereabouts of the Heart"
+label_settings = SubResource("LabelSettings_l2xif")
+
+[node name="Control" type="Control" parent="GameOverlay/MusicCredits"]
+layout_mode = 2
+
+[node name="DialogueUI" type="ColorRect" parent="GameOverlay"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -583.5
+offset_top = -308.0
+offset_right = 582.5
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.17, 0.17, 0.17, 0.384314)
+
+[node name="NameplateLeft" type="ColorRect" parent="GameOverlay/DialogueUI"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 37.0
+offset_top = -156.5
+offset_right = 256.0
+offset_bottom = -98.5
+grow_vertical = 2
+color = Color(0.135617, 0.135617, 0.135617, 1)
+
+[node name="Label" type="Label" parent="GameOverlay/DialogueUI/NameplateLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lucas"
+label_settings = SubResource("LabelSettings_hndcy")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NameplateRight" type="ColorRect" parent="GameOverlay/DialogueUI"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -156.5
+offset_right = -37.0
+offset_bottom = -98.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.135617, 0.135617, 0.135617, 1)
+
+[node name="Label" type="Label" parent="GameOverlay/DialogueUI/NameplateRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Kalligan"
+label_settings = SubResource("LabelSettings_hndcy")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Text" type="Label" parent="GameOverlay/DialogueUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 59.0
+offset_top = 30.0
+offset_right = -78.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+autowrap_mode = 2
+clip_text = true

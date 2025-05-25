@@ -63,6 +63,9 @@ var level_ref: Level = null
 var player_ref: Player = null
 var level_thread: Thread = null
 
+var dialogue_chain: DialogueChain = null
+var dialogue_pause: bool = false
+
 ## Returns the global position of the player.
 static func get_player_pos() -> Vector2:
 	if not _game_instance.player_ref:
@@ -71,8 +74,42 @@ static func get_player_pos() -> Vector2:
 		return _game_instance.player_ref.position
 
 
-## SFX Methods
+## Dialogue UI Methods
 
+static func open_dialogue(chain: DialogueChain):
+	_game_instance.call_deferred("_open_dialogue", chain)
+
+
+static func close_dialogue():
+	_game_instance.call_deferred("_close_dialogue")
+	
+
+## Runs the next link in the dialogue chain. Keeps running links until it runs a text link.
+func _advance_dialogue():
+	var result = dialogue_chain.run_next_link()
+	
+	while result == DialogueChain.DIALOGUE_EVENT or result == DialogueChain.DIALOGUE_CALLBACK:
+		result = dialogue_chain.run_next_link()
+	
+	if result == "":
+		_close_dialogue()
+
+
+func _open_dialogue(chain: DialogueChain):
+	state = GameState.GAME_DIALOGUE
+	dialogue_chain = chain
+	dialogue_chain.new_text.connect(main_ui.dialogue_line)
+	main_ui.show_dialogue().tween_callback(_advance_dialogue)
+
+	
+func _close_dialogue():
+	state = GameState.GAME_STARTED
+	dialogue_chain = null
+	main_ui.hide_dialogue()
+
+
+
+## SFX Methods
 static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
@@ -112,6 +149,7 @@ func is_paused() -> bool:
 
 ## Standard Methods
 func _ready() -> void:
+	print(OS.get_thread_caller_id())
 	_game_instance = self
 	
 	main_ui.set_boss_stats(false)
@@ -142,6 +180,9 @@ func _process(delta: float) -> void:
 		sfx_cooldown = 0.1
 		
 		bullet_sfx.play()
+		
+	if state == GameState.GAME_DIALOGUE and Input.is_action_just_pressed("primary") and not dialogue_pause:
+		_advance_dialogue()
 
 
 ## Pauses or unpauses the game, depending on [param paused]. True to pause, false to unpause.[br]
@@ -172,7 +213,9 @@ func play_next_level() -> void:
 	level_ref.level_finished.connect(_on_level_finished)
 	level_ref.bullet_fired.connect(_on_bullet_fired)
 	level_ref.bgm_changed.connect(play_bgm)
-
+	level_ref.dialogue_started.connect(GameController.open_dialogue)
+	level_ref.dialogue_controls.connect(func(paused): dialogue_pause = paused)
+	
 	level_ref.boss_defeated.connect(func(): 
 		main_ui.set_boss_stats(false)
 		play_boss_death_sfx(true)

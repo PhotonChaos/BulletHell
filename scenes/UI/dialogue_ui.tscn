@@ -1,0 +1,102 @@
+[gd_scene load_steps=4 format=3 uid="uid://cml7g7e14vqvn"]
+
+[ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_v5f2h"]
+[ext_resource type="Script" uid="uid://wd6jrj3kcx8j" path="res://scripts/UI/dialogue_ui.gd" id="2_qq553"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_b3co0"]
+font_size = 22
+
+[node name="DialogueUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -741.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_v5f2h")
+script = ExtResource("2_qq553")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 246.0
+offset_bottom = 459.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.17, 0.17, 0.17, 0.384314)
+
+[node name="Nameplate" type="ColorRect" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 37.0
+offset_top = -143.5
+offset_right = 256.0
+offset_bottom = -85.5
+grow_vertical = 2
+color = Color(0.135617, 0.135617, 0.135617, 1)
+
+[node name="Label" type="Label" parent="ColorRect/Nameplate"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lucas"
+label_settings = SubResource("LabelSettings_b3co0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpeakerRight" type="ColorRect" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -143.5
+offset_right = -37.0
+offset_bottom = -85.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.135617, 0.135617, 0.135617, 1)
+
+[node name="Label" type="Label" parent="ColorRect/SpeakerRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Kalligan"
+label_settings = SubResource("LabelSettings_b3co0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Text" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 30.0
+offset_right = -65.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+autowrap_mode = 2
+clip_text = true
+
+[node name="SpeakerLeft" type="Control" parent="ColorRect"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

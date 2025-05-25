@@ -1,0 +1,12 @@
+L:lucas:neutral:Man what a day...
+L:lucas:neutral:First, I get shot at by some random planes.
+L:lucas:neutral:THEN, I get blindsighted by some rando that Kal sent flying.
+L:lucas:neutral:I swear if I see that eldritch idiot again I'm gonna kick his ass!
+*enter crystal_boss*
+*titlecard crystal_boss*
+R:kal:neutral:Hello there~
+L:lucas:neutral:...
+L:lucas:neutral:I'm gonna kick your ass.
+*bgm crystal_boss*
+R:kal:neutral:Well, good luck then~
+*startfight crystal_boss*

@@ -3,6 +3,9 @@ extends Area2D
 ## Base class for a Boss. Subclass this for special behaviour![br]
 ## Just load this up with spell cards if you don't need anything fancy
 
+## Emits when the start method is called
+signal boss_started
+
 ## Emits when the boss runs out of spell cards
 signal boss_defeated
 
@@ -56,6 +59,8 @@ var _level: Level = null
 
 var current_spell: SpellCard = null
 var current_spell_index: int = -1;
+
+var fight_started: bool = false
 
 ## End of Spell Handling
 
@@ -214,14 +219,23 @@ func defeat_phase(card: bool) -> void:
 		reset_tween.tween_callback(func(): current_spell.started = true)
 	
 
+func start() -> void:
+	boss_started.emit()
+	phases_left_changed.emit(0, len(spell_cards)) # No -1 offset here bc we start on a nonspell
+	fight_started = true
+	next_spell()
+
+
 func _ready() -> void:
 	area_entered.connect(_on_hitbox_entered)
-	phases_left_changed.emit(0, len(spell_cards)) # No -1 offset here bc we start on a nonspell
-	next_spell()
+
 
 func _physics_process(delta: float) -> void:
 	var box: Rect2 = ($Hitbox as CollisionShape2D).shape.get_rect()
 	GameController.update_boss_pos(global_position.x + box.position.x, box.size.x)
+	
+	if not fight_started:
+		return
 	
 	if len(move_queue) > 0:
 		var dest = move_queue[0]
@@ -239,6 +253,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_hitbox_entered(area: Area2D) -> void:
+	if not fight_started:
+		# Don't damage player during dialogue
+		return
+	
 	if area is PlayerShot and current_spell.started:
 		area.queue_free()
 		damage((area as PlayerShot).damage)

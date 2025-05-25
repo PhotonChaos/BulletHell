@@ -7,10 +7,9 @@ signal level_loaded
 signal level_finished
 
 # For SFX
-# TODO: Figure out where to handle this
 signal bullet_fired
-
 signal boss_spawned
+signal boss_started
 signal boss_defeated
 signal boss_phase_defeated
 signal boss_phases_changed(old: int, new: int)
@@ -18,6 +17,8 @@ signal spell_started(name: String, boss_name: String)
 signal spell_time_updated(new: float)
 signal spell_hp_updated(max: int, old: int, new: int)
 signal bgm_changed(bgm: BGMAudio)
+signal dialogue_started(chain: DialogueChain)
+signal dialogue_controls(paused: bool)
 
 enum BulletType {
 	BALL = 0,
@@ -30,6 +31,9 @@ enum BulletType {
 @export var subtitle: String
 @export var level_id: String
 
+## Map of bosses that the level might need. Can be empty.
+@export var bosses: Dictionary[String, PackedScene]
+
 # TODO: Implement object pooling
 # ## Unused at the moment.
 #@export var bullet_pools: Dictionary[Level.BulletType, int]
@@ -39,8 +43,15 @@ var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 var _boss_death_wave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
 var _boss_death_particles: PackedScene = preload("res://scenes/fx/fx_boss_explosion.tscn")
 
+var _boss_ref: Boss = null
+
 const DEFAULT_BULLET_TYPE = BulletType.BALL
+const BOSS_OFFSCREEN_POSITION = Vector2(-40, 100)
 const BOSS_DEFAULT_POSITION = Vector2(620, 300)
+
+const DIALOGUE_CUE_BOSS_SPAWN = "enter"
+const DIALOGUE_CUE_BOSS_START = "startfight"
+const DIALOGUE_CUE_BOSS_BGM = "bgm"
 
 # Screw it, I'm just gonna hardcode this.
 const bullet_library: Dictionary = {
@@ -103,6 +114,22 @@ func sleep(time: float) -> void:
 	OS.delay_msec(floor(time * 1000))
 
 
+func start_dialogue(chain: DialogueChain):
+	chain.event_cue.connect(on_dialogue_event)
+	call_deferred("emit_signal", "dialogue_started", chain)
+
+## This [i]should[/i] get called on the main thread
+func on_dialogue_event(event_name: String, params: Array):
+	print(OS.get_thread_caller_id())
+	
+	if event_name == DIALOGUE_CUE_BOSS_SPAWN:
+		spawn_boss(params[0], BOSS_DEFAULT_POSITION, BOSS_OFFSCREEN_POSITION)
+	elif event_name == DIALOGUE_CUE_BOSS_START:
+		_boss_ref.start()
+	elif event_name == DIALOGUE_CUE_BOSS_BGM:
+		bgm_changed.emit(_boss_ref.boss_theme)
+	
+
 # Enemy spawning
 
 ## Spawns a standard enemy. Death functions must be added manually.[br]
@@ -136,13 +163,13 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 	return enemies
 
 ## Spawns [param boss] at position [param pos]
-func spawn_boss(boss: PackedScene, pos: Vector2) -> void:
-	call_deferred("_spawn_boss", boss, pos)
+func spawn_boss(boss: String, pos: Vector2=BOSS_DEFAULT_POSITION, offscreen_pos: Vector2=BOSS_OFFSCREEN_POSITION) -> void:
+	call_deferred("_spawn_boss", boss, pos, offscreen_pos)
 	
 ## Called only on the main thread.
-func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
-	var bossInstance: Boss = boss.instantiate() 
-	bossInstance.global_position = pos
+func _spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
+	var bossInstance: Boss = bosses[boss].instantiate() 
+	bossInstance.global_position = offscreen_pos
 	bossInstance._level = self
 	
 	boss_spawned.emit()
@@ -150,14 +177,22 @@ func _spawn_boss(boss: PackedScene, pos: Vector2) -> void:
 	bossInstance.boss_defeated.connect(func(): clear_bullet_wave(bossInstance.position, 1, true, true))
 	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
 	
+	bossInstance.boss_started.connect(boss_started.emit)
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
 	bossInstance.spell_time_changed.connect(func(new): spell_time_updated.emit(new))
 	bossInstance.spell_card_started.connect(func(spell_name): spell_started.emit(spell_name, bossInstance.name))
 	bossInstance.phases_left_changed.connect(func(old, new): boss_phases_changed.emit(old, new))
 	bossInstance.phase_defeated.connect(func(was_spellz): boss_phase_defeated.emit())
 	
-	call_deferred("change_bgm", bossInstance.boss_theme)
-	call_deferred("add_child", bossInstance)
+	var tw = get_tree().create_tween().set_ease(Tween.EASE_OUT)
+	
+	tw.set_trans(Tween.TRANS_QUAD).tween_property(bossInstance, "position:x", pos.x, 2)
+	tw.parallel().set_trans(Tween.TRANS_EXPO).tween_property(bossInstance, "position:y", pos.y, 2)
+	tw.tween_callback(func(): dialogue_controls.emit(false))
+	
+	_boss_ref = bossInstance
+	dialogue_controls.emit(true)
+	add_child(bossInstance)
 
 # Bullet mechanics
 

@@ -32,7 +32,7 @@ levels = Array[PackedScene]([ExtResource("2_p57ef")])
 [node name="GameplayUI" parent="UILayer" instance=ExtResource("2_iywne")]
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
-layer = 2
+layer = 4
 
 [node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
 visible = false
@@ -42,7 +42,7 @@ offset_right = -711.0
 offset_bottom = -23.0
 
 [node name="GameOverLayer" type="CanvasLayer" parent="."]
-layer = 3
+layer = 5
 
 [node name="GameOverMenu" parent="GameOverLayer" instance=ExtResource("5_0tnpc")]
 process_mode = 2
@@ -53,6 +53,7 @@ offset_right = -711.0
 offset_bottom = -23.0
 
 [node name="ScoreSummaryLayer" type="CanvasLayer" parent="."]
+layer = 5
 
 [node name="EndScoreScreen" parent="ScoreSummaryLayer" instance=ExtResource("6_vtaks")]
 visible = false

@@ -279,7 +279,7 @@ func _physics_process(delta: float) -> void:
 	if shot_cooldown >= shot_threshold:
 		shot_cooldown = shot_threshold
 
-		if Input.is_action_pressed("primary"):
+		if Input.is_action_pressed("primary") and _game_ref.state != GameController.GameState.GAME_DIALOGUE:
 			shot_cooldown = 0
 			shoot()
 	

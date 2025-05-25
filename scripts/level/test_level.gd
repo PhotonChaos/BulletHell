@@ -1,7 +1,5 @@
 extends Level
 
-@onready var bossy = preload("res://scenes/boss/crystal_boss/crystal_boss.tscn")
-
 func _play() -> void:
 	#for i in range(5):
 		#var posx = randf_range(100, 360)
@@ -11,7 +9,10 @@ func _play() -> void:
 		#spawn_enemy(Vector2(posx, -60), Vector2(posx, randf_range(130, 200)), randf_range(0.1, 0.4), enemy_tick)
 		#sleep(1)
 	#
-	#sleep(3)
+	sleep(2)
+	var chain: DialogueChain = DialogueChain.new()
 	
-	spawn_boss(bossy, Level.BOSS_DEFAULT_POSITION)
+	chain.add_script_from_text("res://resources/dialogue_scripts/lucas_kalligan_text.txt")
+	start_dialogue(chain)
+	
 	sleep(1000)

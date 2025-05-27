@@ -152,7 +152,9 @@ func show_dialogue() -> Tween:
 	
 	dialogueNameplateLeftText.text = ""
 	dialogueNameplateRightText.text = ""
-
+	
+	dialoguePortraitLeft.modulate = Color.WHITE
+	dialoguePortraitRight.modulate = Color.WHITE
 	
 	tw.tween_property(dialogueContainer, "size:x", dialogueStartingWidth, 1)
 	tw.parallel().tween_property(dialogueContainer, "modulate", Color.WHITE, 1)
@@ -166,6 +168,12 @@ func hide_dialogue() -> Tween:
 	tw.tween_property(dialogueNameplateLeft, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
 	tw.parallel().tween_property(dialogueNameplateRight, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
 	
+	tw.parallel().tween_property(dialoguePortraitLeft, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
+	tw.parallel().tween_property(dialoguePortraitRight, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
+	
+	tw.tween_callback(func(): dialoguePortraitLeft.texture = null)
+	tw.tween_callback(func(): dialoguePortraitRight.texture = null)
+	
 	tw.tween_property(dialogueContainer, "size:x", 0, 0.5)
 	tw.parallel().tween_property(dialogueContainer, "modulate", Color.TRANSPARENT, 0.5)
 	tw.tween_callback(func(): dialogueContainer.hide())
@@ -174,10 +182,7 @@ func hide_dialogue() -> Tween:
 	rightPlateShown = false
 	
 	current_side = "N"
-	
-	dialoguePortraitLeft.hide()
-	dialoguePortraitRight.hide()
-	
+
 	return tw
 
 func set_nameplate(nameplate: ColorRect, active: bool) -> Tween:
@@ -229,11 +234,6 @@ func show_nameplate(nameplate: ColorRect, original_pos: Vector2) -> Tween:
 	
 	return tw
 
-func show_portrait(left: bool) -> Tween:
-	var tw = get_tree().create_tween()
-	
-	return tw
-	
 
 
 ## Shows a line of dialogue. 

@@ -496,6 +496,7 @@ offset_top = -700.0
 offset_right = 460.0
 grow_vertical = 0
 expand_mode = 4
+stretch_mode = 4
 
 [node name="PortraitRight" type="TextureRect" parent="GameOverlay/DialogueUI"]
 z_index = -1

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bj8v6f48680p5"
-path="res://.godot/imported/ClariseLucas.jpg-6565aa93d0bb929c43ec68117d07f3d0.ctex"
+uid="uid://c85ofdmdk2of0"
+path="res://.godot/imported/crystal_boss.png-91c55431807ccdee37049908bd423b03.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/UI/dialogue_portraits/ClariseLucas.jpg"
-dest_files=["res://.godot/imported/ClariseLucas.jpg-6565aa93d0bb929c43ec68117d07f3d0.ctex"]
+source_file="res://textures/bosses/crystal_boss.png"
+dest_files=["res://.godot/imported/crystal_boss.png-91c55431807ccdee37049908bd423b03.ctex"]
 
 [params]
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_sphx7"]
 [ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="2_bj3dq"]
 [ext_resource type="Resource" uid="uid://4vbkq5wuo86w" path="res://audio/music/bosses/crystal_boss/junko_remix.tres" id="2_f1rpc"]
-[ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/boss.png" id="2_npn3v"]
+[ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/bosses/crystal_boss.png" id="2_npn3v"]
 [ext_resource type="PackedScene" uid="uid://dgjsgcajoewvb" path="res://scenes/boss/crystal_boss/spellcard/quartz_ripples.tscn" id="3_ctll2"]
 [ext_resource type="PackedScene" uid="uid://d4d0ktav1jh72" path="res://scenes/boss/crystal_boss/spellcard/glass_chains.tscn" id="5_0qcvj"]
 [ext_resource type="PackedScene" uid="uid://dd8qfo1h75i4i" path="res://scenes/boss/crystal_boss/spellcard/diamondhearted.tscn" id="5_b0kb4"]

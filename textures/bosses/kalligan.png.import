@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wjna0bref6dt"
-path="res://.godot/imported/kalligan.png-91d93e349b9c2c6204c5509de9613846.ctex"
+uid="uid://b80ib2vxwprrb"
+path="res://.godot/imported/kalligan.png-33cd8ccf319d3902e581167716ab23fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/UI/dialogue_portraits/kalligan.png"
-dest_files=["res://.godot/imported/kalligan.png-91d93e349b9c2c6204c5509de9613846.ctex"]
+source_file="res://textures/bosses/kalligan.png"
+dest_files=["res://.godot/imported/kalligan.png-33cd8ccf319d3902e581167716ab23fa.ctex"]
 
 [params]
 

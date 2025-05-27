@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="DialogueProfile" load_steps=3 format=3 uid="uid://5fbh5wjmvctw"]
 
 [ext_resource type="Script" uid="uid://bl6in5scwqfoq" path="res://scripts/resources/dialogue_profile.gd" id="1_crbxa"]
-[ext_resource type="Texture2D" uid="uid://bj8v6f48680p5" path="res://textures/UI/dialogue_portraits/ClariseLucas.jpg" id="1_v7foy"]
+[ext_resource type="Texture2D" uid="uid://bj8v6f48680p5" path="res://textures/UI/dialogue_portraits/lucas_portrait.jpg" id="1_v7foy"]
 
 [resource]
 script = ExtResource("1_crbxa")

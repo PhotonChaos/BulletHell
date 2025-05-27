@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c85ofdmdk2of0"
-path="res://.godot/imported/boss.png-e685fdcc4a5b295dc1233ada775f89e5.ctex"
+uid="uid://bj8v6f48680p5"
+path="res://.godot/imported/lucas_portrait.jpg-44577098ddc17b87564b90ef9902ac6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/boss.png"
-dest_files=["res://.godot/imported/boss.png-e685fdcc4a5b295dc1233ada775f89e5.ctex"]
+source_file="res://textures/UI/dialogue_portraits/lucas_portrait.jpg"
+dest_files=["res://.godot/imported/lucas_portrait.jpg-44577098ddc17b87564b90ef9902ac6e.ctex"]
 
 [params]
 

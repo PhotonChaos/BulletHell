@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
-[ext_resource type="PackedScene" uid="uid://b5a8qqajkoryp" path="res://scenes/player/player.tscn" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_p57ef"]
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bullet_shoot_1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://lmhik51vbob" path="res://scenes/UI/game_over_menu.tscn" id="5_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
+[ext_resource type="PackedScene" uid="uid://cm48yie4xer8w" path="res://scenes/player/characters/lucas.tscn" id="7_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
@@ -62,6 +62,9 @@ offset_top = 23.0
 offset_right = -711.0
 offset_bottom = -23.0
 
+[node name="Lucas" parent="." instance=ExtResource("7_vtaks")]
+position = Vector2(620, 843)
+
 [node name="BulletBounds" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 6
@@ -71,20 +74,6 @@ visible = false
 position = Vector2(634, 550)
 shape = SubResource("RectangleShape2D_e2o6t")
 debug_color = Color(0.970831, 0, 0.452073, 0.42)
-
-[node name="Player" parent="." instance=ExtResource("2_lbhrr")]
-position = Vector2(620, 843)
-speed = 690.0
-focus_speed = 300.0
-lives = 3
-bombs = 3
-max_flash_charge = 40
-deathbomb_window = 0.2
-fire_rate = 20.0
-shot_count = 5
-shot_spread = 45.0
-focus_spread = 15.0
-shot_velocity = 2700.0
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
@@ -136,8 +125,3 @@ debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 [connection signal="restart" from="ScoreSummaryLayer/EndScoreScreen" to="." method="_on_end_score_screen_restart"]
 [connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
-[connection signal="bombs_changed" from="Player" to="." method="_on_player_bombs_changed"]
-[connection signal="flash_changed" from="Player" to="." method="_on_player_flash_changed"]
-[connection signal="high_score_changed" from="Player" to="." method="_on_player_high_score_changed"]
-[connection signal="lives_changed" from="Player" to="." method="_on_player_lives_changed"]
-[connection signal="score_changed" from="Player" to="." method="_on_player_score_changed"]

@@ -1,0 +1,129 @@
+[gd_scene load_steps=16 format=3 uid="uid://cm48yie4xer8w"]
+
+[ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player/player.gd" id="1_082dn"]
+[ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="2_ta65i"]
+[ext_resource type="Texture2D" uid="uid://cp17eer47sjjy" path="res://textures/hitbox.png" id="3_65m7u"]
+[ext_resource type="AudioStream" uid="uid://k61e757lhigq" path="res://audio/SFX/hit_hurt.wav" id="4_6xdn3"]
+[ext_resource type="AudioStream" uid="uid://cul6jc03mcold" path="res://audio/SFX/not_mine/click.mp3" id="5_y63ll"]
+[ext_resource type="AudioStream" uid="uid://vdp0ujrss5mj" path="res://audio/SFX/click(5).wav" id="6_lydr7"]
+[ext_resource type="AudioStream" uid="uid://b2tp5s8e66uoq" path="res://audio/SFX/power_up.wav" id="7_mm2ox"]
+[ext_resource type="AudioStream" uid="uid://c0cjmekmov8y1" path="res://audio/SFX/explosion.wav" id="8_6ggio"]
+[ext_resource type="AudioStream" uid="uid://c1gqc0uf2fda" path="res://audio/SFX/flashbomb.wav" id="9_egapk"]
+[ext_resource type="AudioStream" uid="uid://hoiidgdj4d54" path="res://audio/SFX/not_mine/laserShoot.wav" id="10_bhrse"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
+size = Vector2(42, 81)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
+radius = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i3pqv"]
+radius = 40.4475
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
+radius = 76.0263
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
+radius = 17.0
+height = 82.0
+
+[node name="Lucas" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_082dn")
+speed = 690.0
+focus_speed = 300.0
+lives = 3
+bombs = 3
+max_flash_charge = 45
+deathbomb_window = 0.2
+fire_rate = 20.0
+shot_count = 5
+shot_spread = 45.0
+focus_spread = 15.0
+shot_velocity = 2700.0
+
+[node name="PlayerWallCollider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_dqkch")
+debug_color = Color(0.7, 0.7, 0.7, 0.419608)
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("2_ta65i")
+
+[node name="HitboxSprite" type="Sprite2D" parent="."]
+z_index = 10
+position = Vector2(0, 2)
+scale = Vector2(3, 3)
+texture = ExtResource("3_65m7u")
+
+[node name="PlayerHitbox" type="Area2D" parent="HitboxSprite" groups=["boss"]]
+position = Vector2(0, -2)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxSprite/PlayerHitbox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_onrkg")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)
+
+[node name="PlayerGrazebox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGrazebox"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_i3pqv")
+debug_color = Color(0, 0.7, 0.396667, 0.419608)
+
+[node name="ItemMagnetBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemMagnetBox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_qlg0r")
+debug_color = Color(0.606667, 0, 0.7, 0)
+
+[node name="ItemHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemHitbox"]
+position = Vector2(0, 5)
+shape = SubResource("CapsuleShape2D_qlg0r")
+
+[node name="HitSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_6xdn3")
+bus = &"SFX"
+
+[node name="GrazeSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_y63ll")
+bus = &"SFX"
+
+[node name="ItemSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_lydr7")
+bus = &"SFX"
+
+[node name="BulletItemSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_lydr7")
+bus = &"SFX"
+
+[node name="FlashChargeSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_mm2ox")
+volume_db = -1.18
+bus = &"SFX"
+
+[node name="BombSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_6ggio")
+
+[node name="FlashBombSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_egapk")
+
+[node name="ShotSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_bhrse")
+volume_db = -9.75
+
+[connection signal="area_entered" from="HitboxSprite/PlayerHitbox" to="." method="_on_player_hitbox_area_entered"]
+[connection signal="area_entered" from="PlayerGrazebox" to="." method="_on_player_grazebox_area_entered"]
+[connection signal="area_entered" from="ItemMagnetBox" to="." method="_on_item_magnet_box_area_entered"]
+[connection signal="area_entered" from="ItemHitbox" to="." method="_on_item_hitbox_area_entered"]

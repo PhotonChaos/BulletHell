@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DialogueProfile" load_steps=3 format=3 uid="uid://b1sqlt83srr26"]
 
-[ext_resource type="Texture2D" uid="uid://wjna0bref6dt" path="res://textures/UI/dialogue_portraits/kalligan.png" id="1_1kvms"]
+[ext_resource type="Texture2D" uid="uid://b80ib2vxwprrb" path="res://textures/UI/dialogue_portraits/kalligan.png" id="1_1kvms"]
 [ext_resource type="Script" uid="uid://bl6in5scwqfoq" path="res://scripts/resources/dialogue_profile.gd" id="1_ya8y2"]
 
 [resource]

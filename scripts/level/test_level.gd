@@ -8,7 +8,6 @@ func _play() -> void:
 	(func(): boss_defeated.connect(func(): boss_flag = true)).call_deferred()
 	
 	var chain: DialogueChain = DialogueChain.new_from_script("res://resources/dialogue_scripts/lucas_kalligan_text.txt")
-	chain.add_callback(func(): boss_flag = true)
 	start_dialogue(chain)
 
 	while not boss_flag:

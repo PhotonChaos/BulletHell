@@ -33,13 +33,16 @@ var chain_index: int = 0
 
 # Builder Functions
 
-func add_link(speaker: String, emotion: String, text: String) -> DialogueChain:
-	chain.push_back([DIALOGUE_TEXT, speaker, emotion, text])
+static func new_from_script(path: String):
+	return DialogueChain.new().add_script_from_text(path)
+
+func add_link(side: String, speaker: String, emotion: String, text: String) -> DialogueChain:
+	chain.push_back([DIALOGUE_TEXT, side, speaker, emotion, text])
 	return self
 
 
 func add_callback(callback: Callable) -> DialogueChain:
-	chain.push_back(callback)
+	chain.push_back([DIALOGUE_CALLBACK, callback])
 	return self
 	
 
@@ -69,8 +72,8 @@ func _parse_text(path: String) -> Array:
 	for line in text.split("\n"):
 		line = line.strip_edges()
 		
-		if line.is_empty():
-			# Ignore empty lines
+		if line.is_empty() or line[0] == "#":
+			# Ignore empty lines and comments
 			continue
 		
 		if line[0] == "*":

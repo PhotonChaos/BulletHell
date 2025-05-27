@@ -39,7 +39,7 @@ var started = false
 var dying = false
 var setup_complete = false
 
-const WARMUP_DEFAULT: float = 2
+const WARMUP_DEFAULT: float = 1
 var warmup_timer: float = WARMUP_DEFAULT
 
 var hp_left: float = 0
@@ -102,7 +102,7 @@ func start(level: Level) -> void:
 		_defeat()
 		
 	hp_changed.emit(hp_left, 0, hp_left)
-	
+	time_changed.emit(time_left)
 
 ## Custom movement function for both attacks. Called once per physics frame, before the attacks.
 func movement() -> void:

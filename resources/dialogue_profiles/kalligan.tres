@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DialogueProfile" load_steps=3 format=3 uid="uid://b1sqlt83srr26"]
+
+[ext_resource type="Texture2D" uid="uid://wjna0bref6dt" path="res://textures/UI/dialogue_portraits/Kalligan.png" id="1_1kvms"]
+[ext_resource type="Script" uid="uid://bl6in5scwqfoq" path="res://scripts/resources/dialogue_profile.gd" id="1_ya8y2"]
+
+[resource]
+script = ExtResource("1_ya8y2")
+character_id = "kal"
+character_name = "Kalligan"
+character_title = "Eldritch Idiot"
+character_color = Color(0.027451, 0.666667, 0.780392, 1)
+portraits = Dictionary[String, Texture2D]({
+"neutral": ExtResource("1_1kvms")
+})
+metadata/_custom_type_script = "uid://bl6in5scwqfoq"

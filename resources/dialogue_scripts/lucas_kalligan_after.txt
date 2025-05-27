@@ -1,0 +1,8 @@
+L:lucas:neutral:Alright, well I'm satisfied.
+R:kal:neutral:Good that you got that out of your system. I needed to blow off some steam too~
+L:lucas:neutral:Must have been a busy day for you. I'm pretty sure two of those planes that shot at me earlier were from your base, what was up with that?
+R:kal:neutral:Just some enemies causing a stir is all, the pilots must have been on edge from all that.
+L:lucas:neutral:OK cool great; could you tell them to like, not shoot at me next time?
+R:kal:neutral:Alright, I'll pass it on. 
+R:kal:neutral:Want to get some food?
+L:lucas:neutral:That sounds like a great idea!

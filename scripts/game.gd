@@ -218,7 +218,10 @@ func play_next_level() -> void:
 	level_ref.boss_defeated.connect(func(): 
 		main_ui.set_boss_stats(false)
 		play_boss_death_sfx(true)
-		
+	)
+	level_ref.boss_defeated.connect(func(): game_bgm.stop())
+	
+	level_ref.level_finished.connect(func():
 		state = GameState.RESULTS_SCREEN
 		
 		get_tree().create_timer(3).timeout.connect(func():
@@ -227,7 +230,6 @@ func play_next_level() -> void:
 			player_ref.add_points(results_ui.calculate_bonus(player_ref._lives, player_ref._bombs, 0))
 		)
 	)
-	level_ref.boss_defeated.connect(func(): game_bgm.stop())
 	
 	level_ref.spell_started.connect(func(spell_name, boss_name):
 		main_ui.set_boss_stats(true)

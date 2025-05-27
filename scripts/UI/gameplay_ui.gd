@@ -35,6 +35,8 @@ var musicY
 @onready var dialogueNameplateRight = $GameOverlay/DialogueUI/NameplateRight as ColorRect
 @onready var dialogueNameplateLeftText = $GameOverlay/DialogueUI/NameplateLeft/Label as Label
 @onready var dialogueNameplateRightText = $GameOverlay/DialogueUI/NameplateRight/Label as Label
+@onready var dialoguePortraitLeft = $GameOverlay/DialogueUI/PortraitLeft as TextureRect
+@onready var dialoguePortraitRight = $GameOverlay/DialogueUI/PortraitRight as TextureRect
 @onready var dialogueText = $GameOverlay/DialogueUI/Text as Label
 
 # Boss Tracker
@@ -45,14 +47,29 @@ const DEFAULT_COLOR: Color = Color.WHITE
 const DEFAULT_NAME: String = "???"
 const DEFAULT_EMOTION: String = "neutral"
 
+## Time that animations for activating a side of dialogue should take
+const DIALOGUE_SIDE_SWITCH_TIME = 0.2
+
 var dialogueRegistry: Dictionary[String, DialogueProfile]
 
 var dialogueStartingWidth: float
 var dialogueStartingHeight: float
+
+var dialogueStartColor: Color
 var nameplateStartColor: Color
 
+var leftPlateStartPos: Vector2
+var rightPlateStartPos: Vector2
+
+var leftPortraitStartPos: Vector2
+var rightPortraitStartPos: Vector2
+
 var leftPlateShown: bool
+var leftPlateActive: bool
 var rightPlateShown: bool
+var rightPlateActive: bool
+
+var side: String = "N"
 
 
 func _ready() -> void:
@@ -61,11 +78,22 @@ func _ready() -> void:
 	
 	dialogueStartingWidth = dialogueContainer.size.x
 	dialogueStartingHeight = dialogueContainer.size.y
+	dialogueStartColor = dialogueContainer.color
 	nameplateStartColor = dialogueNameplateLeft.color
+	
+	leftPlateStartPos = dialogueNameplateLeft.position
+	rightPlateStartPos = dialogueNameplateRight.position
+	
 	dialogueContainer.hide()
 	
 	leftPlateShown = false
 	rightPlateShown = false
+	
+	leftPlateActive = false
+	rightPlateActive = false
+	
+	leftPortraitStartPos = dialoguePortraitLeft.position
+	rightPortraitStartPos = dialoguePortraitRight.position
 	
 	# Setup dialogue registry
 	dialogueRegistry = {}
@@ -118,20 +146,23 @@ func show_dialogue() -> Tween:
 	
 	dialogueNameplateLeft.hide()
 	dialogueNameplateRight.hide()
+	leftPlateShown = false
+	rightPlateShown = false
 	
-	var oldColor = dialogueContainer.color
+	leftPlateActive = false
+	rightPlateActive = false
 	
 	dialogueContainer.size = Vector2(10, dialogueStartingHeight)
-	dialogueContainer.color = Color.TRANSPARENT
+	dialogueContainer.color.a = 0
 	dialogueText.text = ""
 	
 	dialogueNameplateLeftText.text = ""
 	dialogueNameplateRightText.text = ""
-	dialogueNameplateLeftText.modulate = Color.WHITE
-	dialogueNameplateRightText.modulate = Color.WHITE
+	#dialogueNameplateLeftText.modulate = Color.WHITE
+	#dialogueNameplateRightText.modulate = Color.WHITE
 	
 	tw.tween_property(dialogueContainer, "size:x", dialogueStartingWidth, 1)
-	tw.parallel().tween_property(dialogueContainer, "color", oldColor, 1)
+	tw.parallel().tween_property(dialogueContainer, "color", dialogueStartColor, 1)
 	
 	return tw
 
@@ -139,22 +170,74 @@ func show_dialogue() -> Tween:
 func hide_dialogue() -> Tween:
 	var tw = get_tree().create_tween()
 	
-	tw.tween_property(dialogueNameplateLeft, "color", Color.TRANSPARENT, 0.3)
-	tw.parallel().tween_property(dialogueNameplateRight, "color", Color.TRANSPARENT, 0.3)
-	tw.parallel().tween_property(dialogueNameplateLeftText, "modulate", Color.TRANSPARENT, 0.3)
-	tw.parallel().tween_property(dialogueNameplateRightText, "modulate", Color.TRANSPARENT, 0.3)
+	tw.tween_property(dialogueNameplateLeft, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
+	tw.parallel().tween_property(dialogueNameplateRight, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
 	
 	tw.tween_property(dialogueContainer, "size:x", 0, 0.5)
 	tw.parallel().tween_property(dialogueContainer, "color", Color.TRANSPARENT, 0.5)
 	tw.tween_callback(func(): dialogueContainer.hide())
 	
+	leftPlateShown = false
+	rightPlateShown = false
+	
+	leftPlateActive = false
+	rightPlateActive = false
+	
+	dialoguePortraitLeft.hide()
+	dialoguePortraitRight.hide()
+	
 	return tw
 
-func activate_nameplate(left: bool):
-	pass
+func set_nameplate(nameplate: ColorRect, active: bool) -> Tween:
+	var tw = get_tree().create_tween()
 	
-func show_nameplate(left: bool):
-	pass
+	if active:
+		nameplate.position += Vector2(0, 10)
+		tw.tween_property(nameplate, "color:a", nameplateStartColor.a, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.parallel().tween_property(nameplate, "position:y", leftPlateStartPos.y, DIALOGUE_SIDE_SWITCH_TIME)
+	else:
+		nameplate.position.y = leftPlateStartPos.y
+		tw.tween_property(nameplate, "color:a", 0.3, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.parallel().tween_property(nameplate, "position:y", leftPlateStartPos.y+10, DIALOGUE_SIDE_SWITCH_TIME)
+	
+	return tw
+	
+func set_portrait(left: bool, active: bool) -> Tween:
+	var tw = get_tree().create_tween()
+	
+	const OFFSET = 15
+	
+	var original_pos = leftPortraitStartPos if left else rightPortraitStartPos
+	var begin_pos = original_pos if not active else original_pos - OFFSET
+	var end_x_offset = -OFFSET if left else OFFSET
+	var portrait = dialoguePortraitLeft if left else dialoguePortraitRight
+	var oldPos = portrait.position.x
+	
+	#portrait.position.x += begin_x_offset
+	tw.tween_property(portrait, "position:x", oldPos, DIALOGUE_SIDE_SWITCH_TIME)
+	
+	return tw
+	
+	
+func show_nameplate(nameplate: ColorRect, original_pos: Vector2) -> Tween:
+	var tw = get_tree().create_tween()
+	
+	nameplate.position += Vector2(0, 20)
+	nameplate.color.a = 0
+	
+	nameplate.show()
+	
+	tw.tween_property(nameplate, "modulate", Color.WHITE, DIALOGUE_SIDE_SWITCH_TIME)
+	tw.parallel().tween_property(nameplate, "position", original_pos, DIALOGUE_SIDE_SWITCH_TIME)
+	
+	return tw
+
+func show_portrait(left: bool) -> Tween:
+	var tw = get_tree().create_tween()
+	
+	return tw
+	
+
 
 ## Shows a line of dialogue. 
 func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: String):
@@ -178,19 +261,52 @@ func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: S
 	
 	var activeNameplate: ColorRect
 	var activeNameplateText: Label
+	var activePortrait: TextureRect
+	
 	var inactiveNameplate: ColorRect
+	var inactivePortrait: TextureRect
 	
 	if side == "L":
 		activeNameplate = dialogueNameplateLeft
 		activeNameplateText = dialogueNameplateLeftText
+		activePortrait = dialoguePortraitLeft
+		
 		inactiveNameplate = dialogueNameplateRight
+		inactivePortrait = dialoguePortraitRight
+		
+		if not leftPlateShown:
+			show_nameplate(dialogueNameplateLeft, leftPlateStartPos)
+			leftPlateShown = true
+			
+		if not leftPlateActive:
+			set_nameplate(activeNameplate, true)
+			leftPlateActive = true
+			
+			set_nameplate(inactiveNameplate, false)
+			rightPlateActive = false
 	else:
 		activeNameplate = dialogueNameplateRight
 		activeNameplateText = dialogueNameplateRightText
+		activePortrait = dialoguePortraitRight
+		
 		inactiveNameplate = dialogueNameplateLeft
+		inactivePortrait = dialoguePortraitLeft
+		
+		if not rightPlateShown:
+			show_nameplate(dialogueNameplateRight, rightPlateStartPos)
+			rightPlateShown = true
+		
+		if not rightPlateActive:
+			set_nameplate(activeNameplate, true)
+			rightPlateActive = true
+			
+			set_nameplate(inactiveNameplate, false)
+			leftPlateActive = false
 	
-	activeNameplate.show()
-	inactiveNameplate.hide()
+	inactivePortrait.hide()
+	
+	activePortrait.texture = portrait
+	activePortrait.show()
 	
 	activeNameplateText.text = _name
 	activeNameplateText.set("theme_override_colors/font_color", _color)
@@ -204,8 +320,8 @@ func introduce_speaker(speaker_id: String, on_left: bool):
 	
 	if on_left:
 		dialogueNameplateLeft.position -= Vector2(0, -10)
-		tw.tween_property(dialogueNameplateLeft, "color", nameplateStartColor, 0.3)
-		tw.parallel().tween_property(dialogueNameplateLeft, "position:y", dialogueNameplateLeft.position.y + 10, 0.3)
+		tw.tween_property(dialogueNameplateLeft, "color", nameplateStartColor, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.parallel().tween_property(dialogueNameplateLeft, "position:y", dialogueNameplateLeft.position.y + 10, DIALOGUE_SIDE_SWITCH_TIME)
 
 # Boss Methods
 func set_boss_pos(boss_x: float, boss_width: float):

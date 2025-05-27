@@ -115,8 +115,9 @@ func sleep(time: float) -> void:
 
 
 func start_dialogue(chain: DialogueChain):
-	chain.event_cue.connect(on_dialogue_event)
+	(func(): chain.event_cue.connect(on_dialogue_event)).call_deferred()
 	call_deferred("emit_signal", "dialogue_started", chain)
+
 
 ## This [i]should[/i] get called on the main thread
 func on_dialogue_event(event_name: String, params: Array):	
@@ -127,6 +128,9 @@ func on_dialogue_event(event_name: String, params: Array):
 	elif event_name == DIALOGUE_CUE_BOSS_BGM:
 		bgm_changed.emit(_boss_ref.boss_theme)
 	
+
+func on_boss_defeat():
+	pass
 
 # Enemy spawning
 
@@ -174,6 +178,7 @@ func _spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
 	bossInstance.boss_defeated.connect(func(): boss_death_particles(bossInstance.position))
 	bossInstance.boss_defeated.connect(func(): clear_bullet_wave(bossInstance.position, 1, true, true))
 	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
+	
 	
 	bossInstance.boss_started.connect(boss_started.emit)
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))

@@ -22,7 +22,7 @@ func nonspell() -> void:
 			random_walk += 90
 		if global_position.x + random_walk > Boss.MOVEMENT_RIGHT_BOUND - 30:
 			random_walk -= 90
-		print(random_walk)
+
 		_boss.tween_move_to(global_position + Vector2(random_walk,0), 0.80)
 
 var turrets = []

@@ -21,7 +21,7 @@ func spell() -> void:
 		_level.bullet_ring(global_position, Level.BulletType.SMALL_BALL, 2, last_trajectory, 3, 0, 40)
 
 func get_time_scaler() -> float:
-	return max(0, 1-(float(lifetime)/((spell_time_limit-5)*60)))
+	return max(0, 1-(float(lifetime)/((spell_time_limit-10)*60)))
 
 
 func charge_at_player(delay: float) -> void:

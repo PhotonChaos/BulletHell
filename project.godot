@@ -32,7 +32,8 @@ window/stretch/mode="viewport"
 [file_customization]
 
 folder_colors={
-"res://export/": "gray"
+"res://export/": "gray",
+"res://resources/": "yellow"
 }
 
 [global_group]

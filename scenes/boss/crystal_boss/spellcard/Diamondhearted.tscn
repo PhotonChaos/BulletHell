@@ -7,5 +7,6 @@ script = ExtResource("1_g4to6")
 spell_name = "Diamondhearted"
 nonspell_hp = 0
 spell_hp = 1000
+spell_time_limit = 1
 is_timeout = true
 metadata/_custom_type_script = "uid://bqfvpb22cobwe"

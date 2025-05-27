@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=26 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://lchfyx5pruq1" path="res://textures/UI/flashbomb_ui.png" id="3_dyrh1"]
 [ext_resource type="Resource" uid="uid://5fbh5wjmvctw" path="res://resources/dialogue_profiles/lucas.tres" id="4_dmn3c"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
+[ext_resource type="Resource" uid="uid://b1sqlt83srr26" path="res://resources/dialogue_profiles/kalligan.tres" id="5_dmn3c"]
 [ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
 [ext_resource type="Texture2D" uid="uid://bql312u8ubupg" path="res://textures/UI/music.png" id="7_1i81k"]
 [ext_resource type="FontFile" uid="uid://dig053nwgpxcp" path="res://ui/fonts/m5x7.ttf" id="8_8qdoy"]
@@ -73,7 +74,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wf0n7")
 script = ExtResource("2_bcwfe")
-dialogueProfiles = Array[ExtResource("3_bogbp")]([ExtResource("4_dmn3c")])
+dialogueProfiles = Array[ExtResource("3_bogbp")]([ExtResource("4_dmn3c"), ExtResource("5_dmn3c")])
 
 [node name="BorderBottom" type="ColorRect" parent="."]
 z_index = 1
@@ -419,7 +420,7 @@ offset_right = 582.5
 offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 0
-color = Color(0.17, 0.17, 0.17, 0.384314)
+color = Color(0.168627, 0.168627, 0.168627, 0.85098)
 
 [node name="NameplateLeft" type="ColorRect" parent="GameOverlay/DialogueUI"]
 layout_mode = 1
@@ -484,3 +485,30 @@ grow_vertical = 2
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 autowrap_mode = 2
 clip_text = true
+
+[node name="PortraitLeft" type="TextureRect" parent="GameOverlay/DialogueUI"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -700.0
+offset_right = 460.0
+grow_vertical = 0
+expand_mode = 4
+
+[node name="PortraitRight" type="TextureRect" parent="GameOverlay/DialogueUI"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = -700.0
+grow_horizontal = 0
+grow_vertical = 0
+expand_mode = 4
+stretch_mode = 4
+flip_h = true

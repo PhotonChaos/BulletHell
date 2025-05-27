@@ -65,11 +65,9 @@ var leftPortraitStartPos: Vector2
 var rightPortraitStartPos: Vector2
 
 var leftPlateShown: bool
-var leftPlateActive: bool
 var rightPlateShown: bool
-var rightPlateActive: bool
 
-var side: String = "N"
+var current_side: String
 
 
 func _ready() -> void:
@@ -89,8 +87,7 @@ func _ready() -> void:
 	leftPlateShown = false
 	rightPlateShown = false
 	
-	leftPlateActive = false
-	rightPlateActive = false
+	current_side = "N"
 	
 	leftPortraitStartPos = dialoguePortraitLeft.position
 	rightPortraitStartPos = dialoguePortraitRight.position
@@ -149,20 +146,16 @@ func show_dialogue() -> Tween:
 	leftPlateShown = false
 	rightPlateShown = false
 	
-	leftPlateActive = false
-	rightPlateActive = false
-	
 	dialogueContainer.size = Vector2(10, dialogueStartingHeight)
-	dialogueContainer.color.a = 0
+	dialogueContainer.modulate = Color.TRANSPARENT
 	dialogueText.text = ""
 	
 	dialogueNameplateLeftText.text = ""
 	dialogueNameplateRightText.text = ""
-	#dialogueNameplateLeftText.modulate = Color.WHITE
-	#dialogueNameplateRightText.modulate = Color.WHITE
+
 	
 	tw.tween_property(dialogueContainer, "size:x", dialogueStartingWidth, 1)
-	tw.parallel().tween_property(dialogueContainer, "color", dialogueStartColor, 1)
+	tw.parallel().tween_property(dialogueContainer, "modulate", Color.WHITE, 1)
 	
 	return tw
 
@@ -174,14 +167,13 @@ func hide_dialogue() -> Tween:
 	tw.parallel().tween_property(dialogueNameplateRight, "modulate", Color.TRANSPARENT, DIALOGUE_SIDE_SWITCH_TIME)
 	
 	tw.tween_property(dialogueContainer, "size:x", 0, 0.5)
-	tw.parallel().tween_property(dialogueContainer, "color", Color.TRANSPARENT, 0.5)
+	tw.parallel().tween_property(dialogueContainer, "modulate", Color.TRANSPARENT, 0.5)
 	tw.tween_callback(func(): dialogueContainer.hide())
 	
 	leftPlateShown = false
 	rightPlateShown = false
 	
-	leftPlateActive = false
-	rightPlateActive = false
+	current_side = "N"
 	
 	dialoguePortraitLeft.hide()
 	dialoguePortraitRight.hide()
@@ -205,16 +197,21 @@ func set_nameplate(nameplate: ColorRect, active: bool) -> Tween:
 func set_portrait(left: bool, active: bool) -> Tween:
 	var tw = get_tree().create_tween()
 	
-	const OFFSET = 15
+	const OFFSET = Vector2(15, 0)
 	
 	var original_pos = leftPortraitStartPos if left else rightPortraitStartPos
-	var begin_pos = original_pos if not active else original_pos - OFFSET
 	var end_x_offset = -OFFSET if left else OFFSET
+	var begin_pos = original_pos if not active else original_pos + end_x_offset
+	var end_pos = original_pos + end_x_offset if not active else original_pos
 	var portrait = dialoguePortraitLeft if left else dialoguePortraitRight
-	var oldPos = portrait.position.x
+	var start_color = Color.WHITE if not active else Color(0.5, 0.5, 0.5, 0.2)
+	var end_color = Color(0.5, 0.5, 0.5, 0.5) if not active else Color.WHITE
 	
-	#portrait.position.x += begin_x_offset
-	tw.tween_property(portrait, "position:x", oldPos, DIALOGUE_SIDE_SWITCH_TIME)
+	portrait.position = begin_pos
+	portrait.modulate = start_color
+	
+	tw.tween_property(portrait, "position", end_pos, DIALOGUE_SIDE_SWITCH_TIME)
+	tw.parallel().tween_property(portrait, "modulate", end_color, DIALOGUE_SIDE_SWITCH_TIME)
 	
 	return tw
 	
@@ -278,12 +275,6 @@ func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: S
 			show_nameplate(dialogueNameplateLeft, leftPlateStartPos)
 			leftPlateShown = true
 			
-		if not leftPlateActive:
-			set_nameplate(activeNameplate, true)
-			leftPlateActive = true
-			
-			set_nameplate(inactiveNameplate, false)
-			rightPlateActive = false
 	else:
 		activeNameplate = dialogueNameplateRight
 		activeNameplateText = dialogueNameplateRightText
@@ -296,17 +287,16 @@ func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: S
 			show_nameplate(dialogueNameplateRight, rightPlateStartPos)
 			rightPlateShown = true
 		
-		if not rightPlateActive:
-			set_nameplate(activeNameplate, true)
-			rightPlateActive = true
-			
-			set_nameplate(inactiveNameplate, false)
-			leftPlateActive = false
 	
-	inactivePortrait.hide()
+	if side != current_side:
+		set_nameplate(activeNameplate, true)
+		set_nameplate(inactiveNameplate, false)
+		set_portrait(side == "L", true)
+		set_portrait(side != "L", false)
 	
+	current_side = side
+		
 	activePortrait.texture = portrait
-	activePortrait.show()
 	
 	activeNameplateText.text = _name
 	activeNameplateText.set("theme_override_colors/font_color", _color)

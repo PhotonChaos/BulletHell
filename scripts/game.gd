@@ -179,6 +179,7 @@ func _ready() -> void:
 	if len(levels) > 0:
 		level_thread = Thread.new()
 		play_next_level()
+		
 
 
 func _process(delta: float) -> void:

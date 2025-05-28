@@ -1,13 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgya03ux1bnsp"]
+[gd_scene load_steps=5 format=3 uid="uid://bgya03ux1bnsp"]
 
-[ext_resource type="Script" uid="uid://diwqqp7a0ovpi" path="res://scenes/bullets/lasers/laser_straight.gd" id="1_ouuvg"]
+[ext_resource type="Script" uid="uid://diwqqp7a0ovpi" path="res://scripts/bullet/laser/laser_straight.gd" id="1_ouuvg"]
+
+[sub_resource type="Gradient" id="Gradient_ouuvg"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 0.188235, 1, 1, 1, 1, 1, 1, 1, 0.19, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a46k7"]
+gradient = SubResource("Gradient_ouuvg")
+width = 10
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ouuvg"]
+size = Vector2(1, 1)
 
-[node name="LaserStraight" type="Area2D"]
-collision_layer = 2
-collision_mask = 0
+[node name="LaserStraight" type="Sprite2D"]
+texture = SubResource("GradientTexture1D_a46k7")
 script = ExtResource("1_ouuvg")
 
-[node name="Hitbox" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_ouuvg")

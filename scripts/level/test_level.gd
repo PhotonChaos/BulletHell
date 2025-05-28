@@ -5,19 +5,11 @@ var end_dialogue_flag = false
 
 func _play() -> void:
 	sleep(1)
-	(func(): boss_defeated.connect(func(): boss_flag = true)).call_deferred()
 	
-	var chain: DialogueChain = DialogueChain.new_from_script("res://resources/dialogue_scripts/lucas_kalligan_text.txt")
-	start_dialogue(chain)
-
-	while not boss_flag:
-		sleep(0.1)
+	for j in range(20):
+		for i in range(40):
+			var laser = LaserStraight.create(Vector2(randf_range(100, 1100), -100), Vector2.from_angle(randf_range(0,PI)), 2400, 30, 1, 3, Color.GREEN, Color.BLACK)
+			call_deferred("add_child", laser)
+		sleep(3)
 	
-	sleep(3)
-	
-	chain = DialogueChain.new_from_script("res://resources/dialogue_scripts/lucas_kalligan_after.txt")
-	chain.add_callback(func(): end_dialogue_flag = true)
-	start_dialogue(chain)
-	
-	while not end_dialogue_flag:
-		sleep(0.1)
+	sleep(10000)

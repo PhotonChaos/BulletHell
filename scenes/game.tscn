@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=16 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
 [ext_resource type="PackedScene" uid="uid://cm48yie4xer8w" path="res://scenes/player/characters/lucas.tscn" id="7_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
+[ext_resource type="Texture2D" uid="uid://bb7ypyttrx210" path="res://textures/bullets/bullet_small.png" id="11_kvpfn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(1514, 1278)
@@ -120,6 +121,11 @@ debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 position = Vector2(1233.25, 549.5)
 shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
+
+[node name="DebugRuler" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1138, 419)
+texture = ExtResource("11_kvpfn")
 
 [connection signal="restart" from="GameOverLayer/GameOverMenu" to="." method="_on_game_over_menu_restart"]
 [connection signal="restart" from="ScoreSummaryLayer/EndScoreScreen" to="." method="_on_end_score_screen_restart"]

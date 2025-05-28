@@ -73,6 +73,9 @@ static func get_player_pos() -> Vector2:
 	else:
 		return _game_instance.player_ref.position
 
+## Returns a reference to the player
+static func get_player() -> Player:
+	return _game_instance.player_ref
 
 ## Dialogue UI Methods
 
@@ -155,6 +158,13 @@ func _ready() -> void:
 	
 	player_ref = get_tree().get_first_node_in_group('player')
 	player_ref._game_ref = self
+	
+	player_ref.score_changed.connect(_on_player_score_changed)
+	player_ref.high_score_changed.connect(_on_player_high_score_changed)
+	player_ref.bombs_changed.connect(_on_player_bombs_changed)
+	player_ref.lives_changed.connect(_on_player_lives_changed)
+	player_ref.flash_changed.connect(_on_player_flash_changed)
+	
 	player_ref.emit_stats()
 	
 	state = GameState.GAME_STARTED

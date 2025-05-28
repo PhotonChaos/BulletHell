@@ -172,7 +172,15 @@ func add_points(points: int) -> void:
 	# TODO: Check for extra life thresholds
 	score_changed.emit(score-points, score)
 
-## Kills the player as if they got hit by a bullet. Does not kill the player if a bomb is active.
+
+func hit() -> void:
+	sfx_player_hit.play()
+	
+	set_itime(deathbomb_window+0.1)
+	get_tree().create_timer(deathbomb_window).timeout.connect(die)
+
+
+## Kills the player as if they got hit by a bullet, with no deathbomb window. Does not kill the player if a bomb is active.
 func die() -> void:
 	if (get_parent() as Level)._bomb_active:
 		# This is to allow for the deathbomb window. 
@@ -241,17 +249,17 @@ func _physics_process(delta: float) -> void:
 	
 	
 	if itime > 0 and itime - delta <= 0:
-		var hit = false
+		var _hit = false
 		for area in hitbox.get_overlapping_areas():
 			if area is Bullet:
 				(get_parent() as Level).clear_bullet(area, false)
-				hit = true
+				_hit = true
 				break
 			elif area is Killable and (area as Killable).harms_player or area is Boss:
-				hit = true
+				_hit = true
 				break
-		if hit:
-			die()
+		if _hit:
+			hit()
 	itime = max(0, itime - delta)
 	
 	var frame_move = Vector2.ZERO
@@ -310,10 +318,7 @@ func _on_player_hitbox_area_entered(area: Area2D) -> void:
 		
 		area.queue_free()
 		
-	sfx_player_hit.play()
-	
-	set_itime(deathbomb_window)
-	await get_tree().create_timer(deathbomb_window).timeout.connect(die)
+	hit()
 
 
 func _on_player_grazebox_area_entered(area: Area2D) -> void:

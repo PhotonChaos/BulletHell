@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgya03ux1bnsp"]
+
+[ext_resource type="Script" uid="uid://diwqqp7a0ovpi" path="res://scenes/bullets/lasers/laser_straight.gd" id="1_ouuvg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ouuvg"]
+
+[node name="LaserStraight" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_ouuvg")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ouuvg")

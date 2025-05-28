@@ -154,6 +154,9 @@ func clear_move_queue() -> void:
 func damage(amount: int) -> void:
 	if _level._bomb_active and is_bomb_immune():
 		return
+
+	if not current_spell:
+		return
 		
 	current_spell.damage(amount)
 

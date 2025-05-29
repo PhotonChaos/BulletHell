@@ -22,6 +22,7 @@ extends Node2D
 # [ ] Figure out SFX for level stuff
 
 @export var levels: Array[PackedScene]
+@export var player_character: PackedScene
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
@@ -156,7 +157,12 @@ func _ready() -> void:
 	
 	main_ui.set_boss_stats(false)
 	
-	player_ref = get_tree().get_first_node_in_group('player')
+	var pl = player_character.instantiate() as Player
+	pl.position = Vector2(620, 843)
+	add_child(pl)
+	
+	#player_ref = get_tree().get_first_node_in_group('player')
+	player_ref = pl
 	player_ref._game_ref = self
 	
 	player_ref.score_changed.connect(_on_player_score_changed)

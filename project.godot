@@ -43,6 +43,7 @@ player="Contains the player node"
 items="For positive player pickups"
 boss="Contains the current boss of the level"
 boss_turrets="Contains turrets spawned by bosses. Objects in this group will be deleted whenever a spell or nonspell is defeated."
+enemy_lasers="Contains lasers fired by enemies and the boss"
 
 [input]
 

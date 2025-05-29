@@ -14,13 +14,13 @@ width = 10
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ouuvg"]
 size = Vector2(1, 1)
 
-[node name="LaserStraight" type="Sprite2D"]
-texture = SubResource("GradientTexture1D_a46k7")
-script = ExtResource("1_ouuvg")
-
-[node name="Area2D" type="Area2D" parent="."]
+[node name="LaserStraight" type="Area2D" groups=["enemy_lasers"]]
 collision_layer = 2
 collision_mask = 0
+script = ExtResource("1_ouuvg")
 
-[node name="Hitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture1D_a46k7")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ouuvg")

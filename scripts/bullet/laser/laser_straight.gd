@@ -1,5 +1,5 @@
 class_name LaserStraight
-extends Sprite2D
+extends Area2D
 
 
 var start: Vector2
@@ -14,7 +14,7 @@ var out_color: Color = Color.TRANSPARENT
 
 const LASER_EXPAND_TIME: float = 0.2
 const LASER_WARN_WIDTH: int = 2
-const LASER_GRACE_THRESHOLD: int = 5
+const LASER_GRACE_THRESHOLD: int = 2
 const LASER_ABSOLUTE_MIN_RADIUS: int = 1
 
 var _laser_arrow: Vector2
@@ -22,7 +22,8 @@ var _grace: float
 
 var _player_ref: Player
 
-@onready var collider: CollisionShape2D = $Area2D/Hitbox
+@onready var sprite: Sprite2D = $Sprite
+@onready var collider: CollisionShape2D = $Hitbox
 
 
 static func create(start: Vector2, direction: Vector2, length: float, radius: float, warn_time: float, duration: float, out_color: Color=Color.TRANSPARENT, in_color: Color=Color.WHITE) -> LaserStraight:
@@ -58,16 +59,19 @@ func _ready() -> void:
 	_laser_arrow = end - start
 	_grace = max(5, radius - LASER_ABSOLUTE_MIN_RADIUS)
 
-	texture = GradientTexture1D.new()
+	sprite.texture = GradientTexture1D.new()
 	
 	var gradient = Gradient.new()
 	gradient.set_color(0, out_color)
 	gradient.set_color(1, out_color)
 	gradient.add_point(0.2, in_color)
 	gradient.add_point(0.8, in_color)
-	texture.width = LASER_WARN_WIDTH
-	texture.gradient = gradient
+	sprite.texture.width = LASER_WARN_WIDTH
+	sprite.texture.gradient = gradient
 	
+	var collider_shape = RectangleShape2D.new()
+	collider_shape.size = Vector2(radius, 1)
+	collider.shape = collider_shape
 	collider.disabled = true
 	
 	draw_sprite()
@@ -92,10 +96,10 @@ func draw_sprite():
 
 
 func expand_laser():
-	collider.disabled = false
 	var tween = get_tree().create_tween()
-	tween.tween_property(texture, "width", radius, LASER_EXPAND_TIME)
-	tween.parallel().tween_property(collider, "scale:x", radius - _grace, LASER_EXPAND_TIME)
+	tween.tween_property(sprite.texture, "width", radius, LASER_EXPAND_TIME)
+	#tween.parallel().tween_property(collider.shape, "size:x", radius - _grace, LASER_EXPAND_TIME)
+	tween.tween_callback(func(): collider.disabled = false)
 	tween.tween_interval(duration)
 	tween.tween_callback(collapse_laser)
 
@@ -104,5 +108,5 @@ func collapse_laser():
 	
 	var tw = get_tree().create_tween()
 	
-	tw.tween_property(texture, "width", 0, LASER_EXPAND_TIME)
+	tw.tween_property(sprite.texture, "width", 1, LASER_EXPAND_TIME)
 	tw.tween_callback(queue_free)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=27 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://5fbh5wjmvctw" path="res://resources/dialogue_profiles/lucas.tres" id="4_dmn3c"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
 [ext_resource type="Resource" uid="uid://b1sqlt83srr26" path="res://resources/dialogue_profiles/kalligan.tres" id="5_dmn3c"]
+[ext_resource type="Resource" uid="uid://d32nnlma2ltqi" path="res://resources/dialogue_profiles/maya.tres" id="6_3ukiq"]
 [ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
 [ext_resource type="Texture2D" uid="uid://bql312u8ubupg" path="res://textures/UI/music.png" id="7_1i81k"]
 [ext_resource type="FontFile" uid="uid://dig053nwgpxcp" path="res://ui/fonts/m5x7.ttf" id="8_8qdoy"]
@@ -74,7 +75,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wf0n7")
 script = ExtResource("2_bcwfe")
-dialogueProfiles = Array[ExtResource("3_bogbp")]([ExtResource("4_dmn3c"), ExtResource("5_dmn3c")])
+dialogueProfiles = Array[ExtResource("3_bogbp")]([ExtResource("4_dmn3c"), ExtResource("5_dmn3c"), ExtResource("6_3ukiq")])
 
 [node name="BorderBottom" type="ColorRect" parent="."]
 z_index = 1

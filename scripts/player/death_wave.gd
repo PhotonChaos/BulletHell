@@ -8,6 +8,8 @@ var invisible: bool = false
 var give_points: bool = true
 var lifetime: float = 0
 
+var hard_clear: bool = false
+
 var _level_ref: Level = null
 
 func _ready() -> void:
@@ -29,3 +31,5 @@ func _process(delta: float) -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if area is Bullet:
 		_level_ref.clear_bullet(area, give_points)
+	if area is LaserStraight and hard_clear:
+		_level_ref.clear_laser(area)

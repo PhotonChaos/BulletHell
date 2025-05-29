@@ -81,7 +81,6 @@ func play() -> void:
 	change_bgm(get_starting_bgm())
 	
 	_level_thread = Thread.new()
-	
 	_level_thread.start(_play)
 	_level_thread.wait_to_finish()
 	
@@ -281,13 +280,20 @@ func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
 		call_deferred("spawn_item", bullet.global_position, Item.ItemType.SMALL_POINT, true)
 
 
+func clear_laser(laser: LaserStraight) -> void:
+	laser.collapse_laser()
+
 ## Turns all bullets onscreen into points. [br]
-## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs)
+## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs) and lasers
 func clear_all_bullets(hard_clear=false):
 	var bullets: Array = get_tree().get_nodes_in_group("enemy_bullets")
 	
 	for bullet: Bullet in bullets:
 		clear_bullet(bullet, true)
+	
+	if hard_clear:
+		for laser: LaserStraight in get_tree().get_nodes_in_group("enemy_lasers"):
+			clear_laser(laser)
 
 ## Spawns a wave that clears the bullets onscreen.
 func clear_bullet_wave(pos: Vector2, duration: float, points: bool, hard: bool) -> void:

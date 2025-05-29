@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_p57ef"]
+[ext_resource type="PackedScene" uid="uid://c62sx5d6pmgwm" path="res://scenes/player/characters/maya/maya.tscn" id="3_dinhu"]
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bullet_shoot_1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://lmhik51vbob" path="res://scenes/UI/game_over_menu.tscn" id="5_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
-[ext_resource type="PackedScene" uid="uid://cm48yie4xer8w" path="res://scenes/player/characters/lucas.tscn" id="7_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
 [ext_resource type="Texture2D" uid="uid://bb7ypyttrx210" path="res://textures/bullets/bullet_small.png" id="11_kvpfn"]
 
@@ -27,6 +27,7 @@ size = Vector2(46.5, 1035)
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 levels = Array[PackedScene]([ExtResource("2_p57ef")])
+player_character = ExtResource("3_dinhu")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -62,9 +63,6 @@ offset_left = 30.0
 offset_top = 23.0
 offset_right = -711.0
 offset_bottom = -23.0
-
-[node name="Lucas" parent="." instance=ExtResource("7_vtaks")]
-position = Vector2(620, 843)
 
 [node name="BulletBounds" type="Area2D" parent="."]
 collision_layer = 0

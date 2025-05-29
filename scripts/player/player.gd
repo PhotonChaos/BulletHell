@@ -255,7 +255,7 @@ func _physics_process(delta: float) -> void:
 				(get_parent() as Level).clear_bullet(area, false)
 				_hit = true
 				break
-			elif area is Killable and (area as Killable).harms_player or area is Boss:
+			elif area is Killable and (area as Killable).harms_player or area is Boss or area is LaserStraight:
 				_hit = true
 				break
 		if _hit:

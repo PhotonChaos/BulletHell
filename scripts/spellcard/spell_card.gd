@@ -47,6 +47,8 @@ var time_left: float = 0
 ## Lifetime of the attack in frames. Resets when the spell starts.
 var lifetime: int = 0
 
+var _timers: Array[Timer] = []
+
 ####################
 ## Utility Functions
 
@@ -65,6 +67,32 @@ func spawn_turret(dest: Vector2, travel_time: float) -> BossTurret:
 func clear_turrets() -> void:
 	for turret in get_tree().get_nodes_in_group("boss_turrets"):
 		turret.queue_free()
+
+func add_timer(time: float, task: Callable) -> Timer:
+	if time == 0:
+		task.call()
+		return null
+	
+	var timer = Timer.new()
+	
+	timer.wait_time = time
+	timer.one_shot = true
+	timer.timeout.connect(task)
+	timer.timeout.connect(func(): timer.queue_free())
+	timer.autostart = true
+	
+	add_child(timer)
+		
+	_timers.append(timer)
+	
+	return timer
+
+func clear_timers() -> void:
+	for timer: Timer in _timers:
+		if timer:
+			timer.free()
+	
+	_timers.clear()
 
 ####################
 ## Core Functions
@@ -126,12 +154,14 @@ func spell() -> void:
 
 ## Called whenever the current step of the attack is defeated. If on a nonspell, begins the spell portion
 func _defeat():
+	clear_turrets()
+	clear_timers()
+	
 	_drop_spell_items()
 	
 	if on_spell:
 		spell_defeated.emit()
 	else:
-		clear_turrets()
 		time_left = spell_time_limit
 		hp_left = spell_hp
 		on_spell = true

@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="BulletHell"
-config/description="Bullet hell game!!"
-config/version="0.1.0"
+config/description="Bullet Hell Engine!"
+config/version="0.2.0"
 run/main_scene="uid://uk6quv3bwyb6"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://textures/icon.svg"
@@ -101,6 +101,13 @@ boss_kill_cheat={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":75,"key_label":0,"unicode":107,"location":0,"echo":false,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="Walls"
+2d_physics/layer_2="Enemy Bullets"
+2d_physics/layer_3="Player Shots"
+2d_physics/layer_4="Items"
 
 [rendering]
 

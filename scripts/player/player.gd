@@ -6,6 +6,7 @@ signal bombs_changed(old: int, new: int)
 signal score_changed(old: int, new: int)
 signal high_score_changed(old: int, new: int)
 signal flash_changed(value: int, max: int)
+signal move_state_changed(new: XMoveState)
 
 ## Used to determine perfect clears of spells
 signal hit_or_bomb 
@@ -29,6 +30,7 @@ signal hit_or_bomb
 
 @export_group("Cheats")
 @export var invincible: bool = false
+@export var infinite_lives: bool = false
 
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
@@ -91,7 +93,15 @@ enum PlayerState {
 	PAUSE
 }
 
+# Used mostly for sprites
+enum XMoveState {
+	NONE,
+	LEFT,
+	RIGHT
+}
+
 var state: PlayerState
+var move_state: XMoveState
 
 func get_move_speed() -> float:
 	return focus_speed if focused else speed
@@ -174,6 +184,9 @@ func add_points(points: int) -> void:
 
 
 func hit() -> void:
+	if invincible:
+		return
+		
 	sfx_player_hit.play()
 	
 	set_itime(deathbomb_window+0.1)
@@ -199,7 +212,9 @@ func die() -> void:
 	_bombs = max(_bombs, bombs)  # Refresh bombs, but don't take extras away
 	set_itime(HIT_ITIME)
 	
-	lives_changed.emit(_lives+1, _lives)
+	if _lives > 0 or _lives == 0 and not infinite_lives:
+		lives_changed.emit(_lives+1, _lives)
+		
 	bombs_changed.emit(old_bombs, _bombs)
 
 ## Causes the player to emit all of it's stat changed signals
@@ -214,6 +229,7 @@ func emit_stats():
 
 func _ready() -> void:
 	state = PlayerState.NORMAL
+	move_state = XMoveState.NONE
 	
 	_lives = lives
 	_bombs = bombs
@@ -263,11 +279,19 @@ func _physics_process(delta: float) -> void:
 	itime = max(0, itime - delta)
 	
 	var frame_move = Vector2.ZERO
+	var new_state = XMoveState.NONE
 	
 	if Input.is_action_pressed("move_left"):
 		frame_move += Vector2.LEFT
+		new_state = XMoveState.LEFT
 	elif Input.is_action_pressed("move_right"):
 		frame_move += Vector2.RIGHT
+		new_state = XMoveState.RIGHT
+
+	if new_state != move_state:
+		move_state = new_state
+		move_state_changed.emit(move_state)
+
 	
 	if Input.is_action_pressed("move_up"):
 		frame_move += Vector2.UP

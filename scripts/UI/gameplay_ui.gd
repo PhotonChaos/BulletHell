@@ -190,11 +190,13 @@ func set_nameplate(nameplate: ColorRect, active: bool) -> Tween:
 	
 	if active:
 		nameplate.position += Vector2(0, 10)
-		tw.tween_property(nameplate, "color:a", nameplateStartColor.a, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.tween_property(nameplate.get_child(0), "modulate:a", 1, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.parallel().tween_property(nameplate, "color:a", nameplateStartColor.a, DIALOGUE_SIDE_SWITCH_TIME)
 		tw.parallel().tween_property(nameplate, "position:y", leftPlateStartPos.y, DIALOGUE_SIDE_SWITCH_TIME)
 	else:
 		nameplate.position.y = leftPlateStartPos.y
-		tw.tween_property(nameplate, "color:a", 0.3, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.tween_property(nameplate.get_child(0), "modulate:a", 0.3, DIALOGUE_SIDE_SWITCH_TIME)
+		tw.parallel().tween_property(nameplate, "color:a", 0.3, DIALOGUE_SIDE_SWITCH_TIME)
 		tw.parallel().tween_property(nameplate, "position:y", leftPlateStartPos.y+10, DIALOGUE_SIDE_SWITCH_TIME)
 	
 	return tw

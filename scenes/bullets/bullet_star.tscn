@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://clnxr7bsdtfg"]
+
+[ext_resource type="Script" uid="uid://fa5v0xc5mrmx" path="res://scenes/bullets/bullet_star.gd" id="1_67vxx"]
+[ext_resource type="Texture2D" uid="uid://jfra5bhijoe6" path="res://textures/bullets/star_border.png" id="2_67vxx"]
+[ext_resource type="Texture2D" uid="uid://blnerp60ipkbm" path="res://textures/bullets/star_core.png" id="3_pkgfj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v7oki"]
+radius = 8.01561
+
+[node name="Bullet" type="Area2D" groups=["enemy_bullets"]]
+z_index = 5
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_67vxx")
+metadata/_custom_type_script = "uid://dfi0g7guqnkfg"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("3_pkgfj")
+
+[node name="Border" type="Sprite2D" parent="Sprite2D"]
+self_modulate = Color(0.341176, 1, 0.737255, 1)
+texture = ExtResource("2_67vxx")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+z_index = 6
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_v7oki")

@@ -6,7 +6,7 @@ extends AnimatedSprite2D
 
 @onready var area = $Hitbox as Area2D
 
-const DAMAGE_GAP = 0.5
+const DAMAGE_GAP = 0.1
 const MAX_SCALE = Vector2(60, 60)
 const MIN_SCALE = Vector2(0.1, 0.1)
 
@@ -35,9 +35,9 @@ func _process(delta: float) -> void:
 		for target in area.get_overlapping_areas():
 			if target is Killable:
 				var t = target as Killable
-				t.damage(damage)
+				t.damage(damage / 5)
 			elif target is Boss and not (target as Boss).is_bomb_immune():
-				(target as Boss).damage(damage)
+				(target as Boss).damage(damage / 5)
 	
 	if _age > _lerp_end and not is_playing():
 		play("default")

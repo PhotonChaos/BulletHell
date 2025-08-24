@@ -35,6 +35,9 @@ signal phases_left_changed(old: int, new: int)
 ## The music that plays in the background over the boss fight
 @export var boss_theme: BGMAudio
 
+## Whether the boss should explode or stick around when defeated
+@export var explode_on_defeat: bool = true
+
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
 @export var spell_cards: Array[PackedScene]
 
@@ -170,7 +173,10 @@ func next_spell() -> void:
 	
 	if current_spell_index >= len(spell_cards):
 		boss_defeated.emit()
-		queue_free()
+		
+		if explode_on_defeat:
+			queue_free()
+			
 		return
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
@@ -194,15 +200,17 @@ func defeat_phase(card: bool) -> void:
 	# Only spawn the clear wave if we're not skipping the spell
 	if not (card == false and (current_spell.nonspell_hp == 0 or current_spell.nonspell_time_limit == 0)):
 		_level.clear_bullet_wave(global_position, 1, true, true)
+		_level.call_deferred("clear_all_lasers")
 			
 	for t in move_tweens:
 		t.kill()
+		
 	move_tweens.clear()
 	
 	var reset_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO)
 	reset_tween.tween_property(self, "position", Level.BOSS_DEFAULT_POSITION, 1.5)
 	
-	if card:		
+	if card:
 		# Nonspells can't be timeouts.
 		current_spell.started = false
 		current_spell.clear_turrets()
@@ -256,8 +264,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_hitbox_entered(area: Area2D) -> void:
-	if not fight_started:
-		# Don't damage player during dialogue
+	if not fight_started or not current_spell:
 		return
 	
 	if area is PlayerShot and current_spell.started:

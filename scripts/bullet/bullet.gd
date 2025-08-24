@@ -29,6 +29,8 @@ var harmless: bool = false
 
 var type: Level.BulletType
 
+var paint_color: Color = Color.WHITE
+
 func _ready():
 	var collider = get_node_or_null("Hitbox") as CollisionShape2D
 	
@@ -50,6 +52,11 @@ func init(template: BulletStats = null) -> void:
 
 func get_sprite() -> Sprite2D:
 	return $Sprite2D
+
+## Implemented in some bullet types. Colours the sprite according to [param color][br]
+## By default, does nothing but set [field Bullet.paint_color].
+func paint_bullet(color: Color) -> void:
+	paint_color = color
 
 func _physics_process(delta: float) -> void:
 	velocity += 0.5 * acceleration * delta

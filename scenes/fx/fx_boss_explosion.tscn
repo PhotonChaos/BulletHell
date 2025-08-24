@@ -22,6 +22,7 @@ scale_max = 3.0
 alpha_curve = SubResource("CurveTexture_fjorq")
 
 [node name="FxBossExplosion" type="GPUParticles2D"]
+z_index = 5
 emitting = false
 amount = 100
 texture = ExtResource("1_e8ntv")

@@ -1,6 +1,8 @@
 class_name LaserStraight
 extends Area2D
 
+## Emits when the laser begins to expand
+signal laser_expand
 
 var start: Vector2
 var end: Vector2
@@ -16,6 +18,10 @@ const LASER_EXPAND_TIME: float = 0.2
 const LASER_WARN_WIDTH: int = 2
 const LASER_GRACE_THRESHOLD: int = 2
 const LASER_ABSOLUTE_MIN_RADIUS: int = 1
+
+var _laser_started: bool
+
+var _expand_tween: Tween
 
 var _laser_arrow: Vector2
 var _grace: float
@@ -58,21 +64,22 @@ func _ready() -> void:
 	_player_ref = GameController.get_player()
 	_laser_arrow = end - start
 	_grace = max(5, radius - LASER_ABSOLUTE_MIN_RADIUS)
-
+	_laser_started = false
+	
 	sprite.texture = GradientTexture1D.new()
 	
 	var gradient = Gradient.new()
 	gradient.set_color(0, out_color)
 	gradient.set_color(1, out_color)
-	gradient.add_point(0.2, in_color)
-	gradient.add_point(0.8, in_color)
+	gradient.add_point(0.3, in_color)
+	gradient.add_point(0.7, in_color)
 	sprite.texture.width = LASER_WARN_WIDTH
 	sprite.texture.gradient = gradient
 	
 	var collider_shape = RectangleShape2D.new()
 	collider_shape.size = Vector2(radius, 1)
 	collider.shape = collider_shape
-	collider.disabled = true
+	collider.set_deferred("disabled", true)
 	
 	draw_sprite()
 
@@ -96,17 +103,21 @@ func draw_sprite():
 
 
 func expand_laser():
-	var tween = get_tree().create_tween()
-	tween.tween_property(sprite.texture, "width", radius, LASER_EXPAND_TIME)
-	#tween.parallel().tween_property(collider.shape, "size:x", radius - _grace, LASER_EXPAND_TIME)
-	tween.tween_callback(func(): collider.disabled = false)
-	tween.tween_interval(duration)
-	tween.tween_callback(collapse_laser)
+	laser_expand.emit()
+	
+	_expand_tween = get_tree().create_tween()
+	_expand_tween.tween_property(sprite.texture, "width", radius, LASER_EXPAND_TIME)
+	# Be forgiving on the player, only enable the collider when at max width in the animation
+	_expand_tween.tween_callback(func(): 
+		collider.set_deferred("disabled", false)
+		_laser_started = true
+		)
+	_expand_tween.tween_interval(duration)
+	_expand_tween.tween_callback(collapse_laser)
 
 func collapse_laser():
-	collider.disabled = true
+	collider.set_deferred("disabled", true)
 	
 	var tw = get_tree().create_tween()
-	
 	tw.tween_property(sprite.texture, "width", 1, LASER_EXPAND_TIME)
 	tw.tween_callback(queue_free)

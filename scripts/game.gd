@@ -18,13 +18,13 @@ extends Node2D
 #  10. Player Hitbox
 
 # TODO list
-# [ ] Level base class has dialogue starting methods
 # [ ] Figure out SFX for level stuff
 
 @export var levels: Array[PackedScene]
 @export var player_character: PackedScene
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
+@onready var laser_sfx = $LaserSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
 @onready var boss_death_sfx = $BossDeathSoundPlayer as AudioStreamPlayer2D
 @onready var game_bgm: AudioStreamPlayer = $GameBGM
@@ -57,7 +57,9 @@ var state: GameState = GameState.MAIN_MENU
 var _last_state: GameState = state
 
 var play_sfx: bool = false
+var play_sfx_laser: bool = false
 var sfx_cooldown: float = 0
+var sfx_cooldown_laser: float = 0
 
 var current_level: int = -1
 var level_ref: Level = null
@@ -186,17 +188,26 @@ func _ready() -> void:
 		level_thread = Thread.new()
 		play_next_level()
 		
+	#AudioServer.set_bus_volume_linear(OptionsMenu.BUS_BGM_INDEX, 0)
+		
 
 
 func _process(delta: float) -> void:
 	sfx_cooldown = max(0, sfx_cooldown - delta)
+	sfx_cooldown_laser = max(0, sfx_cooldown_laser - delta)
 	
 	if sfx_cooldown <= 0 and play_sfx:
 		play_sfx = false
 		sfx_cooldown = 0.1
 		
 		bullet_sfx.play()
+	
+	if sfx_cooldown_laser <= 0 and play_sfx_laser:
+		play_sfx_laser = false
+		sfx_cooldown_laser = 0.1
 		
+		laser_sfx.play()
+	
 	if state == GameState.GAME_DIALOGUE and Input.is_action_just_pressed("primary") and not dialogue_pause:
 		_advance_dialogue()
 
@@ -228,6 +239,7 @@ func play_next_level() -> void:
 	# Connect signals
 	level_ref.level_finished.connect(_on_level_finished)
 	level_ref.bullet_fired.connect(_on_bullet_fired)
+	level_ref.laser_fired.connect(_on_laser_fired)
 	level_ref.bgm_changed.connect(play_bgm)
 	level_ref.dialogue_started.connect(GameController.open_dialogue)
 	level_ref.dialogue_controls.connect(func(paused): dialogue_pause = paused)
@@ -279,6 +291,9 @@ func _on_bullet_fired() -> void:
 	play_sfx = true
 
 
+func _on_laser_fired() -> void:
+	play_sfx_laser = true
+
 func _on_level_finished() -> void:
 	if current_level + 1 == len(levels):
 		print_rich("[color=green][b]You Win!!!![/b][/color]")
@@ -287,9 +302,9 @@ func _on_level_finished() -> void:
 
 
 func _on_bullet_bounds_area_exited(area: Area2D) -> void:
-	# Triggers whenever a bullet exits the area
 	# TODO: Figure out how this works with object pooling
-	area.queue_free()  # Only bullets and enemies should be on layer 2
+	if area is Bullet or area is PlayerShot:
+		area.queue_free()
 
 
 func _on_player_bombs_changed(old: int, new: int) -> void:

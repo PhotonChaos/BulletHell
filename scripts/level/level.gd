@@ -8,6 +8,7 @@ signal level_finished
 
 # For SFX
 signal bullet_fired
+signal laser_fired
 signal boss_spawned
 signal boss_started
 signal boss_defeated
@@ -24,7 +25,9 @@ enum BulletType {
 	BALL = 0,
 	SMALL_BALL,
 	KNIFE,
-	SHARD
+	KNIFE_GOLD,
+	SHARD,
+	STAR
 }
 
 @export var title: String
@@ -48,17 +51,22 @@ var _boss_ref: Boss = null
 const DEFAULT_BULLET_TYPE = BulletType.BALL
 const BOSS_OFFSCREEN_POSITION = Vector2(-40, 100)
 const BOSS_DEFAULT_POSITION = Vector2(620, 300)
+const PLAY_AREA_CENTER = Vector2(619.5, 540.5)
 
 const DIALOGUE_CUE_BOSS_SPAWN = "enter"
 const DIALOGUE_CUE_BOSS_START = "startfight"
 const DIALOGUE_CUE_BOSS_BGM = "bgm"
 
+const BULLET_CLEAR_TIME = 0.1
+
 # Screw it, I'm just gonna hardcode this.
 const bullet_library: Dictionary = {
 	BulletType.BALL: preload('res://scenes/bullets/bullet.tscn'),
 	BulletType.KNIFE: preload('res://scenes/bullets/bullet_knife.tscn'),
+	BulletType.KNIFE_GOLD: preload('res://scenes/bullets/bullet_gold_knife.tscn'),
 	BulletType.SMALL_BALL: preload('res://scenes/bullets/bullet_small.tscn'),
-	BulletType.SHARD: preload("res://scenes/bullets/bullet_shard.tscn")
+	BulletType.SHARD: preload("res://scenes/bullets/bullet_shard.tscn"),
+	BulletType.STAR: preload("res://scenes/bullets/bullet_star.tscn")
 }
 
 var _player_ref: Player = null
@@ -266,22 +274,60 @@ func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: floa
 func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:	
 	return bullet_burst(_position, type, count, TAU - TAU / count, _rotation, dist, v, a)
 
+func bullet_star(_position: Vector2, type: BulletType, points: int, density: int, v_mult: float, _rotation: float, v: float, a: float=0) -> Array[Bullet]:
+	var bullets: Array[Bullet] = []
+	var total_bullets = points*density
+	
+	for i in range(total_bullets):
+		var amp = (1-v_mult)*2*abs(i % density - density*0.5) / (2*density) + v_mult
+		var dir = Vector2.from_angle(TAU / total_bullets * i + _rotation) * amp
+		bullets.append(spawn_bullet(_position, type, dir.angle(), dir*v, dir.normalized()*a))
+	
+	for bullet in bullets:
+		bullet.rotate_to_velocity = false
+		add_child(bullet)
+	
+	return bullets
+
+func laser_straight(_start: Vector2, _direction: Vector2, length: float, radius: float, startup_delay: float, duration: float, out_color: Color, in_color: Color = Color.WHITE) -> LaserStraight:
+	var laser = LaserStraight.create(_start, _direction, length, radius, startup_delay, duration, out_color, in_color)
+	
+	laser.laser_expand.connect(laser_fired.emit)
+	add_child(laser)
+	
+	return laser
+
+func laser_straight_points(_start: Vector2, _end: Vector2, radius: float, startup_delay: float, duration: float, out_color: Color, in_color: Color = Color.WHITE) -> LaserStraight:
+	var laser = LaserStraight.create_from_points(_start, _end, radius, startup_delay, duration, out_color, in_color)
+	
+	laser.laser_expand.connect(laser_fired.emit)
+	add_child(laser)
+	
+	return laser
+	
+
 
 func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
 	# Disable collision the first frame so the player isn't hurt
 	bullet.harmless = true 
 		
 	var bullet_tween: Tween = get_tree().create_tween().set_parallel(true)
-	bullet_tween.tween_property(bullet.get_sprite(), "scale", Vector2.ONE * 1.3, 0.1)
-	bullet_tween.tween_property(bullet.get_sprite(), "modulate", Color.TRANSPARENT, 0.1)
-	bullet_tween.tween_callback(bullet.queue_free).set_delay(0.1)
+	bullet_tween.tween_property(bullet.get_sprite(), "scale", Vector2.ONE * 1.3, BULLET_CLEAR_TIME)
+	bullet_tween.tween_property(bullet.get_sprite(), "modulate", Color.TRANSPARENT, BULLET_CLEAR_TIME)
+	bullet_tween.tween_callback(bullet.queue_free).set_delay(BULLET_CLEAR_TIME)
 	
 	if spawn_point:
 		call_deferred("spawn_item", bullet.global_position, Item.ItemType.SMALL_POINT, true)
 
 
 func clear_laser(laser: LaserStraight) -> void:
-	laser.collapse_laser()
+	if laser._expand_tween:
+		laser._expand_tween.kill()
+	
+	if laser._laser_started:
+		laser.collapse_laser()
+	else:
+		laser.queue_free()
 
 ## Turns all bullets onscreen into points. [br]
 ## If [param hard_clear] is set to true, also clears strong bullets (ones which survive bombs) and lasers
@@ -294,14 +340,20 @@ func clear_all_bullets(hard_clear=false):
 	if hard_clear:
 		for laser: LaserStraight in get_tree().get_nodes_in_group("enemy_lasers"):
 			clear_laser(laser)
+			
+func clear_all_lasers():
+	for laser: LaserStraight in get_tree().get_nodes_in_group("enemy_lasers"):
+		clear_laser(laser)
 
 ## Spawns a wave that clears the bullets onscreen.
 func clear_bullet_wave(pos: Vector2, duration: float, points: bool, hard: bool) -> void:
 	var wave = _boss_death_wave_template.instantiate() as DeathWave
 	wave.position = pos
 	wave.lifespan = duration 
+	wave.hard_clear = hard
 	wave.invisible = true
 	wave._level_ref = self
+	wave.finished.connect(clear_all_lasers)
 	call_deferred("add_child", wave)
 
 # Other spawning

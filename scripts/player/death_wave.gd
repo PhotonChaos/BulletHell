@@ -1,6 +1,8 @@
 class_name DeathWave
 extends Area2D
 
+signal finished
+
 const MAX_SCALE = 45*3
 
 var lifespan = Player.HIT_ITIME 
@@ -25,6 +27,7 @@ func _process(delta: float) -> void:
 	scale = Vector2(lifetime, lifetime)*1/(lifespan)*MAX_SCALE
 	
 	if lifetime > lifespan:
+		finished.emit()
 		queue_free()
 
 

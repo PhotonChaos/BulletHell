@@ -84,6 +84,7 @@ text = "x2000"
 label_settings = SubResource("LabelSettings_v2nbv")
 
 [node name="PerfectBonus" type="HBoxContainer" parent="ColorRect/VBoxContainer/ScoreStats"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="ColorRect/VBoxContainer/ScoreStats/PerfectBonus"]

@@ -83,7 +83,7 @@ func _ready() -> void:
 	
 	draw_sprite()
 
-
+## Rotates the laser to point at direction [param angle_rad].
 func rotate_laser(angle_rad: float):
 	var direction = Vector2.from_angle(angle_rad)
 	var length = _laser_arrow.length()

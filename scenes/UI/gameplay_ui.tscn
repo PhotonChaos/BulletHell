@@ -1,17 +1,12 @@
-[gd_scene load_steps=29 format=3 uid="uid://bj0d1se17qkg8"]
+[gd_scene load_steps=24 format=3 uid="uid://bj0d1se17qkg8"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_wf0n7"]
 [ext_resource type="Script" uid="uid://cqwwmy1nmu3k5" path="res://scripts/UI/gameplay_ui.gd" id="2_bcwfe"]
 [ext_resource type="LabelSettings" uid="uid://berx5f5qco7wl" path="res://ui/gameplay_ui.tres" id="3_bcwfe"]
-[ext_resource type="Script" uid="uid://bl6in5scwqfoq" path="res://scripts/resources/dialogue_profile.gd" id="3_bogbp"]
 [ext_resource type="Texture2D" uid="uid://lchfyx5pruq1" path="res://textures/UI/flashbomb_ui.png" id="3_dyrh1"]
-[ext_resource type="Resource" uid="uid://5fbh5wjmvctw" path="res://resources/dialogue_profiles/lucas.tres" id="4_dmn3c"]
 [ext_resource type="FontFile" uid="uid://bpbxeqck4mvha" path="res://ui/fonts/upheavtt.ttf" id="4_haufa"]
-[ext_resource type="Resource" uid="uid://b1sqlt83srr26" path="res://resources/dialogue_profiles/kalligan.tres" id="5_dmn3c"]
-[ext_resource type="Resource" uid="uid://d32nnlma2ltqi" path="res://resources/dialogue_profiles/maya.tres" id="6_3ukiq"]
 [ext_resource type="Texture2D" uid="uid://c0pteuew81res" path="res://textures/UI/bossPhases.png" id="6_5nf6b"]
 [ext_resource type="Texture2D" uid="uid://bql312u8ubupg" path="res://textures/UI/music.png" id="7_1i81k"]
-[ext_resource type="Resource" uid="uid://cmvgui2i2bsx5" path="res://resources/dialogue_profiles/elizabeth.tres" id="7_p6hqe"]
 [ext_resource type="FontFile" uid="uid://dig053nwgpxcp" path="res://ui/fonts/m5x7.ttf" id="8_8qdoy"]
 [ext_resource type="Texture2D" uid="uid://b3k0w3ntw6h7k" path="res://textures/UI/mask.png" id="8_gi0ea"]
 [ext_resource type="Script" uid="uid://clstty55csoiq" path="res://scripts/UI/boss_pos_indicator.gd" id="9_l2xif"]
@@ -91,7 +86,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wf0n7")
 script = ExtResource("2_bcwfe")
-dialogueProfiles = Array[ExtResource("3_bogbp")]([ExtResource("4_dmn3c"), ExtResource("5_dmn3c"), ExtResource("6_3ukiq"), ExtResource("7_p6hqe")])
 
 [node name="Frame" type="TextureRect" parent="."]
 z_index = 2
@@ -183,8 +177,8 @@ layout_mode = 2
 
 [node name="GameTitle" type="Label" parent="GeneralSection/VBoxContainer"]
 layout_mode = 2
-text = "Cosmic
- Encounter"
+text = "Bullet Hell
+Engine!!"
 label_settings = SubResource("LabelSettings_dyrh1")
 horizontal_alignment = 1
 vertical_alignment = 1

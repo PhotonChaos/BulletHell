@@ -289,6 +289,8 @@ func bullet_star(_position: Vector2, type: BulletType, points: int, density: int
 	
 	return bullets
 
+## Creates a straight laser, originating at [param _start], pointing in [param _direction] with a thickness of [param radius].[br]
+## This method appends the laser as a child. 
 func laser_straight(_start: Vector2, _direction: Vector2, length: float, radius: float, startup_delay: float, duration: float, out_color: Color, in_color: Color = Color.WHITE) -> LaserStraight:
 	var laser = LaserStraight.create(_start, _direction, length, radius, startup_delay, duration, out_color, in_color)
 	

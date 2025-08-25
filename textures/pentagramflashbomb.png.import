@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bshv0me678j5o"
-path="res://.godot/imported/mayaflashbomb.png-c6ed4345c56eea5ca9115cad07c11d29.ctex"
+path="res://.godot/imported/pentagramflashbomb.png-1512766e3b767840bd7c50005d6dbc7f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/mayaflashbomb.png"
-dest_files=["res://.godot/imported/mayaflashbomb.png-c6ed4345c56eea5ca9115cad07c11d29.ctex"]
+source_file="res://textures/pentagramflashbomb.png"
+dest_files=["res://.godot/imported/pentagramflashbomb.png-1512766e3b767840bd7c50005d6dbc7f.ctex"]
 
 [params]
 

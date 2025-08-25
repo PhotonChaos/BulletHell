@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c5ywg2refc8yo"
-path="res://.godot/imported/maya_fire_sword.png-37728dfb46fca3bfddcbd4f8d1f75198.ctex"
+path="res://.godot/imported/fire_sword.png-37672f3dc2a8868ea9257b425e5fac18.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/maya_fire_sword.png"
-dest_files=["res://.godot/imported/maya_fire_sword.png-37728dfb46fca3bfddcbd4f8d1f75198.ctex"]
+source_file="res://textures/fire_sword.png"
+dest_files=["res://.godot/imported/fire_sword.png-37672f3dc2a8868ea9257b425e5fac18.ctex"]
 
 [params]
 

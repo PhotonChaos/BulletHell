@@ -71,12 +71,63 @@ const bullet_library: Dictionary = {
 
 var _player_ref: Player = null
 
+# TODO: Replace threading
 var _level_thread: Thread = null
 
 var _bomb_active: bool = false
 
 # ############
+# Level Script
+
+const LS_SLEEP = "sleep"
+const LS_FUNC = "func"
+const LS_GATE = "gate"
+
+# Each entry is an array of the form:
+# [LS_SOMETHING, param1, param2, ...]
+#   - [LS_SLEEP, time_in_seconds]
+#   - [LS_FUNC, lambda_that_calls_func_with_params]
+#   - [LS_GATE, gate_id]
+var _level_script = []
+
+## script index
+var _si = 0
+var gate_locked = false
+
+## Called once per frame. Used for processing the level script
+func tick_level(delta: float):
+	# Don't process if we're finished the level or if the gate is locked
+	if _si >= len(_level_script):
+		level_finished.emit()
+		return
+	
+	if gate_locked:
+		return
+	
+	# If we don't need to sleep anymore, move on without waiting
+	if _level_script[_si][0] == LS_SLEEP and _level_script[_si][1] <= 0:
+		_si += 1
+	
+	# Process non-sleep commands
+	while _si < len(_level_script) and _level_script[_si][0] != LS_SLEEP:
+		# Process next command
+		if _level_script[_si][0] == LS_FUNC:
+			_level_script[_si][1].call()
+			_si += 1
+		elif _level_script[_si][0] == LS_GATE:
+			gate_locked = true
+	
+	# Process sleep
+	if _level_script[_si][0] == LS_SLEEP:
+		_level_script[_si][1] -= delta
+		
+
+# ############
 # Core Functions
+
+func _process(delta: float) -> void:
+	tick_level(delta)
+	
 
 ## Called to set up object pools. Not implemented yet.
 func setup(player_ref: Player) -> void:

@@ -10,5 +10,4 @@ func _play() -> void:
 	sleep(3)
 	_boss_ref.call_deferred("start")
 	
-	
 	sleep(10000)

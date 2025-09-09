@@ -96,17 +96,21 @@ var gate_locked = false
 
 ## Called once per frame. Used for processing the level script
 func tick_level(delta: float):
-	# Don't process if we're finished the level or if the gate is locked
-	if _si >= len(_level_script):
-		level_finished.emit()
+	# Don't process if the gate is locked
+	if gate_locked:
 		return
 	
-	if gate_locked:
+	if _si >= len(_level_script):
+		level_finished.emit()
 		return
 	
 	# If we don't need to sleep anymore, move on without waiting
 	if _level_script[_si][0] == LS_SLEEP and _level_script[_si][1] <= 0:
 		_si += 1
+	
+	# Process sleep
+	if _si < len(_level_script) and _level_script[_si][0] == LS_SLEEP:
+		_level_script[_si][1] -= delta
 	
 	# Process non-sleep commands
 	while _si < len(_level_script) and _level_script[_si][0] != LS_SLEEP:
@@ -116,22 +120,25 @@ func tick_level(delta: float):
 			_si += 1
 		elif _level_script[_si][0] == LS_GATE:
 			gate_locked = true
-	
-	# Process sleep
-	if _level_script[_si][0] == LS_SLEEP:
-		_level_script[_si][1] -= delta
-		
+			_si += 1
+
+## Extended by level objects to construct the level script
+func _build_level():
+	print("I thihnk this works?????????")
 
 # ############
 # Core Functions
 
 func _process(delta: float) -> void:
-	tick_level(delta)
+	if _si < len(_level_script):
+		tick_level(delta)
 	
 
-## Called to set up object pools. Not implemented yet.
+## Called to set up object pools [NYI], level scripts, and some variables
 func setup(player_ref: Player) -> void:
 	_player_ref = player_ref
+	
+	
 
 
 ## Begin the level script in a new thread.[br]

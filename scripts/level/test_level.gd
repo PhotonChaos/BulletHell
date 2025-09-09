@@ -3,6 +3,9 @@ extends Level
 var boss_flag = false
 var end_dialogue_flag = false
 
+func _build_level() -> void:
+	pass
+
 func _play() -> void:
 	sleep(2)
 	

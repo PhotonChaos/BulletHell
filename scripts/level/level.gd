@@ -212,7 +212,7 @@ func spawn_enemy(pos: Vector2, dest: Vector2, tick_length: float, shot_func: Cal
 
 ## Spawns a wave of [param count] enemies, at time intervals of [param spacing] seconds.[br]
 ## Doesn't work well if called twice. Can't parallelize. Just do this manually.
-func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, tick_length: float, shot_func: Callable) -> Array[Enemy]:
+func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, tick_length: float, shot_func: Callable) -> Array:
 	var enemies = []
 	
 	for i in range(count):
@@ -296,7 +296,7 @@ func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vec
 
 
 ## Spawns a shotgun-burst containing [param count] bullets of [param type], 
-## spread evenly across an arc of [param spread]. [br]
+## spread evenly across an arc of [param spread] radians. [br]
 ## The arc is centred on a vector rotated by [param _rotation] radians, and the 
 ## bullets spawn [param distance] away from [param position] along the aim vector.[br]
 ## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].[br]

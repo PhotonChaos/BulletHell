@@ -124,6 +124,9 @@ func tick_level(delta: float):
 func _build_level():
 	print("I thihnk this works?????????")
 
+func add_script_func(fun: Callable):
+	_level_script.append([LS_FUNC, fun])
+
 # ############
 # Core Functions
 
@@ -164,11 +167,13 @@ func sleep(time: float) -> void:
 
 
 func start_dialogue(chain: DialogueChain):
-	(func(): chain.event_cue.connect(on_dialogue_event)).call_deferred()
-	call_deferred("emit_signal", "dialogue_started", chain)
+	var dialogue_lamb = func():
+		chain.event_cue.connect(on_dialogue_event)
+		dialogue_started.emit(chain)
+		
+	_level_script.append([LS_FUNC, dialogue_lamb])
+	
 
-
-## This [i]should[/i] get called on the main thread
 func on_dialogue_event(event_name: String, params: Array):	
 	if event_name == DIALOGUE_CUE_BOSS_SPAWN:
 		spawn_boss(params[0], BOSS_DEFAULT_POSITION, BOSS_OFFSCREEN_POSITION)
@@ -194,13 +199,13 @@ func spawn_enemy(pos: Vector2, dest: Vector2, tick_length: float, shot_func: Cal
 	enemy.tick_func = shot_func
 	enemy._level_ref = self
 
-	# Can't add children from outside the main thread, so we use call_deferred
-	call_deferred("add_child", enemy)
+	_level_script.append([LS_FUNC, func(): add_child(enemy)])
 	
 	return enemy
 
 
 ## Spawns a wave of [param count] enemies, at time intervals of [param spacing] seconds.[br]
+## Doesn't work well if called twice. Can't parallelize. Just do this manually.
 func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, tick_length: float, shot_func: Callable) -> Array[Enemy]:
 	var enemies = []
 	
@@ -209,25 +214,20 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 		enemies.append(enemy)
 		
 		if i != count-1:
-			OS.delay_msec(floor(spacing*1000))
+			sleep(spacing)
 	
 	return enemies
 
+
 ## Spawns [param boss] at position [param pos]
-func spawn_boss(boss: String, pos: Vector2=BOSS_DEFAULT_POSITION, offscreen_pos: Vector2=BOSS_OFFSCREEN_POSITION) -> void:
-	call_deferred("_spawn_boss", boss, pos, offscreen_pos)
-	
-## Called only on the main thread.
-func _spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
+func spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
 	var bossInstance: Boss = bosses[boss].instantiate() 
 	bossInstance.global_position = offscreen_pos
 	bossInstance._level = self
 	
-	boss_spawned.emit()
 	bossInstance.boss_defeated.connect(func(): boss_death_particles(bossInstance.position))
 	bossInstance.boss_defeated.connect(func(): clear_bullet_wave(bossInstance.position, 1, true, true))
 	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
-	
 	
 	bossInstance.boss_started.connect(boss_started.emit)
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))
@@ -236,15 +236,20 @@ func _spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
 	bossInstance.phases_left_changed.connect(func(old, new): boss_phases_changed.emit(old, new))
 	bossInstance.phase_defeated.connect(func(was_spellz): boss_phase_defeated.emit())
 	
-	var tw = get_tree().create_tween().set_ease(Tween.EASE_OUT)
+	var boss_lambda = func():
+		boss_spawned.emit()
+		
+		var tw = get_tree().create_tween().set_ease(Tween.EASE_OUT)
+		
+		tw.set_trans(Tween.TRANS_QUAD).tween_property(bossInstance, "position:x", pos.x, 2)
+		tw.parallel().set_trans(Tween.TRANS_EXPO).tween_property(bossInstance, "position:y", pos.y, 2)
+		tw.tween_callback(func(): dialogue_controls.emit(false))
+		
+		_boss_ref = bossInstance
+		dialogue_controls.emit(true)
+		add_child(bossInstance)
 	
-	tw.set_trans(Tween.TRANS_QUAD).tween_property(bossInstance, "position:x", pos.x, 2)
-	tw.parallel().set_trans(Tween.TRANS_EXPO).tween_property(bossInstance, "position:y", pos.y, 2)
-	tw.tween_callback(func(): dialogue_controls.emit(false))
-	
-	_boss_ref = bossInstance
-	dialogue_controls.emit(true)
-	add_child(bossInstance)
+	_level_script.append([LS_FUNC, boss_lambda])
 
 # Bullet mechanics
 

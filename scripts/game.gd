@@ -189,8 +189,7 @@ func _ready() -> void:
 		play_next_level()
 		
 	#AudioServer.set_bus_volume_linear(OptionsMenu.BUS_BGM_INDEX, 0)
-		
-
+	
 
 func _process(delta: float) -> void:
 	sfx_cooldown = max(0, sfx_cooldown - delta)

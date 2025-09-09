@@ -166,6 +166,12 @@ func sleep(time: float) -> void:
 	_level_script.append([LS_SLEEP, time])
 
 
+func lock_gate():
+	_level_script.append([LS_GATE])
+	
+func open_gate():
+	gate_locked = false
+
 func start_dialogue(chain: DialogueChain):
 	var dialogue_lamb = func():
 		chain.event_cue.connect(on_dialogue_event)

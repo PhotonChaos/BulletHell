@@ -71,9 +71,6 @@ const bullet_library: Dictionary = {
 
 var _player_ref: Player = null
 
-# TODO: Replace threading
-var _level_thread: Thread = null
-
 var _bomb_active: bool = false
 
 # ############
@@ -89,8 +86,9 @@ const LS_GATE = "gate"
 #   - [LS_FUNC, lambda_that_calls_func_with_params]
 #   - [LS_GATE, gate_id]
 var _level_script = []
+var playing = false
 
-## script index
+# script index
 var _si = 0
 var gate_locked = false
 
@@ -130,34 +128,20 @@ func _build_level():
 # Core Functions
 
 func _process(delta: float) -> void:
-	if _si < len(_level_script):
+	if playing and _si < len(_level_script):
 		tick_level(delta)
 	
 
 ## Called to set up object pools [NYI], level scripts, and some variables
 func setup(player_ref: Player) -> void:
 	_player_ref = player_ref
+	_build_level()
 	
-	
-
-
 ## Begin the level script in a new thread.[br]
 ## Make sure to call [method Level.setup()] first!
 func play() -> void:
 	change_bgm(get_starting_bgm())
-	
-	_level_thread = Thread.new()
-	_level_thread.start(_play)
-	_level_thread.wait_to_finish()
-	
-	call_deferred("emit_signal", "level_finished")
-
-
-## Internal version of the play method, executes in a new thread.
-## This is what is overridden in subclasses, do not call this directly.[br]
-## The level_end signal is sent out immediately after this method finishes executing.
-func _play() -> void:
-	Logger.error("Do not instantiate Level directly, use a subclass!")
+	playing = true
 
 
 ## Produces the BGM asset that the level should use at the start.[br]
@@ -176,7 +160,7 @@ func change_bgm(music: BGMAudio) -> void:
 
 ## Holds up the current thread for [param time] seconds (rounded down to the nearest millisecond).
 func sleep(time: float) -> void:
-	OS.delay_msec(floor(time * 1000))
+	_level_script.append([LS_SLEEP, time])
 
 
 func start_dialogue(chain: DialogueChain):

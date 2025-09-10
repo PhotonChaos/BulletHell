@@ -242,7 +242,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var box: Rect2 = ($Sprite2D as Sprite2D).get_rect()
+	var box: Rect2 = ($CollisionShape2D as CollisionShape2D).shape.get_rect()
 	GameController.update_boss_pos(global_position.x + box.position.x, box.size.x)
 	
 	if not fight_started:

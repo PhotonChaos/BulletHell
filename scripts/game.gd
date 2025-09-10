@@ -245,6 +245,7 @@ func play_next_level() -> void:
 	
 	level_ref.boss_defeated.connect(func(): 
 		main_ui.set_boss_stats(false)
+		main_ui.bossPos.hide()
 		play_boss_death_sfx(true)
 	)
 	level_ref.boss_defeated.connect(func(): game_bgm.stop())

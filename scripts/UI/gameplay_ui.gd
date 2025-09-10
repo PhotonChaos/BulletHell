@@ -74,6 +74,8 @@ func _ready() -> void:
 	musicBox.hide()
 	musicY = musicBox.position.y
 	
+	bossPos.hide()
+	
 	dialogueStartingWidth = dialogueContainer.size.x
 	dialogueStartingHeight = dialogueContainer.size.y
 	dialogueStartColor = dialogueContainer.color
@@ -317,6 +319,7 @@ func introduce_speaker(speaker_id: String, on_left: bool):
 
 # Boss Methods
 func set_boss_pos(boss_x: float, boss_width: float):
+	bossPos.show()
 	bossPos.position.x = boss_x
 	bossPos.size.x = boss_width
 

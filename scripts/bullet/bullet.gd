@@ -41,15 +41,6 @@ func _ready():
 	
 	rotation = velocity.angle() + rotation_offset
 
-## Initializes the bullet with the given template. 
-## Null fields of the template are ignored.
-func init(template: BulletStats = null) -> void:
-	# TODO: Implement this properly.
-	
-	if template:
-		velocity = template.velocity
-		acceleration = template.acceleration
-
 func get_sprite() -> Sprite2D:
 	return $Sprite2D
 

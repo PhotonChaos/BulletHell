@@ -94,6 +94,7 @@ collision_layer = 0
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemBounds"]
+visible = false
 position = Vector2(624, 532)
 shape = SubResource("RectangleShape2D_dinhu")
 

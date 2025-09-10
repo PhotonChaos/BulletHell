@@ -5,7 +5,11 @@ var end_dialogue_flag = false
 
 func _build_level() -> void:
 	sleep(2)
-	spawn_enemy_wave(10, 0.2, Vector2(100,0), Vector2(100, 200), 0.1, func(l: float, p: Vector2, lvl: Level): 
+	spawn_enemy_wave(10, 1, Vector2(100,0), Vector2(100, 2000), 1, func(l: float, p: Vector2, lvl: Level): 
+		lvl.bullet_burst(p, BulletType.KNIFE_GOLD, 8, PI/4, l*PI/32, 5, 100, 45))
+	spawn_enemy_wave(10, 1, Vector2(100,0), Vector2(100, 2000), 1, func(l: float, p: Vector2, lvl: Level): 
+		lvl.bullet_burst(p, BulletType.KNIFE_GOLD, 8, PI/4, l*PI/32, 5, 100, 45))
+	spawn_enemy_wave(10, 1, Vector2(100,0), Vector2(100, 2000), 1, func(l: float, p: Vector2, lvl: Level): 
 		lvl.bullet_burst(p, BulletType.KNIFE_GOLD, 8, PI/4, l*PI/32, 5, 100, 45))
 	sleep(10)
 	

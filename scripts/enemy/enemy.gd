@@ -22,8 +22,11 @@ var _tick_counter: float = 0
 var _lifetime: float
 var _level_ref: Level = null
 
+var _start_pos: Vector2
+
 func _ready() -> void:
 	_lifetime = 0
+	_start_pos = position
 	
 	if _level_ref == null:
 		print_rich("[color=red]ERROR: Enemy spawned with no level reference![/color]")
@@ -39,7 +42,7 @@ func _physics_process(delta: float) -> void:
 		tick()
 		
 	if target_dest:
-		position = position.lerp(destination, 0.1)
+		position = _start_pos.lerp(destination, clamp(_lifetime / interp_time, 0, 1))
 
 		if _lifetime >= interp_time:
 			position = destination

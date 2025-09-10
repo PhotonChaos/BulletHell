@@ -1,22 +1,34 @@
-[gd_scene load_steps=5 format=3 uid="uid://bx36trimyfpbq"]
+[gd_scene load_steps=6 format=3 uid="uid://bx36trimyfpbq"]
 
 [ext_resource type="Script" uid="uid://bosxi47wi46it" path="res://scripts/enemy/enemy.gd" id="1_7p1mj"]
 [ext_resource type="Texture2D" uid="uid://cf8devk28ehbi" path="res://textures/turret.png" id="2_md0e3"]
 [ext_resource type="PackedScene" uid="uid://c8uq6kn21ulaq" path="res://scenes/enemy/killable.tscn" id="3_4ra3w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4ra3w"]
-radius = 8.0
+radius = 17.0294
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_40wdo"]
 
 [node name="Enemy" type="Node2D"]
+editor_description = "A basic enemy template.
+Hurtbox is the area that bullets need to enter to damage the enemy. Hitbox is the area the player needs to enter to lose a life."
 script = ExtResource("1_7p1mj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_md0e3")
 
 [node name="Killable" parent="." instance=ExtResource("3_4ra3w")]
+collision_layer = 0
 
-[node name="Hitbox" type="CollisionShape2D" parent="Killable"]
+[node name="Hurtbox" type="CollisionShape2D" parent="Killable"]
 shape = SubResource("CircleShape2D_4ra3w")
+
+[node name="DamagePlayer" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Hitbox" type="CollisionShape2D" parent="DamagePlayer"]
+shape = SubResource("CircleShape2D_40wdo")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)
 
 [connection signal="dead" from="Killable" to="." method="_on_killable_dead"]

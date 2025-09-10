@@ -24,6 +24,7 @@ extends Node2D
 @export var player_character: PackedScene
 
 @onready var bullet_sfx = $BulletSoundPlayer as AudioStreamPlayer2D
+@onready var strong_bullet_sfx = $StrongBulletSoundPlayer as AudioStreamPlayer2D
 @onready var laser_sfx = $LaserSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
 @onready var boss_death_sfx = $BossDeathSoundPlayer as AudioStreamPlayer2D
@@ -133,6 +134,9 @@ func play_boss_death_sfx(full_kill: bool) -> void:
 		
 	boss_death_sfx.play()
 
+
+func play_strong_shot_sfx() -> void:
+	strong_bullet_sfx.play()
 
 func play_bgm(song: BGMAudio) -> void:
 	if not song:

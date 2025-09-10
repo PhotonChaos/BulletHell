@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=19 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_dinhu"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://lmhik51vbob" path="res://scenes/UI/game_over_menu.tscn" id="5_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
+[ext_resource type="AudioStream" uid="uid://wk06q47tb7xy" path="res://audio/SFX/strong_shoot.wav" id="9_kvuet"]
 [ext_resource type="AudioStream" uid="uid://cx65cb7g73hdm" path="res://audio/SFX/biglaser.wav" id="10_kvuet"]
 [ext_resource type="Texture2D" uid="uid://c214dl4yp3gkq" path="res://textures/bullets/star_test.png" id="12_dinhu"]
 
@@ -100,6 +101,11 @@ shape = SubResource("RectangleShape2D_dinhu")
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="StrongBulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_kvuet")
 volume_db = -10.0
 bus = &"SFX"
 

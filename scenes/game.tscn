@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=18 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_dinhu"]
@@ -15,6 +15,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(1770, 1543)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dinhu"]
+size = Vector2(1332, 1148)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbhrr"]
 size = Vector2(1275.75, 32)
@@ -86,6 +89,14 @@ position = Vector2(653, 566.5)
 shape = SubResource("RectangleShape2D_e2o6t")
 debug_color = Color(0.970831, 0, 0.452073, 0.42)
 
+[node name="ItemBounds" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemBounds"]
+position = Vector2(624, 532)
+shape = SubResource("RectangleShape2D_dinhu")
+
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_lbhrr")
 volume_db = -10.0
@@ -146,3 +157,4 @@ texture = ExtResource("12_dinhu")
 [connection signal="restart" from="ScoreSummaryLayer/EndScoreScreen" to="." method="_on_end_score_screen_restart"]
 [connection signal="area_entered" from="BulletBounds" to="." method="_on_bullet_bounds_area_entered"]
 [connection signal="area_exited" from="BulletBounds" to="." method="_on_bullet_bounds_area_exited"]
+[connection signal="area_exited" from="ItemBounds" to="." method="_on_item_bounds_area_exited"]

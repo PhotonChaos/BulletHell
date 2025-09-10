@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://cqnrcnk8bqiyi"]
+[gd_scene load_steps=10 format=3 uid="uid://cqnrcnk8bqiyi"]
 
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_jdndr"]
 [ext_resource type="Resource" uid="uid://4vbkq5wuo86w" path="res://audio/music/bosses/crystal_boss/junko_remix.tres" id="2_6cppf"]
-[ext_resource type="PackedScene" uid="uid://b54pfgjrkq2cn" path="res://scenes/boss/crystal_boss/spellcard/photon_chaos.tscn" id="3_dlt1h"]
 [ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="3_g1brn"]
 [ext_resource type="PackedScene" uid="uid://d4d0ktav1jh72" path="res://scenes/boss/crystal_boss/spellcard/glass_chains.tscn" id="4_1i7u4"]
 [ext_resource type="PackedScene" uid="uid://dgjsgcajoewvb" path="res://scenes/boss/crystal_boss/spellcard/quartz_ripples.tscn" id="5_pk1r5"]
@@ -24,7 +23,7 @@ boss_name = "Crystal"
 boss_title = "The Testing Dummy"
 bomb_immunity = 1
 boss_theme = ExtResource("2_6cppf")
-spell_cards = Array[PackedScene]([ExtResource("3_dlt1h"), ExtResource("3_g1brn"), ExtResource("4_1i7u4"), ExtResource("5_pk1r5"), ExtResource("6_7f0eh")])
+spell_cards = Array[PackedScene]([ExtResource("3_g1brn"), ExtResource("4_1i7u4"), ExtResource("5_pk1r5"), ExtResource("6_7f0eh")])
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

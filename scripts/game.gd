@@ -306,6 +306,9 @@ func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 	if area is Bullet or area is PlayerShot:
 		area.queue_free()
 
+func _on_item_bounds_area_exited(area: Area2D) -> void:
+	if area is Item:
+		area.queue_free()
 
 func _on_player_bombs_changed(old: int, new: int) -> void:
 	main_ui.set_bombs(new)

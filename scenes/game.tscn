@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=20 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_dinhu"]
@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://wk06q47tb7xy" path="res://audio/SFX/strong_shoot.wav" id="9_kvuet"]
 [ext_resource type="AudioStream" uid="uid://cx65cb7g73hdm" path="res://audio/SFX/biglaser.wav" id="10_kvuet"]
 [ext_resource type="Texture2D" uid="uid://c214dl4yp3gkq" path="res://textures/bullets/star_test.png" id="12_dinhu"]
+[ext_resource type="AudioStream" uid="uid://damd3wglwa2xy" path="res://audio/SFX/hitHurt.wav" id="12_trtic"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
 size = Vector2(1770, 1543)
@@ -49,16 +50,6 @@ grow_vertical = 2
 
 [node name="GameplayUI" parent="UILayer" instance=ExtResource("2_iywne")]
 
-[node name="PauseLayer" type="CanvasLayer" parent="."]
-layer = 4
-
-[node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
-visible = false
-offset_left = 30.0
-offset_top = 23.0
-offset_right = -711.0
-offset_bottom = -23.0
-
 [node name="GameOverLayer" type="CanvasLayer" parent="."]
 layer = 5
 
@@ -74,6 +65,16 @@ offset_bottom = -23.0
 layer = 5
 
 [node name="EndScoreScreen" parent="ScoreSummaryLayer" instance=ExtResource("6_vtaks")]
+visible = false
+offset_left = 30.0
+offset_top = 23.0
+offset_right = -711.0
+offset_bottom = -23.0
+
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="PauseMenu" parent="PauseLayer" instance=ExtResource("4_u5sy4")]
 visible = false
 offset_left = 30.0
 offset_top = 23.0
@@ -115,6 +116,10 @@ bus = &"SFX"
 
 [node name="EnemyDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_iywne")
+bus = &"SFX"
+
+[node name="BossDamageSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_trtic")
 bus = &"SFX"
 
 [node name="BossDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]

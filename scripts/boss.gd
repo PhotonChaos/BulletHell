@@ -160,7 +160,8 @@ func damage(amount: int) -> void:
 
 	if not current_spell:
 		return
-		
+	
+	GameController.play_boss_damage_sfx(lerp(10.0, -4.0, current_spell.hp_left / current_spell.spell_hp))
 	current_spell.damage(amount)
 
 

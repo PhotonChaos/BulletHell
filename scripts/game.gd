@@ -27,7 +27,9 @@ extends Node2D
 @onready var strong_bullet_sfx = $StrongBulletSoundPlayer as AudioStreamPlayer2D
 @onready var laser_sfx = $LaserSoundPlayer as AudioStreamPlayer2D
 @onready var enemy_death_sfx = $EnemyDeathSoundPlayer as AudioStreamPlayer2D
+@onready var boss_damage_sfx = $BossDamageSoundPlayer as AudioStreamPlayer2D
 @onready var boss_death_sfx = $BossDeathSoundPlayer as AudioStreamPlayer2D
+
 @onready var game_bgm: AudioStreamPlayer = $GameBGM
 @onready var main_ui = $UILayer/GameplayUI as GameplayUI
 @onready var pause_ui = $PauseLayer/PauseMenu as PauseMenuUI
@@ -121,6 +123,11 @@ static func play_enemy_death_sfx():
 	_game_instance.enemy_death_sfx.stop()
 	_game_instance.enemy_death_sfx.play()
 
+
+static func play_boss_damage_sfx(volume: float):
+	_game_instance.boss_damage_sfx.stop()
+	_game_instance.boss_damage_sfx.volume_db = volume
+	_game_instance.boss_damage_sfx.play()
 
 static func update_boss_pos(boss_x: float, boss_width: float):
 	_game_instance.main_ui.set_boss_pos(boss_x, boss_width)

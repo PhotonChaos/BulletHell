@@ -17,4 +17,7 @@ func _build_level() -> void:
 	sleep(3)
 	add_script_func(func(): _boss_ref.call_deferred("start"))
 	lock_gate()
-	sleep(10000)
+	sleep(2)
+
+func on_boss_defeat():
+	unlock_gate()

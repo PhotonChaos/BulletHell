@@ -98,10 +98,6 @@ func tick_level(delta: float):
 	if gate_locked:
 		return
 	
-	if _si >= len(_level_script):
-		level_finished.emit()
-		return
-	
 	# If we don't need to sleep anymore, move on without waiting
 	if _level_script[_si][0] == LS_SLEEP and _level_script[_si][1] <= 0:
 		_si += 1
@@ -119,6 +115,10 @@ func tick_level(delta: float):
 		elif _level_script[_si][0] == LS_GATE:
 			gate_locked = true
 			_si += 1
+	
+	if _si >= len(_level_script):
+		level_finished.emit()
+		return
 
 ## Extended by level objects to construct the level script
 func _build_level():
@@ -167,9 +167,11 @@ func sleep(time: float) -> void:
 
 
 func lock_gate():
+	print("gate lock")
 	_level_script.append([LS_GATE])
 	
-func open_gate():
+func unlock_gate():
+	print("gate unlock")
 	gate_locked = false
 
 func start_dialogue(chain: DialogueChain):
@@ -188,7 +190,7 @@ func on_dialogue_event(event_name: String, params: Array):
 	elif event_name == DIALOGUE_CUE_BOSS_BGM:
 		bgm_changed.emit(_boss_ref.boss_theme)
 	
-
+## To be overridden in child classes
 func on_boss_defeat():
 	pass
 
@@ -234,6 +236,7 @@ func spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
 	bossInstance.boss_defeated.connect(func(): boss_death_particles(bossInstance.position))
 	bossInstance.boss_defeated.connect(func(): clear_bullet_wave(bossInstance.position, 1, true, true))
 	bossInstance.boss_defeated.connect(func(): boss_defeated.emit())
+	bossInstance.boss_defeated.connect(on_boss_defeat)
 	
 	bossInstance.boss_started.connect(boss_started.emit)
 	bossInstance.spell_hp_changed.connect(func(max, old, new): spell_hp_updated.emit(max, old, new))

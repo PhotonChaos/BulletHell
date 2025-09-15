@@ -272,7 +272,7 @@ func boss_death_particles(pos: Vector2) -> void:
 ## Produces the template for the bullet with id [param name]
 func get_bullet_template(name: BulletType) -> PackedScene:
 	if not (name in bullet_library):
-		Logger.warning("Unknown bullet type '"+BulletType.keys()[name]+"'")
+		Log.warning("Unknown bullet type '"+BulletType.keys()[name]+"'")
 		name = DEFAULT_BULLET_TYPE
 		
 	return bullet_library[name]

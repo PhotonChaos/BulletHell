@@ -253,11 +253,11 @@ func dialogue_line(side: String, speaker_id: String, emotion_id: String, text: S
 		if dialogueRegistry[speaker_id].portraits.has(emotion_id):
 			portrait = dialogueRegistry[speaker_id].portraits[emotion_id]
 		elif dialogueRegistry[speaker_id].portraits.has(DEFAULT_EMOTION):
-			Logger.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
+			Log.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
 			portrait = dialogueRegistry[speaker_id].portraits[DEFAULT_EMOTION]
 		else:
-			Logger.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
-			Logger.warning("Fallback emotion neutral also missing portrait for speaker " + speaker_id + ". Defaulting to empty image.")
+			Log.warning("Emotion " + emotion_id + " is missing portrait for speaker " + speaker_id)
+			Log.warning("Fallback emotion neutral also missing portrait for speaker " + speaker_id + ". Defaulting to empty image.")
 			portrait = Texture2D.new()
 	
 	var activeNameplate: ColorRect

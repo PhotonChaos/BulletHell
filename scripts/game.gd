@@ -147,7 +147,7 @@ func play_strong_shot_sfx() -> void:
 
 func play_bgm(song: BGMAudio) -> void:
 	if not song:
-		Logger.warning("Tried to play null song")
+		Log.warning("Tried to play null song")
 		return
 	
 	main_ui.show_bgm_credit(song.artist, song.song_name)

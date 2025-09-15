@@ -1,4 +1,4 @@
-class_name Logger extends Object
+class_name Log
 
 enum LogLevel {
 	ERROR = 0,

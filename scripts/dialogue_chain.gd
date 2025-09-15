@@ -81,7 +81,7 @@ func _parse_text(path: String) -> Array:
 			var params = line.substr(1, len(line)-2).split(" ")
 			
 			if len(params) < 1:
-				Logger.error("Dialogue event with no params in file " + path)
+				Log.error("Dialogue event with no params in file " + path)
 				continue
 			
 			parsed.push_back([DIALOGUE_EVENT, params[0], params.slice(1)])
@@ -92,7 +92,7 @@ func _parse_text(path: String) -> Array:
 
 			if len(params) < 4:
 				# If the line is messed up, throw an error but continue
-				Logger.error("Invalid dialogue line in file " + path)
+				Log.error("Invalid dialogue line in file " + path)
 				continue
 			
 			parsed.push_back([DIALOGUE_TEXT, params[0], params[1], params[2], params[3]])
@@ -109,7 +109,7 @@ func run_next_link() -> String:
 		return ""
 	
 	if len(link) == 0:
-		Logger.error("Empty link!")
+		Log.error("Empty link!")
 		return ""
 	
 	if link[0] == DIALOGUE_TEXT:
@@ -118,7 +118,7 @@ func run_next_link() -> String:
 		event_cue.emit(link[1], link[2])
 	elif link[0] == DIALOGUE_CALLBACK:
 		if not link[1] is Callable:
-			Logger.error("Callback dialogue link does not have a callable as it's parameter!")
+			Log.error("Callback dialogue link does not have a callable as it's parameter!")
 			return ""
 			
 		if len(link) == 3:
@@ -126,7 +126,7 @@ func run_next_link() -> String:
 		else:
 			(link[1] as Callable).call()
 	else:
-		Logger.error("Dialogue has invalid link type " + link[0])
+		Log.error("Dialogue has invalid link type " + link[0])
 		return ""
 		
 	return link[0]

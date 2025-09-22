@@ -9,16 +9,19 @@ signal restart
 @onready var totalBonusBox: HBoxContainer = $ColorRect/VBoxContainer/ScoreStats/TotalBonus
 @onready var totalScoreBox: HBoxContainer = $ColorRect/VBoxContainer/ScoreStats/ScoreTotal
 @onready var dividerBar: ColorRect = $ColorRect/VBoxContainer/ScoreStats/ColorRect
+@onready var bgRect: ColorRect = $ColorRect
 
 const BONUS_PER_LIFE: int = 10000
 const BONUS_PER_BOMB: int = 2000
 const BONUS_PER_PERFECT: int = 50000
 
+const GAME_END_BG_COLOUR = Color("56bf00", 0.521)
+const LEVEL_END_BG_COLOUR = Color("797a78", 0.321)
 
 func calculate_bonus(lives: int, bombs: int, perfects: int) -> int:
 	return lives * BONUS_PER_LIFE + bombs * BONUS_PER_BOMB + perfects * BONUS_PER_PERFECT
 
-
+## Invokes the game end screen
 func end_transition(lives: int, bombs: int, perfects: int, score: int):
 	var tween = get_tree().create_tween()
 
@@ -32,6 +35,7 @@ func end_transition(lives: int, bombs: int, perfects: int, score: int):
 	bombsBox.get_child(1).text = "x" + str(BONUS_PER_BOMB)
 	#perfectBox.get_child(1).text = "x" + str(BONUS_PER_PERFECT)
 	
+	bgRect.color = GAME_END_BG_COLOUR
 	modulate = Color.TRANSPARENT
 	
 	tween.tween_interval(0.5)
@@ -53,6 +57,10 @@ func end_transition(lives: int, bombs: int, perfects: int, score: int):
 		tween.tween_property(label, "modulate", Color.WHITE, 0.5)
 		tween.parallel().tween_property(bonus, "modulate", Color.WHITE, 0.5)
 		
+## Invokes the level end screen
+func level_end_transition():
+	bgRect.color = GAME_END_BG_COLOUR
+	# TODO: Finish this
 
 func _on_restart_button_pressed() -> void:
 	restart.emit()

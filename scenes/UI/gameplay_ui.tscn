@@ -21,8 +21,8 @@ noise_type = 2
 width = 1920
 height = 23
 generate_mipmaps = false
-color_ramp = SubResource("Gradient_l2xif")
 noise = SubResource("FastNoiseLite_hndcy")
+color_ramp = SubResource("Gradient_l2xif")
 
 [sub_resource type="LabelSettings" id="LabelSettings_dyrh1"]
 font = ExtResource("4_haufa")

@@ -43,6 +43,8 @@ extends Node2D
 @onready var _sfx_boss_full_defeat  = preload("res://audio/SFX/boss_full_kill.wav") as AudioStreamWAV
 
 static var _game_instance: GameController = null
+static var skip_dialogue: bool = false
+static var desperado: bool = false
 
 enum GameState {
 	MAIN_MENU,
@@ -72,12 +74,21 @@ var level_thread: Thread = null
 var dialogue_chain: DialogueChain = null
 var dialogue_pause: bool = false
 
+# Debug metrics
+static var bullet_count: int = 0
+
 ## Returns the global position of the player.
 static func get_player_pos() -> Vector2:
 	if not _game_instance.player_ref:
 		return Vector2.ZERO
 	else:
 		return _game_instance.player_ref.position
+
+static func aim_to_player(source: Vector2) -> Vector2:
+	if not _game_instance.player_ref:
+		return Vector2.ZERO
+	else:
+		return _game_instance.player_ref.position - source
 
 ## Returns a reference to the player
 static func get_player() -> Player:
@@ -108,6 +119,7 @@ func _open_dialogue(chain: DialogueChain):
 	state = GameState.GAME_DIALOGUE
 	dialogue_chain = chain
 	dialogue_chain.new_text.connect(main_ui.dialogue_line)
+	dialogue_chain.speaker_exit.connect(main_ui.exit_speaker)
 	main_ui.show_dialogue().tween_callback(_advance_dialogue)
 
 	
@@ -195,6 +207,8 @@ func _ready() -> void:
 	
 	game_bgm.finished.connect(func(): game_bgm.play())
 	
+	bullet_count = 0
+	
 	if len(levels) > 0:
 		level_thread = Thread.new()
 		play_next_level()
@@ -216,6 +230,7 @@ func _process(delta: float) -> void:
 		play_sfx_laser = false
 		sfx_cooldown_laser = 0.1
 		
+		laser_sfx.pitch_scale = randf_range(0.8, 1.2)
 		laser_sfx.play()
 	
 	if state == GameState.GAME_DIALOGUE and Input.is_action_just_pressed("primary") and not dialogue_pause:
@@ -298,8 +313,8 @@ func restart_game() -> void:
 # Event Methods
 #
 
-func _on_bullet_fired() -> void:
-	play_sfx = true
+func _on_bullet_fired(sfx) -> void:
+	play_sfx = sfx
 
 
 func _on_laser_fired() -> void:
@@ -316,6 +331,7 @@ func _on_bullet_bounds_area_exited(area: Area2D) -> void:
 	# TODO: Figure out how this works with object pooling
 	if area is Bullet or area is PlayerShot:
 		area.queue_free()
+		bullet_count -= 1
 
 func _on_item_bounds_area_exited(area: Area2D) -> void:
 	if area is Item:

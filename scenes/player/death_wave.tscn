@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b7cub3ldtsuys"]
 
 [ext_resource type="Script" uid="uid://d1dpolf64sb4c" path="res://scripts/player/death_wave.gd" id="1_mnyft"]
-[ext_resource type="Texture2D" uid="uid://bblwum0hrb8jo" path="res://textures/death_wave.png" id="2_ls31o"]
+[ext_resource type="Texture2D" uid="uid://yag0u7cigyhs" path="res://textures/death_wave_high.png" id="2_io3hk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mnyft"]
 radius = 16.0
@@ -13,7 +13,8 @@ script = ExtResource("1_mnyft")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -5
-texture = ExtResource("2_ls31o")
+scale = Vector2(0.26, 0.26)
+texture = ExtResource("2_io3hk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mnyft")

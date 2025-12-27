@@ -11,12 +11,20 @@ signal restart
 @onready var dividerBar: ColorRect = $ColorRect/VBoxContainer/ScoreStats/ColorRect
 @onready var bgRect: ColorRect = $ColorRect
 
+@onready var title: Label = $ColorRect/VBoxContainer/WinTitle
+
 const BONUS_PER_LIFE: int = 10000
 const BONUS_PER_BOMB: int = 2000
 const BONUS_PER_PERFECT: int = 50000
 
 const GAME_END_BG_COLOUR = Color("56bf00", 0.521)
 const LEVEL_END_BG_COLOUR = Color("797a78", 0.321)
+
+func _ready() -> void:
+	if GameController.desperado:
+		title.text = "PERFECT!!"
+	else:
+		title.text = "YOU WIN!!"
 
 func calculate_bonus(lives: int, bombs: int, perfects: int) -> int:
 	return lives * BONUS_PER_LIFE + bombs * BONUS_PER_BOMB + perfects * BONUS_PER_PERFECT
@@ -63,6 +71,7 @@ func level_end_transition():
 	# TODO: Finish this
 
 func _on_restart_button_pressed() -> void:
+	GameController.skip_dialogue = false
 	restart.emit()
 
 

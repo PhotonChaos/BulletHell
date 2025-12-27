@@ -19,6 +19,9 @@ const LASER_WARN_WIDTH: int = 2
 const LASER_GRACE_THRESHOLD: int = 2
 const LASER_ABSOLUTE_MIN_RADIUS: int = 1
 
+## Set this to a positive number if you want the laser to expand/contract faster than normal.
+var laser_expand_override: float = -1
+
 var _laser_started: bool
 
 var _expand_tween: Tween
@@ -93,6 +96,21 @@ func rotate_laser(angle_rad: float):
 	draw_sprite()
 	
 
+## Rotates the laser around its midpoint
+func rotate_around_midpoint(angle_rad: float):
+	var midpoint = start + 0.5*(end - start)
+	var mag = (start - midpoint).length()
+	var dir = Vector2.from_angle(angle_rad)
+	
+	start = midpoint + dir*mag
+	end = midpoint - dir*mag
+	
+	draw_sprite()
+
+func get_midpoint_angle() -> float:
+	return (end - start).angle()
+	
+	
 ## Sets the sprite parameters so that the laser renders properly. 
 ## Call only when the positions of [member start] or [member end] change.
 func draw_sprite():
@@ -105,8 +123,10 @@ func draw_sprite():
 func expand_laser():
 	laser_expand.emit()
 	
+	var true_expand_time = LASER_EXPAND_TIME if laser_expand_override <= 0 else laser_expand_override
+	
 	_expand_tween = get_tree().create_tween()
-	_expand_tween.tween_property(sprite.texture, "width", radius, LASER_EXPAND_TIME)
+	_expand_tween.tween_property(sprite.texture, "width", radius, true_expand_time)
 	# Be forgiving on the player, only enable the collider when at max width in the animation
 	_expand_tween.tween_callback(func(): 
 		collider.set_deferred("disabled", false)
@@ -118,6 +138,8 @@ func expand_laser():
 func collapse_laser():
 	collider.set_deferred("disabled", true)
 	
+	var true_expand_time = LASER_EXPAND_TIME if laser_expand_override <= 0 else laser_expand_override
+	
 	var tw = get_tree().create_tween()
-	tw.tween_property(sprite.texture, "width", 1, LASER_EXPAND_TIME)
+	tw.tween_property(sprite.texture, "width", 1, true_expand_time)
 	tw.tween_callback(queue_free)

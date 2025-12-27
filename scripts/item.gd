@@ -14,8 +14,15 @@ enum ItemType {
 const _sprite_map = {
 	ItemType.POINT: preload("res://textures/items/point_alt.png"),
 	ItemType.SMALL_POINT: preload("res://textures/items/small_point.png"),
-	ItemType.LIFE: preload("res://textures/UI/heart_icon.png"),
-	ItemType.BOMB: preload("res://textures/UI/bomb_icon.png")
+	ItemType.LIFE: preload("res://textures/items/hat.png"),
+	ItemType.BOMB: preload("res://textures/items/bomb.png")
+}
+
+const _scale_map = {
+	ItemType.POINT: 3,
+	ItemType.SMALL_POINT: 3,
+	ItemType.LIFE: 0.15,
+	ItemType.BOMB: 0.15
 }
 
 const _sound_map = {
@@ -34,7 +41,7 @@ const _sound_map = {
 
 const GRAVITY = 120
 const MAX_FALL_SPEED = 360
-const MAGNET_SPEED = 1000
+const MAGNET_SPEED = 1400
 
 ## y-coordinate of max point value
 const POINT_OF_COLLECTION = 180
@@ -73,6 +80,7 @@ static func new_item(type: ItemType):
 func _ready() -> void:
 	if item_type in _sprite_map:
 		sprite.texture = _sprite_map[item_type]
+		sprite.scale = Vector2.ONE * _scale_map[item_type]
 
 
 func apply(player: Player) -> void:
@@ -84,11 +92,15 @@ func apply(player: Player) -> void:
 	elif item_type == ItemType.SMALL_POINT:
 		player.add_points(SMALL_POINT_VALUE)
 	elif item_type == ItemType.BOMB:
-		player.add_bombs(1)
-		player.add_points(BOMB_POINT_VALUE)
+		if not GameController.desperado:
+			player.add_bombs(1) 
+			
+		player.add_points(BOMB_POINT_VALUE * (10 if GameController.desperado else 1))
 	elif item_type == ItemType.LIFE:
-		player.add_lives(1)
-		player.add_points(LIFE_POINT_VALUE)
+		if not GameController.desperado:
+			player.add_lives(1)
+			
+		player.add_points(LIFE_POINT_VALUE * (10 if GameController.desperado else 1))
 		
 	if item_type in _sound_map:
 		var stream = AudioStreamPlayer2D.new()

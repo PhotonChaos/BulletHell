@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://df6m74ryr1ksr"]
+
+[ext_resource type="Script" uid="uid://cvsgxgbky64f8" path="res://scenes/utils/bullet_clear_point.gd" id="1_fl12n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3wn5s"]
+radius = 3.0
+
+[node name="BulletClearPoint" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_fl12n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3wn5s")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

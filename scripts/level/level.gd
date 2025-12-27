@@ -7,7 +7,7 @@ signal level_loaded
 signal level_finished
 
 # For SFX
-signal bullet_fired
+signal bullet_fired(play_sfx: bool)
 signal laser_fired
 signal boss_spawned
 signal boss_started
@@ -26,8 +26,12 @@ enum BulletType {
 	SMALL_BALL,
 	KNIFE,
 	KNIFE_GOLD,
+	KNIFE_SHADOW,
+	KNIFE_BLUE,
 	SHARD,
-	STAR
+	STAR,
+	RIFLE,
+	BUBBLE_PURPLE
 }
 
 @export var title: String
@@ -44,7 +48,7 @@ enum BulletType {
 var _enemy_template: PackedScene = preload("res://scenes/enemy/enemy.tscn")
 var _item_template: PackedScene = preload("res://scenes/pickup/item.tscn")
 var _boss_death_wave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
-var _boss_death_particles: PackedScene = preload("res://scenes/fx/fx_boss_explosion.tscn")
+var _boss_death_particles: PackedScene = preload("res://scenes/fx/fx_hm_boss_explosion.tscn")
 
 var _boss_ref: Boss = null
 
@@ -64,10 +68,20 @@ const bullet_library: Dictionary = {
 	BulletType.BALL: preload('res://scenes/bullets/bullet.tscn'),
 	BulletType.KNIFE: preload('res://scenes/bullets/bullet_knife.tscn'),
 	BulletType.KNIFE_GOLD: preload('res://scenes/bullets/bullet_gold_knife.tscn'),
+	BulletType.KNIFE_SHADOW: preload("res://scenes/bullets/bullet_shadow_knife.tscn"),
+	BulletType.KNIFE_BLUE: preload("res://scenes/bullets/bullet_knife_blue.tscn"),
 	BulletType.SMALL_BALL: preload('res://scenes/bullets/bullet_small.tscn'),
 	BulletType.SHARD: preload("res://scenes/bullets/bullet_shard.tscn"),
-	BulletType.STAR: preload("res://scenes/bullets/bullet_star.tscn")
+	BulletType.STAR: preload("res://scenes/bullets/bullet_star.tscn"),
+	BulletType.RIFLE: preload("res://scenes/bullets/bullet_rifle.tscn"),
+	BulletType.BUBBLE_PURPLE: preload("res://scenes/bullets/bullet_bubble.tscn")
 }
+
+const AREA_X_MAX = 1209
+const AREA_Y_MAX = 1057
+
+const AREA_X_MIN = 30
+const AREA_Y_MIN = 23
 
 var _player_ref: Player = null
 
@@ -130,9 +144,16 @@ func add_script_func(fun: Callable):
 # ############
 # Core Functions
 
+var lifetime = 0
+
 func _process(delta: float) -> void:
 	if playing and _si < len(_level_script):
 		tick_level(delta)
+		
+	#if lifetime % 200 == 0:
+		#print("bullet count: ", GameController.bullet_count)
+	
+	lifetime += 1
 	
 
 ## Called to set up object pools [NYI], level scripts, and some variables
@@ -184,7 +205,7 @@ func start_dialogue(chain: DialogueChain):
 
 func on_dialogue_event(event_name: String, params: Array):	
 	if event_name == DIALOGUE_CUE_BOSS_SPAWN:
-		spawn_boss(params[0], BOSS_DEFAULT_POSITION, BOSS_OFFSCREEN_POSITION)
+		spawn_boss(params[0], BOSS_DEFAULT_POSITION, BOSS_OFFSCREEN_POSITION, true)
 	elif event_name == DIALOGUE_CUE_BOSS_START:
 		_boss_ref.start()
 	elif event_name == DIALOGUE_CUE_BOSS_BGM:
@@ -228,7 +249,7 @@ func spawn_enemy_wave(count: int, spacing: float, pos: Vector2, dest: Vector2, t
 
 
 ## Spawns [param boss] at position [param pos]
-func spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
+func spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2, immediate: bool = false) -> void:
 	var bossInstance: Boss = bosses[boss].instantiate() 
 	bossInstance.global_position = offscreen_pos
 	bossInstance._level = self
@@ -258,7 +279,10 @@ func spawn_boss(boss: String, pos: Vector2, offscreen_pos: Vector2) -> void:
 		dialogue_controls.emit(true)
 		add_child(bossInstance)
 	
-	_level_script.append([LS_FUNC, boss_lambda])
+	if immediate:
+		boss_lambda.call()
+	else:
+		_level_script.append([LS_FUNC, boss_lambda])
 
 # Bullet mechanics
 
@@ -269,23 +293,24 @@ func boss_death_particles(pos: Vector2) -> void:
 	particles.finished.connect(func(): particles.queue_free())
 	particles.emitting = true
 
-## Produces the template for the bullet with id [param name]
-func get_bullet_template(name: BulletType) -> PackedScene:
-	if not (name in bullet_library):
-		Log.warning("Unknown bullet type '"+BulletType.keys()[name]+"'")
-		name = DEFAULT_BULLET_TYPE
+## Produces the template for the bullet with id [param t_name]
+func get_bullet_template(t_name: BulletType) -> PackedScene:
+	if not (t_name in bullet_library):
+		Log.warning("Unknown bullet type '"+BulletType.keys()[t_name]+"'")
+		t_name = DEFAULT_BULLET_TYPE
 		
-	return bullet_library[name]
+	return bullet_library[t_name]
 
 
 ## Spawns a bullet of [param type] at [param position] with properties [param args].[br]
 ## Returns a reference to the new bullet.
-func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vector2, a: Vector2) -> Bullet:
+func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vector2, a: Vector2, bullet_scale: Vector2 = Vector2.ONE) -> Bullet:
 	# TODO: Make this work with object pooling
 	var bullet: Bullet = get_bullet_template(type).instantiate()
 	
 	bullet.position = _position
 	bullet.scale = Vector2.ZERO
+	bullet.modulate = Color.TRANSPARENT
 	bullet.type = type
 	bullet.velocity = v
 	bullet.acceleration = a
@@ -293,7 +318,10 @@ func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vec
 	
 	# TODO: Figure out whether it's better to bulk-tween these in the burst methods instead of this.
 	var tween = get_tree().create_tween()
-	tween.tween_property(bullet, "scale", Vector2.ONE, 0.1)
+	tween.tween_property(bullet, "scale", bullet_scale, 0.1)
+	tween.parallel().tween_property(bullet, "modulate", Color.WHITE, 0.1)
+	
+	GameController.bullet_count += 1
 	
 	return bullet
 
@@ -305,10 +333,10 @@ func spawn_bullet(_position: Vector2, type: BulletType, _rotation: float, v: Vec
 ## The bullets will have a velocity of [param v] in the direction they are facing, with acceleration [param a].[br]
 ## Also, the bullets will be added as children of the game controller.
 ## Returns an array containing the bullets, ordered from lowest angle aim vector to highest.
-func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, _rotation: float, dist: float, v: float, a: float) -> Array[Bullet]:	
+func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: float, _rotation: float, dist: float, v: float, a: float, play_sfx: bool = true) -> Array[Bullet]:	
 	var bullets: Array[Bullet] = []
-	var angle_gap = spread / (count-1) if count > 1 else 0
-	var start_angle = _rotation - spread / 2
+	var angle_gap = spread / (count-1) if count > 1 else 0.0
+	var start_angle = _rotation - spread / 2 if count > 1 else _rotation
 	
 	for i in range(count):
 		var bullet_dir = start_angle + angle_gap * i
@@ -318,7 +346,7 @@ func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: floa
 		
 		bullets.append(bullet)
 	
-	bullet_fired.emit()
+	bullet_fired.emit(play_sfx)
 	
 	for bullet in bullets:
 		add_child(bullet)
@@ -327,8 +355,8 @@ func bullet_burst(_position: Vector2, type: BulletType, count: int, spread: floa
 
 
 ## Same as [method Level.spawn_burst] but spawns them in a circle.
-func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0) -> Array[Bullet]:	
-	return bullet_burst(_position, type, count, TAU - TAU / count, _rotation, dist, v, a)
+func bullet_ring(_position: Vector2, type: BulletType, count: int, _rotation: float=0, dist: float=0, v: float=0, a: float=0, play_sfx: bool = true) -> Array[Bullet]:	
+	return bullet_burst(_position, type, count, TAU - TAU / count, _rotation, dist, v, a, play_sfx)
 
 func bullet_star(_position: Vector2, type: BulletType, points: int, density: int, v_mult: float, _rotation: float, v: float, a: float=0) -> Array[Bullet]:
 	var bullets: Array[Bullet] = []
@@ -376,6 +404,8 @@ func clear_bullet(bullet: Bullet, spawn_point: bool) -> void:
 	
 	if spawn_point:
 		call_deferred("spawn_item", bullet.global_position, Item.ItemType.SMALL_POINT, true)
+	
+	GameController.bullet_count -= 1
 
 
 func clear_laser(laser: LaserStraight) -> void:

@@ -41,6 +41,7 @@ signal phases_left_changed(old: int, new: int)
 ## The attacks that the boss uses. Using int as a placeholder for the nodes
 @export var spell_cards: Array[PackedScene]
 
+@onready var hitbox: Area2D = $Hitbox
 
 enum BombImmunityLevel { ## The level of immunity a boss has to damage while a bomb is active (when not on a timeout spell)
 	## Bombs will always damage the boss
@@ -54,7 +55,8 @@ enum BombImmunityLevel { ## The level of immunity a boss has to damage while a b
 }
 
 const MOVEMENT_LEFT_BOUND: float = 120
-const MOVEMENT_RIGHT_BOUND: float = 320*3
+const MOVEMENT_RIGHT_BOUND: float = 1118
+const MOVEMENT_BOUND_CENTER: float = (MOVEMENT_RIGHT_BOUND + MOVEMENT_LEFT_BOUND) / 2 
 
 var _level: Level = null
 
@@ -154,6 +156,19 @@ func clear_move_queue() -> void:
 	move_queue.clear()
 
 
+func try_wander(dmin = 50, dmax = 80, move_duration=0.5) -> Tween:
+	var dist = randi_range(dmin, dmax) * (-1 if randi_range(0, 1) == 0 else 1) + (MOVEMENT_BOUND_CENTER - position.x)
+	
+	if position.x + dist <= MOVEMENT_LEFT_BOUND or position.x + dist >= MOVEMENT_RIGHT_BOUND:
+		dist = -dist
+		
+	if position.x + dist <= MOVEMENT_LEFT_BOUND or position.x + dist >= MOVEMENT_RIGHT_BOUND:
+		Log.error("Movement out of bounds")
+		return
+		
+	return tween_move_to(position + Vector2(dist, 0), move_duration)
+	
+	
 func damage(amount: int) -> void:
 	if _level._bomb_active and is_bomb_immune():
 		return
@@ -173,11 +188,7 @@ func next_spell() -> void:
 	current_spell_index += 1
 	
 	if current_spell_index >= len(spell_cards):
-		boss_defeated.emit()
-		
-		if explode_on_defeat:
-			queue_free()
-			
+		die()
 		return
 	
 	current_spell = spell_cards[current_spell_index].instantiate()
@@ -185,7 +196,7 @@ func next_spell() -> void:
 	current_spell.spell_started.connect(func(): defeat_phase(false))
 	current_spell.spell_defeated.connect(func(): defeat_phase(true))
 	
-	current_spell.hp_changed.connect(func(max: int, old: int, new: int): spell_hp_changed.emit(max, old, new))
+	current_spell.hp_changed.connect(func(_max: int, old: int, new: int): spell_hp_changed.emit(_max, old, new))
 	current_spell.time_changed.connect(func(new: float): spell_time_changed.emit(new))
 	
 	add_child(current_spell)
@@ -209,26 +220,42 @@ func defeat_phase(card: bool) -> void:
 	move_tweens.clear()
 	
 	var reset_tween = get_tree().create_tween().set_trans(Tween.TRANS_EXPO)
+	
+	if card and current_spell_index >= len(spell_cards):
+		die()
+		return
+		
 	reset_tween.tween_property(self, "position", Level.BOSS_DEFAULT_POSITION, 1.5)
+	reset_tween.parallel().tween_property(self, "scale", Vector2.ONE, 1.5)
+	
+	current_spell.started = false
 	
 	if card:
 		# Nonspells can't be timeouts.
-		current_spell.started = false
 		current_spell.clear_turrets()
 		
 		reset_tween.parallel().tween_property($Sprite2D, "modulate", Color.WHITE, 0.5)
+		reset_tween.parallel().tween_property($AnimatedSprite2D, "modulate", Color.WHITE, 0.5)
 		reset_tween.tween_callback(next_spell)
 		set_deferred("collision_mask", 0b100)
+		hitbox.set_deferred("collision_layer", 0b10)
 	else:
-		current_spell.started = false
 		phases_left_changed.emit(0, len(spell_cards)-current_spell_index-1)
 		spell_card_started.emit(current_spell.spell_name)
 		
 		if current_spell.is_timeout:
 			reset_tween.parallel().tween_property($Sprite2D, "modulate", Color(1,1,1,0.5), 0.5)
+			reset_tween.parallel().tween_property($AnimatedSprite2D, "modulate", Color(1,1,1,0.5), 0.5)
 			set_deferred("collision_mask", 0)
+			hitbox.set_deferred("collision_layer", 0)
 		
 		reset_tween.tween_callback(func(): current_spell.started = true)
+	
+	
+func die() -> void:
+	boss_defeated.emit()
+	if explode_on_defeat:
+		queue_free()
 	
 
 func start() -> void:

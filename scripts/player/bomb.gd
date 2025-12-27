@@ -52,5 +52,5 @@ func _on_animation_finished() -> void:
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if area is Bullet:
+	if area is Bullet and not (area as Bullet).strong:
 		level_ref.clear_bullet(area as Bullet, true)

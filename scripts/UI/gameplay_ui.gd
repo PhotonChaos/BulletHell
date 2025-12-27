@@ -14,6 +14,10 @@ var phase_icon = preload("res://textures/UI/bossPhases.png")
 @onready var highScoreLabel = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/Scores/HighScore as Label
 @onready var flashBombMeter = $GeneralSection/VBoxContainer/HBoxContainer/FlashbombContainer/VBoxContainer/FlashbombMeter/TextureProgressBar as TextureProgressBar
 
+@onready var lifeLabel = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/LivesContainer/HPLabel as Label
+@onready var bombLabel = $GeneralSection/VBoxContainer/HBoxContainer/PlayerStats/PlayerResources/BombsContainer/BombLabel as Label
+@onready var desperadoLabel = $GeneralSection/VBoxContainer/Desperado as Label
+
 # Boss UI elements
 @onready var spellNameLabel = $GameOverlay/BossStats/VBoxContainer/HBoxContainer/SpellName as Label
 @onready var bossNameLabel = $GameOverlay/BossStats/VBoxContainer/HBoxContainer/BossName as Label
@@ -74,6 +78,11 @@ func _ready() -> void:
 	musicBox.hide()
 	musicY = musicBox.position.y
 	
+	if GameController.desperado:
+		lifeLabel.text = "Lives: NO REST"
+		bombLabel.text = "Bombs: NO MERCY"
+		desperadoLabel.text = "DESPERADO"
+	
 	bossPos.hide()
 	
 	dialogueStartingWidth = dialogueContainer.size.x
@@ -111,8 +120,8 @@ func _set_icons(container: HBoxContainer, count: int, texture: Resource):
 		
 		icon.texture = texture
 		icon.position = Vector2(0, 4)
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		
 		container.add_child(icon)
 
@@ -130,7 +139,7 @@ func set_score(score: int):
 
 
 func set_high_score(score: int):
-	highScoreLabel.text = "High Score: " + str(score)
+	highScoreLabel.text = "HiScore: " + str(score)
 
 
 func set_flash_charge(charge: float, max: float):
@@ -316,6 +325,14 @@ func introduce_speaker(speaker_id: String, on_left: bool):
 		dialogueNameplateLeft.position -= Vector2(0, -10)
 		tw.tween_property(dialogueNameplateLeft, "color", nameplateStartColor, DIALOGUE_SIDE_SWITCH_TIME)
 		tw.parallel().tween_property(dialogueNameplateLeft, "position:y", dialogueNameplateLeft.position.y + 10, DIALOGUE_SIDE_SWITCH_TIME)
+
+func exit_speaker(on_left: bool):
+	if on_left:
+		dialoguePortraitLeft.texture = null
+		dialogueNameplateLeftText.text = ""
+	else:
+		dialoguePortraitRight.texture = null
+		dialogueNameplateRightText.text = ""
 
 # Boss Methods
 func set_boss_pos(boss_x: float, boss_width: float):

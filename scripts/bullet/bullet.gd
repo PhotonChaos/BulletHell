@@ -27,6 +27,9 @@ var strong: bool = false
 ## If set to true, the bullet will not harm the player
 var harmless: bool = false
 
+## Number of times the bullet has been reflected off walls and such. Used so they don't get stuck
+var reflectCount: int = 0
+
 var type: Level.BulletType
 
 var paint_color: Color = Color.WHITE
@@ -49,10 +52,15 @@ func get_sprite() -> Sprite2D:
 func paint_bullet(color: Color) -> void:
 	paint_color = color
 
-func _physics_process(delta: float) -> void:
-	velocity += 0.5 * acceleration * delta
-	position += velocity * delta
-	velocity += 0.5 * acceleration * delta
-	
-	if rotate_to_velocity:
-		rotation = velocity.angle() + rotation_offset
+func reflect_bullet(normal: Vector2) -> void:
+	reflectCount += 1
+	velocity = velocity - 2 * velocity.dot(normal) * normal
+	acceleration = Vector2.from_angle(velocity.angle()) * acceleration.length()
+
+#func _physics_process(delta: float) -> void:
+	#velocity += 0.5 * acceleration * delta
+	#position += velocity * delta
+	#velocity += 0.5 * acceleration * delta
+	#
+	#if rotate_to_velocity:
+		#rotation = velocity.angle() + rotation_offset

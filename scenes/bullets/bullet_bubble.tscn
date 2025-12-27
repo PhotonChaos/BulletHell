@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpd717tun8m72"]
+
+[ext_resource type="Script" uid="uid://dfi0g7guqnkfg" path="res://scripts/bullet/bullet.gd" id="1_skyvc"]
+[ext_resource type="Texture2D" uid="uid://doqq02kl2ysgy" path="res://textures/bullets/bubble_large.png" id="2_d2vvx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0yy36"]
+radius = 12.351339
+
+[node name="BulletBubble" type="Area2D" groups=["enemy_bullets"]]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_skyvc")
+metadata/_custom_type_script = "uid://dfi0g7guqnkfg"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
+scale = Vector2(2, 2)
+texture = ExtResource("2_d2vvx")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+z_index = 5
+scale = Vector2(2, 2)
+shape = SubResource("CircleShape2D_0yy36")
+debug_color = Color(0.970831, 0, 0.452073, 0.42)

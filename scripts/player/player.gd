@@ -20,6 +20,12 @@ signal hit_or_bomb
 @export var max_flash_charge: int
 ## The time in seconds the player has to bomb after getting hit to save themselves
 @export_range(0, 2) var deathbomb_window: float
+
+@export_group("Player Special")
+@export var bomb_template: PackedScene
+@export var flashbomb_template: PackedScene
+
+
 @export_group("Player Shot")
 @export_range(1, 100) var fire_rate: float
 @export_range(1, 7) var shot_count: int
@@ -28,6 +34,8 @@ signal hit_or_bomb
 @export_range(1, 360) var focus_spread: float
 @export var shot_velocity: float
 
+@export var shot_template: PackedScene
+
 @export_group("Cheats")
 @export var invincible: bool = false
 @export var infinite_lives: bool = false
@@ -35,6 +43,8 @@ signal hit_or_bomb
 ## Game Variables
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
 @onready var hitbox: Area2D = $HitboxSprite/PlayerHitbox
+
+@onready var player_sprite: AnimatedSprite2D = $PlayerAnimSprite
 
 @onready var sfx_player_hit: AudioStreamPlayer2D = $HitSFX
 @onready var sfx_player_graze: AudioStreamPlayer2D = $GrazeSFX
@@ -45,9 +55,6 @@ signal hit_or_bomb
 @onready var sfx_player_use_flashbomb: AudioStreamPlayer2D = $FlashBombSFX
 @onready var sfx_player_shoot: AudioStreamPlayer2D = $ShotSFX
 
-var shot_template: PackedScene = preload("res://scenes/player/player_shot.tscn")
-var bomb_template: PackedScene = preload("res://scenes/player/bomb.tscn")
-var flashbomb_template: PackedScene = preload("res://scenes/player/flash_bomb.tscn")
 var deathwave_template: PackedScene = preload("res://scenes/player/death_wave.tscn")
 
 var item_pickup_sfx: AudioStreamWAV = preload("res://audio/SFX/click(5).wav")
@@ -228,11 +235,25 @@ func emit_stats():
 
 
 func _ready() -> void:
+	if shot_template == null:
+		shot_template = load("res://scenes/player/player_shot.tscn")
+	
+	if bomb_template == null:
+		bomb_template = load("res://scenes/player/bomb.tscn")
+	
+	if flashbomb_template == null:
+		flashbomb_template = load("res://scenes/player/flash_bomb.tscn")
+	
 	state = PlayerState.NORMAL
 	move_state = XMoveState.NONE
 	
 	_lives = lives
 	_bombs = bombs
+	
+	if GameController.desperado:
+		_lives = 1
+		_bombs = 0
+		max_flash_charge = 99999999
 	
 	_flash_charge = 0
 	
@@ -248,6 +269,17 @@ func _ready() -> void:
 	else:
 		_shot_gap_size = 0
 		_focus_gap_size = 0
+		
+	player_sprite.play("default")
+	
+	move_state_changed.connect(func(new_state: XMoveState): 
+		if new_state == XMoveState.LEFT:
+			player_sprite.play("lean_left")
+		elif new_state == XMoveState.RIGHT:
+			player_sprite.play("lean_right")
+		else:
+			player_sprite.play("default")
+		)
 
 ## Used for debug
 #func _draw():

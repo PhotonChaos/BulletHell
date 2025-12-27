@@ -16,6 +16,9 @@ extends RefCounted
 ## Emitted when a dialogue script or chain trigger an event
 signal new_text(on_left: bool, speaker: String, emotion: String, text: String)
 
+## Emitted when the script calls for the speaker to exit the dialogue. Used to hide the sprite.
+signal speaker_exit(on_left: bool)
+
 ## Emits when the script calls for a cue. Used by Levels for things like effects and bosses entering
 signal event_cue(cue: String, args: Array[String])
 
@@ -26,6 +29,7 @@ const DIALOGUE_CALLBACK = "callback"
 
 const _ACTION_BGM = "bgm"
 const _ACTION_TITLECARD = "titlecard"
+const _ACTION_EXIT = "exit"
 #const _ACTION_ENTER = "enter"
 
 var chain: Array = []
@@ -115,6 +119,9 @@ func run_next_link() -> String:
 	if link[0] == DIALOGUE_TEXT:
 		new_text.emit(link[1], link[2], link[3], link[4])
 	elif link[0] == DIALOGUE_EVENT:
+		if link[1] == _ACTION_EXIT:
+			speaker_exit.emit(link[2][0] == "L")
+			
 		event_cue.emit(link[1], link[2])
 	elif link[0] == DIALOGUE_CALLBACK:
 		if not link[1] is Callable:

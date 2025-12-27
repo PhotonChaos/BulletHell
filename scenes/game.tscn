@@ -1,9 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://uk6quv3bwyb6"]
+[gd_scene load_steps=19 format=3 uid="uid://uk6quv3bwyb6"]
 
 [ext_resource type="Script" uid="uid://cfuhtk0ngnq3" path="res://scripts/game.gd" id="1_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://cgknclatif1f1" path="res://scenes/levels/test_level.tscn" id="2_dinhu"]
 [ext_resource type="PackedScene" uid="uid://bj0d1se17qkg8" path="res://scenes/UI/gameplay_ui.tscn" id="2_iywne"]
-[ext_resource type="PackedScene" uid="uid://cm48yie4xer8w" path="res://scenes/player/characters/lucas.tscn" id="2_kvpfn"]
+[ext_resource type="Texture2D" uid="uid://u63i0ntelmu8" path="res://textures/bg/nebula-nasa.jpg" id="4_ir15t"]
 [ext_resource type="AudioStream" uid="uid://dnp48pthy6pnw" path="res://audio/SFX/not_mine/pop.mp3" id="4_iywne"]
 [ext_resource type="AudioStream" uid="uid://b1sojvrbym1ec" path="res://audio/SFX/bullet_shoot_1.wav" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cwb74j15yhms2" path="res://scenes/UI/pause_menu.tscn" id="4_u5sy4"]
@@ -11,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dmqrsuxqm0g51" path="res://scenes/UI/end_score_screen.tscn" id="6_vtaks"]
 [ext_resource type="AudioStream" uid="uid://gvidqnmxu8yf" path="res://audio/SFX/boss_beat.wav" id="8_gee14"]
 [ext_resource type="AudioStream" uid="uid://wk06q47tb7xy" path="res://audio/SFX/strong_shoot.wav" id="9_kvuet"]
-[ext_resource type="AudioStream" uid="uid://cx65cb7g73hdm" path="res://audio/SFX/biglaser.wav" id="10_kvuet"]
+[ext_resource type="AudioStream" uid="uid://cmjyv6bygq0of" path="res://audio/SFX/new_laser.wav" id="11_ir15t"]
 [ext_resource type="Texture2D" uid="uid://c214dl4yp3gkq" path="res://textures/bullets/star_test.png" id="12_dinhu"]
 [ext_resource type="AudioStream" uid="uid://damd3wglwa2xy" path="res://audio/SFX/hitHurt.wav" id="12_trtic"]
 
@@ -32,19 +31,22 @@ size = Vector2(46.5, 1035)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
-levels = Array[PackedScene]([ExtResource("2_dinhu")])
-player_character = ExtResource("2_kvpfn")
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -2
 
 [node name="TextureRect" type="TextureRect" parent="BackgroundLayer"]
 modulate = Color(0.361575, 0.361575, 0.361575, 1)
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_left = 29.0
+offset_top = 22.0
+offset_right = 1210.0
+offset_bottom = -22.0
 grow_vertical = 2
+texture = ExtResource("4_ir15t")
+expand_mode = 4
+stretch_mode = 4
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -111,7 +113,10 @@ volume_db = -10.0
 bus = &"SFX"
 
 [node name="LaserSoundPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("10_kvuet")
+stream = ExtResource("11_ir15t")
+volume_db = 2.298
+max_polyphony = 8
+panning_strength = 0.0
 bus = &"SFX"
 
 [node name="EnemyDeathSoundPlayer" type="AudioStreamPlayer2D" parent="."]
@@ -159,9 +164,27 @@ position = Vector2(1233.25, 549.5)
 shape = SubResource("RectangleShape2D_p57ef")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
+[node name="DebugRuler4" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(499, 162)
+scale = Vector2(3, 3)
+texture = ExtResource("12_dinhu")
+
+[node name="DebugRuler3" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(620, 160)
+scale = Vector2(3, 3)
+texture = ExtResource("12_dinhu")
+
+[node name="DebugRuler2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(120, 162)
+scale = Vector2(3, 3)
+texture = ExtResource("12_dinhu")
+
 [node name="DebugRuler" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(1209, 1057)
+position = Vector2(1118, 162)
 scale = Vector2(3, 3)
 texture = ExtResource("12_dinhu")
 

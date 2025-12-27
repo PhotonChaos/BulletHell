@@ -31,6 +31,7 @@ height = 82.0
 script = ExtResource("1_4flbx")
 lives = 5
 bombs = 4
+invincible = true
 
 [node name="PlayerWallCollider" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4.5)

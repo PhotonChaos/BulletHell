@@ -1,10 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://by3v0a2t44smh"]
+[gd_scene load_steps=5 format=3 uid="uid://by3v0a2t44smh"]
 
 [ext_resource type="Theme" uid="uid://burtlrkgl63lg" path="res://ui/main_theme.tres" id="1_m3vow"]
 [ext_resource type="Script" uid="uid://ncwmwak2vba1" path="res://scripts/UI/options_menu.gd" id="2_3t8k5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m3vow"]
 font_size = 88
+outline_size = 44
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3t8k5"]
+font_size = 22
+outline_size = 11
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 
 [node name="OptionsMenu" type="Control"]
 layout_mode = 3
@@ -15,6 +22,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_m3vow")
 script = ExtResource("2_3t8k5")
+default_bgm_volume = 0.2
+default_sfx_volume = 1.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -54,6 +63,11 @@ alignment = 1
 custom_minimum_size = Vector2(184, 0)
 layout_mode = 2
 text = "Music Volume:"
+label_settings = SubResource("LabelSettings_3t8k5")
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/MusicVolume"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
 
 [node name="MusicVolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/MusicVolume"]
 layout_mode = 2
@@ -69,6 +83,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(184, 0)
 layout_mode = 2
 text = "SFX Volume:"
+label_settings = SubResource("LabelSettings_3t8k5")
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/SFXVolume"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
 
 [node name="SFXVolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/SFXVolume"]
 layout_mode = 2
@@ -84,7 +103,7 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Back"
+text = " Back "
 
 [node name="Control" type="Control" parent="HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)

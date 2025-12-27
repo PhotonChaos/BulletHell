@@ -10,12 +10,12 @@ config_version=5
 
 [application]
 
-config/name="BulletHell"
-config/description="Bullet Hell Engine!"
+config/name="Bullet Hell Engine"
+config/description="Base project for making bullet hell games!"
 config/version="0.3.2"
-run/main_scene="uid://uk6quv3bwyb6"
+run/main_scene="uid://ogbgrgwuqww5"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://textures/icon.svg"
+config/icon="uid://bpo48wg8b4ji6"
 
 [audio]
 
@@ -32,8 +32,10 @@ window/stretch/mode="viewport"
 [file_customization]
 
 folder_colors={
+"res://audio/": "teal",
 "res://export/": "gray",
-"res://resources/": "yellow"
+"res://resources/": "yellow",
+"res://textures/": "red"
 }
 
 [global_group]

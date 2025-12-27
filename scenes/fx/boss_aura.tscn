@@ -1,17 +1,17 @@
 [gd_scene load_steps=7 format=3 uid="uid://ctkwcoondih06"]
 
-[ext_resource type="Texture2D" uid="uid://bkflrvs1435te" path="res://textures/fx/small_particle.png" id="1_aoae3"]
+[ext_resource type="Texture2D" uid="uid://dsiw6a0j6k5p5" path="res://textures/fx/boss_aura.png" id="1_aoae3"]
 
 [sub_resource type="Curve" id="Curve_aoae3"]
-_data = [Vector2(0, 1), 0.0, 0.587084, 0, 0, Vector2(1, 0), 0.127739, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0.2058338), 0.0, 0.587084, 0, 0, Vector2(0.4978541, 0.49917454), 0.0, 0.0, 0, 0, Vector2(1, 0.2058338), 0.127739, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_s84dl"]
 curve = SubResource("Curve_aoae3")
 
 [sub_resource type="Curve" id="Curve_c6eel"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0.79966986), 0.0, 0.0, 0, 0, Vector2(0.50214595, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.79966986), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_tsbga"]
 curve = SubResource("Curve_c6eel")
@@ -19,10 +19,13 @@ curve = SubResource("Curve_c6eel")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aoae3"]
 particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 10.0
 scale_curve = SubResource("CurveTexture_tsbga")
 alpha_curve = SubResource("CurveTexture_s84dl")
 
 [node name="BossAura" type="GPUParticles2D"]
 amount = 1
 texture = ExtResource("1_aoae3")
+lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_aoae3")

@@ -41,4 +41,6 @@ func _on_options_menu_sfx_test() -> void:
 	
 
 func _on_quit_button_pressed() -> void:
-	get_tree().quit()
+	GameController.skip_dialogue = false
+	GameController._game_instance.set_pause(false)
+	get_tree().change_scene_to_file("res://scenes/UI/main_menu.tscn")

@@ -94,6 +94,21 @@ func clear_timers() -> void:
 	
 	_timers.clear()
 
+func add_bbg(physics_func: Callable) -> BBG:
+	var bbg = BBG.new()
+	bbg.physics_func = physics_func
+	add_child(bbg)
+	return bbg
+
+func add_bcp(pos: Vector2, bullets: Array[Bullet]) -> BulletClearPoint:
+	var bcp = BulletClearPoint.create(_level)
+	
+	_level.add_child(bcp)
+	bcp.bullets = bullets
+	bcp.global_position = pos
+	
+	return bcp
+
 ####################
 ## Core Functions
 
@@ -156,6 +171,7 @@ func spell() -> void:
 func _defeat():
 	clear_turrets()
 	clear_timers()
+	cleanup()
 	
 	_drop_spell_items()
 	
@@ -173,6 +189,10 @@ func _defeat():
 		hp_changed.emit(hp_left, 0, hp_left)
 		spell_started.emit()
 
+## Used to clean up stuff the spell sets up
+func cleanup():
+	pass
+
 ## Called to determine what items the attack should drop
 func get_drops() -> Dictionary:
 	return Item.get_drop_dict(0, 0, 0)
@@ -185,7 +205,7 @@ func _drop_spell_items() -> void:
 			pass
 		
 		for i in range(items[itemType]):
-			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(60, 120) + global_position
+			var pos = Vector2.from_angle(randf_range(0, TAU)) * randf_range(70, 180) + global_position
 			var item = Item.new_item(itemType)
 			item.global_position = pos
 			get_parent().call_deferred("add_sibling", item)

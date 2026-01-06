@@ -44,7 +44,7 @@ signal hit_or_bomb
 @onready var hitbox_sprite: Sprite2D = $HitboxSprite
 @onready var hitbox: Area2D = $HitboxSprite/PlayerHitbox
 
-@onready var player_sprite: AnimatedSprite2D = $PlayerAnimSprite
+@onready var player_sprite: AnimatedSprite2D = $PlayerSprite
 
 @onready var sfx_player_hit: AudioStreamPlayer2D = $HitSFX
 @onready var sfx_player_graze: AudioStreamPlayer2D = $GrazeSFX

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cm48yie4xer8w"]
+[gd_scene load_steps=17 format=3 uid="uid://cm48yie4xer8w"]
 
 [ext_resource type="Script" uid="uid://bi0cje8dqty4t" path="res://scripts/player/player.gd" id="1_082dn"]
 [ext_resource type="Texture2D" uid="uid://dnck3uf6dygsx" path="res://textures/player.png" id="2_ta65i"]
@@ -13,6 +13,17 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
 size = Vector2(42, 81)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_082dn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ta65i")
+}],
+"loop": false,
+"name": &"default",
+"speed": 1.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
 radius = 1.0
@@ -47,9 +58,9 @@ position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_dqkch")
 debug_color = Color(0.7, 0.7, 0.7, 0.419608)
 
-[node name="PlayerSprite" type="Sprite2D" parent="."]
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
-texture = ExtResource("2_ta65i")
+sprite_frames = SubResource("SpriteFrames_082dn")
 
 [node name="HitboxSprite" type="Sprite2D" parent="."]
 z_index = 10

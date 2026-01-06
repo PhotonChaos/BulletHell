@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cqnrcnk8bqiyi"]
+[gd_scene load_steps=9 format=3 uid="uid://cqnrcnk8bqiyi"]
 
 [ext_resource type="Script" uid="uid://by5x81wsjesdb" path="res://scripts/boss.gd" id="1_jdndr"]
-[ext_resource type="Resource" uid="uid://4vbkq5wuo86w" path="res://audio/music/bosses/crystal_boss/junko_remix.tres" id="2_6cppf"]
 [ext_resource type="PackedScene" uid="uid://b1uk3qklqcuqs" path="res://scenes/boss/crystal_boss/spellcard/crystal_spray.tscn" id="3_g1brn"]
 [ext_resource type="PackedScene" uid="uid://d4d0ktav1jh72" path="res://scenes/boss/crystal_boss/spellcard/glass_chains.tscn" id="4_1i7u4"]
 [ext_resource type="PackedScene" uid="uid://dgjsgcajoewvb" path="res://scenes/boss/crystal_boss/spellcard/quartz_ripples.tscn" id="5_pk1r5"]
-[ext_resource type="PackedScene" uid="uid://dd8qfo1h75i4i" path="res://scenes/boss/crystal_boss/spellcard/diamondhearted.tscn" id="6_7f0eh"]
+[ext_resource type="PackedScene" uid="uid://dd8qfo1h75i4i" path="res://scenes/boss/crystal_boss/spellcard/Diamondhearted.tscn" id="6_7f0eh"]
 [ext_resource type="Texture2D" uid="uid://c85ofdmdk2of0" path="res://textures/bosses/crystal_boss.png" id="7_q44ph"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npn3v"]
@@ -22,7 +21,6 @@ script = ExtResource("1_jdndr")
 boss_name = "Crystal"
 boss_title = "The Testing Dummy"
 bomb_immunity = 1
-boss_theme = ExtResource("2_6cppf")
 spell_cards = Array[PackedScene]([ExtResource("3_g1brn"), ExtResource("4_1i7u4"), ExtResource("5_pk1r5"), ExtResource("6_7f0eh")])
 metadata/_custom_type_script = "uid://by5x81wsjesdb"
 
